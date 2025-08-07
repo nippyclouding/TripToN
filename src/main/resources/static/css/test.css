@@ -1,0 +1,25 @@
+.scrolling-image {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200%; /* 화면보다 넓게 */
+    height: auto;
+    z-index: -1; /* 배경 레이어로 */
+    display: flex;
+    animation: scrollRight 20s linear infinite;
+}
+
+.scrolling-image img {
+    width: 50%; /* 각 이미지가 화면 너비와 같게 */
+    height: auto;
+    display: block;
+}
+
+@keyframes scrollRight {
+    0% {
+        transform: translateX(0%) translateY(-50%);
+    }
+    100% {
+        transform: translateX(-50%) translateY(-50%);
+    }
+}

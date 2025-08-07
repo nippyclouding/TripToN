@@ -1,0 +1,55 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>가방 찾기</title>
+    <link rel="stylesheet" href="/css/6_find.css">
+</head>
+<body>
+<div class="container">
+    <h1>📦 저장된 가방들</h1>
+
+    <!-- 에러 메시지 표시 -->
+    <div th:if="${error}" class="error-message">
+        <p th:text="${error}"></p>
+    </div>
+
+    <!-- Luggage 목록 표시 -->
+    <div class="luggage-list" th:if="${luggages != null and !luggages.isEmpty()}">
+        <div th:each="luggage : ${luggages}" class="luggage-item">
+            <div class="luggage-info">
+                <h3 th:text="${luggage.userName + '의 가방'}"></h3>
+                <small th:text="${#temporals.format(luggage.dateTime, 'yyyy-MM-dd HH:mm')}"></small>
+            </div>
+
+            <!-- 비밀번호 입력 폼 -->
+            <div class="password-form">
+                <form method="post" action="/verify-password">
+                    <input type="hidden" name="luggageId" th:value="${luggage.getLID()}">
+                    <input type="password" name="inputPassword" placeholder="비밀번호 입력" required maxlength="4" autocomplete="off">
+                    <button type="submit" class="view-btn">보기</button>
+                </form>
+            </div>
+
+            <!-- 실패한 경우 에러 표시 -->
+            <div th:if="${failedLuggageId != null and failedLuggageId == luggage.getLID()}" class="password-error">
+                비밀번호가 틀렸습니다!
+            </div>
+        </div>
+    </div>
+
+    <!-- 데이터가 없는 경우 -->
+    <div th:if="${luggages == null or luggages.isEmpty()}" class="no-data">
+        <p>저장된 가방이 없습니다.</p>
+        <a href="/" class="home-btn">새 고민 상담하기</a>
+    </div>
+
+    <!-- 홈으로 돌아가기 버튼 -->
+    <div class="actions">
+        <a href="/" class="home-btn">홈으로</a>
+    </div>
+</div>
+</body>
+</html>
