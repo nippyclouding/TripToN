@@ -1,0 +1,140 @@
+/* 2_select.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+h1 {
+    color: white;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.luggage-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+button[name="luggage"] {
+    width: 200px;
+    height: 200px;
+    border: none;
+    border-radius: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+button[value="LuggageA"] {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+}
+
+button[value="LuggageB"] {
+    background: linear-gradient(135deg, #4ecdc4, #44a08d);
+}
+
+button[value="LuggageC"] {
+    background: linear-gradient(135deg, #45b7d1, #3498db);
+}
+
+button[name="luggage"]:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+button[name="luggage"]:active {
+    transform: translateY(-5px) scale(1.02);
+}
+
+/* 버튼에 아이콘 추가 효과 */
+button[name="luggage"]::before {
+    content: '🎒';
+    display: block;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+button[value="LuggageA"]::before {
+    content: '🎒';
+}
+
+button[value="LuggageB"]::before {
+    content: '💼';
+}
+
+button[value="LuggageC"]::before {
+    content: '🧳';
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    form {
+        padding: 2rem;
+        margin: 0 1rem;
+    }
+
+    .luggage-container {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    button[name="luggage"] {
+        width: 180px;
+        height: 180px;
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    button[name="luggage"] {
+        width: 150px;
+        height: 150px;
+        font-size: 1.1rem;
+    }
+}

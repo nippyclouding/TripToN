@@ -2,6 +2,7 @@ package TripToN.TripToN.service;
 
 
 
+import TripToN.TripToN.domain.Color;
 import TripToN.TripToN.domain.luggages.*;
 import TripToN.TripToN.domain.response.*;
 import TripToN.TripToN.repository.LuggageRepository;
@@ -40,6 +41,7 @@ public class LuggageService {
         }
         else if(luggage.getConcern().length()>=25 && luggage.getConcern().length()<50){
             luggage.setAnswer(response.getResponses().get(1));
+
         }
         else if(luggage.getConcern().length()>=50 && luggage.getConcern().length()<75){
             luggage.setAnswer(response.getResponses().get(2));
@@ -87,6 +89,27 @@ public class LuggageService {
         else if(luggage.getConcern().length()>=75 && luggage.getConcern().length()<=100){
             luggage.setAnswer(response.getResponses().get(3));
         }
+        luggageRepository.save(luggage);
+    }
+
+
+    @Transactional
+    public void updateColorA(LuggageA luggage, Color color) {
+        luggage.setColor(color);
+        luggageRepository.save(luggage);
+    }
+
+
+    @Transactional
+    public void updateColorB(LuggageB luggage, Color color) {
+        luggage.setColor(color);
+        luggageRepository.save(luggage);
+    }
+
+
+    @Transactional
+    public void updateColorC(LuggageC luggage, Color color) {
+        luggage.setColor(color);
         luggageRepository.save(luggage);
     }
 

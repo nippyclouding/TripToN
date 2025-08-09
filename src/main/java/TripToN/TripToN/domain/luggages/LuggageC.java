@@ -1,6 +1,7 @@
 package TripToN.TripToN.domain.luggages;
 
 
+import TripToN.TripToN.domain.Color;
 import TripToN.TripToN.domain.response.ResponseC;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,6 +14,8 @@ public class LuggageC extends Luggage {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "RID_C")
     private ResponseC response;
+    @Enumerated(EnumType.STRING)
+    private Color color;
     public LuggageC() {
     }
     public LuggageC(String userName, String concern, String password) {

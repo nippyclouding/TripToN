@@ -1,5 +1,6 @@
 package TripToN.TripToN.controller;
 
+import TripToN.TripToN.domain.Color;
 import TripToN.TripToN.domain.Concern;
 import TripToN.TripToN.domain.luggages.*;
 import TripToN.TripToN.repository.LuggageRepository;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -80,8 +83,67 @@ public class MainController {
             luggageService.put(luggageC);
         }
 
-        return "4_transform";
+        return "4_weight";
     }
+    //DB에 고객이 선택한 가방을 넣은 뒤 무게 측정 페이지
+    //무게 측정 : 일단 보류
+
+    @GetMapping("/color")
+    public String color(HttpSession session, Model model){
+
+        return "5_color";
+    }
+
+    @PostMapping("/color")
+    public String colorFix(@RequestParam("selectedColor") String selectedColor, HttpSession session, Model model) {
+
+        // 세션에서 가방 타입 가져오기
+        String luggageType = (String) session.getAttribute("selectedLuggageType");
+
+        if (luggageType == null) {
+            throw new IllegalArgumentException("세션이 만료되었습니다.");
+        }
+
+        // 문자열을 Color enum으로 변환
+        Color color = convertStringToColor(selectedColor);
+
+        // 가장 최근에 저장된 해당 타입의 Luggage 찾아서 색깔 설정
+        List<Luggage> allLuggages = luggageService.findAll();
+
+        for (int i = allLuggages.size() - 1; i >= 0; i--) {
+            Luggage luggage = allLuggages.get(i);
+
+            if ("LuggageA".equals(luggageType) && luggage instanceof LuggageA) {
+                luggageService.updateColorA((LuggageA) luggage, color);
+                break;
+            } else if ("LuggageB".equals(luggageType) && luggage instanceof LuggageB) {
+                luggageService.updateColorB((LuggageB) luggage, color);
+                break;
+            } else if ("LuggageC".equals(luggageType) && luggage instanceof LuggageC) {
+                luggageService.updateColorC((LuggageC) luggage, color);
+                break;
+            }
+        }
+
+        model.addAttribute("selectedColor", selectedColor);
+        return "6_transform";
+    }
+    // 색깔 변환 유틸리티 메서드
+    private Color convertStringToColor(String colorString) {
+        switch (colorString.toLowerCase()) {
+            case "red":
+                return Color.Red;
+            case "green":
+                return Color.Green;
+            case "blue":
+                return Color.Blue;
+            default:
+                throw new IllegalArgumentException("올바르지 않은 색깔입니다: " + colorString);
+        }
+    }
+
+
+
 
     @GetMapping("/result")
     public String result(HttpSession session, Model model) {
@@ -111,7 +173,7 @@ public class MainController {
             }
         }
 
-        // 모델에 데이터 추가
+        // 모델에 데이터 추가 (개인 결과만)
         if (userLuggage != null) {
             model.addAttribute("luggage", userLuggage);
             model.addAttribute("answer", userLuggage.getAnswer());
@@ -121,62 +183,43 @@ public class MainController {
             model.addAttribute("error", "결과를 찾을 수 없습니다.");
         }
 
-        return "5_result";
+        // allLuggages 모델 추가 제거됨 (전체 결과는 별도 페이지에서 처리)
+
+        return "7_result";
     }
 
 
     @GetMapping("/find")
     public String find(Model model) {
-        // 모든 luggage 조회
         List<Luggage> allLuggages = luggageService.findAll();
-        model.addAttribute("luggages", allLuggages);
-        return "6_find";
+        model.addAttribute("allLuggages", allLuggages);  // ← "luggages"를 "allLuggages"로 변경
+        return "8_find";
     }
 
-    @PostMapping("/verify-password")
-    public String verifyPassword(@RequestParam Long luggageId,
-                                 @RequestParam String inputPassword,
-                                 HttpSession session,
-                                 Model model) {
+
+
+    @PostMapping("/verify-password-ajax")
+    @ResponseBody
+    public Map<String, Object> verifyPasswordAjax(@RequestParam Long luggageId,
+                                                  @RequestParam String inputPassword) {
+        Map<String, Object> response = new HashMap<>();
 
         try {
             Luggage luggage = luggageService.findById(luggageId);
 
-            // 비밀번호 검증
             if (luggage.getPassword().equals(inputPassword)) {
-                // 성공: 세션에 luggage ID 저장하고 myData로 이동
-                session.setAttribute("verifiedLuggageId", luggageId);
-                return "redirect:/myData";
+                response.put("success", true);
+                response.put("message", "비밀번호 인증 성공");
             } else {
-                // 실패: 에러 메시지와 함께 다시 6_find로
-                List<Luggage> allLuggages = luggageService.findAll();
-                model.addAttribute("luggages", allLuggages);
-                model.addAttribute("error", "틀렸습니다");
-                model.addAttribute("failedLuggageId", luggageId); // 실패한 luggage 표시용
-                return "6_find";
+                response.put("success", false);
+                response.put("message", "비밀번호가 틀렸습니다");
             }
         } catch (Exception e) {
-            model.addAttribute("error", "데이터를 찾을 수 없습니다");
-            return "6_find";
-        }
-    }
-
-    @GetMapping("/myData")
-    public String myData(HttpSession session, Model model) {
-        Long luggageId = (Long) session.getAttribute("verifiedLuggageId");
-
-        if (luggageId == null) {
-            return "redirect:/find"; // 인증되지 않으면 find로 돌려보냄
+            response.put("success", false);
+            response.put("message", "데이터를 찾을 수 없습니다");
         }
 
-        try {
-            Luggage luggage = luggageService.findById(luggageId);
-            model.addAttribute("luggage", luggage);
-            return "myData"; // myData.html 페이지
-        } catch (Exception e) {
-            model.addAttribute("error", "데이터를 불러올 수 없습니다");
-            return "6_find";
-        }
+        return response;
     }
 
 

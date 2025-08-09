@@ -1,0 +1,114 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>전체 가방 결과</title>
+    <link rel="stylesheet" href="/css/5_result.css">
+</head>
+<body>
+<div class="container">
+    <h1>📦 저장된 모든 가방들</h1>
+
+    <!-- 에러 메시지 표시 -->
+    <div id="passwordError" class="error-message" style="display: none;">
+        <p></p>
+    </div>
+
+    <!-- Luggage 목록 표시 -->
+    <div class="luggage-list" th:if="${allLuggages != null and !allLuggages.isEmpty()}">
+        <div th:each="luggage : ${allLuggages}" class="luggage-item">
+            <div class="luggage-info">
+                <h3 th:text="${luggage.userName + '의 가방'}"></h3>
+                <small th:text="${#temporals.format(luggage.dateTime, 'yyyy-MM-dd HH:mm')}"></small>
+            </div>
+
+            <!-- 비밀번호 입력 폼 -->
+            <div class="password-form">
+                <form class="password-verify-form" th:attr="data-luggage-id=${luggage.LID}">
+                    <input type="password" name="inputPassword" placeholder="비밀번호 입력" required maxlength="4" autocomplete="off">
+                    <button type="submit" class="view-btn">보기</button>
+                </form>
+            </div>
+
+            <!-- 상세 정보 표시 영역 (처음에는 숨김) -->
+            <div th:id="'details-' + ${luggage.LID}" class="luggage-details" style="display: none;">
+                <div class="data-section">
+                    <h3>📝 고민 내용</h3>
+                    <div class="content-box">
+                        <p th:text="${luggage.concern}"></p>
+                    </div>
+                </div>
+
+                <div class="data-section">
+                    <h3>💬 가방의 답변</h3>
+                    <div class="answer-box">
+                        <p th:text="${luggage.answer}"></p>
+                    </div>
+                </div>
+
+                <div class="data-section">
+                    <h3>⏰ 생성 시간</h3>
+                    <p th:text="${#temporals.format(luggage.dateTime, 'yyyy년 MM월 dd일 HH:mm:ss')}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 데이터가 없는 경우 -->
+    <div th:if="${allLuggages == null or allLuggages.isEmpty()}" class="no-data">
+        <p>저장된 가방이 없습니다.</p>
+    </div>
+
+    <!-- 홈으로 돌아가기 버튼 -->
+    <div class="actions">
+        <a href="/" class="home-btn">홈으로</a>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordError = document.getElementById('passwordError');
+        const passwordForms = document.querySelectorAll('.password-verify-form');
+
+        passwordForms.forEach(form => {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const luggageId = this.dataset.luggageId;
+                const passwordInput = this.querySelector('input[name="inputPassword"]');
+                const password = passwordInput.value;
+
+                try {
+                    const response = await fetch('/verify-password-ajax', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `luggageId=${luggageId}&inputPassword=${password}`
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        const detailsDiv = document.getElementById('details-' + luggageId);
+                        detailsDiv.style.display = 'block';
+                        passwordInput.value = '';
+                        passwordError.style.display = 'none';
+                    } else {
+                        passwordError.querySelector('p').textContent = '비밀번호가 틀렸습니다!';
+                        passwordError.style.display = 'block';
+                        passwordInput.value = '';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    passwordError.querySelector('p').textContent = '오류가 발생했습니다.';
+                    passwordError.style.display = 'block';
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -33,3 +33,60 @@
     transform: translateY(0px);   /* 원래 위치 */
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
+
+/* 가방 결과 섹션 스타일 */
+.luggage-results-section {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid #eee;
+}
+
+.luggage-details {
+    margin-top: 15px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+}
+
+.data-section {
+    margin-bottom: 20px;
+}
+
+.data-section h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.content-box, .answer-box {
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.color-info {
+    display: flex;
+    align-items: center;
+}
+
+.color-badge {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.color-red {
+    background-color: #ff4444;
+}
+
+.color-green {
+    background-color: #44ff44;
+}
+
+.color-blue {
+    background-color: #4444ff;
+}
