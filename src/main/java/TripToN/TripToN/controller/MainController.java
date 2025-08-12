@@ -30,20 +30,21 @@ public class MainController {
         return "1_main";
     }
 
+
     @GetMapping("/introduce")
     public String introduce(){
-        return "introduce/introduce";
+        return "2_introduce";
     }
 
     @GetMapping("/select")
     public String select(){
-        return "2_select";
+        return "3_select";
     }
 
     @PostMapping("/select")
     public String selectItem(@RequestParam String luggage, HttpSession session, Model model){
         session.setAttribute("selectedLuggageType", luggage);
-        return "3_concern";
+        return "4_concern";
     }
 
     //3_concern에서 submit을 누르면 요청받는 컨트롤러
@@ -83,7 +84,7 @@ public class MainController {
             luggageService.put(luggageC);
         }
 
-        return "4_weight";
+        return "5_weight";
     }
     //DB에 고객이 선택한 가방을 넣은 뒤 무게 측정 페이지
     //무게 측정 : 일단 보류
@@ -91,7 +92,7 @@ public class MainController {
     @GetMapping("/color")
     public String color(HttpSession session, Model model){
 
-        return "5_color";
+        return "6_color";
     }
 
     @PostMapping("/color")
@@ -126,7 +127,7 @@ public class MainController {
         }
 
         model.addAttribute("selectedColor", selectedColor);
-        return "6_transform";
+        return "9_transform";
     }
     // 색깔 변환 유틸리티 메서드
     private Color convertStringToColor(String colorString) {

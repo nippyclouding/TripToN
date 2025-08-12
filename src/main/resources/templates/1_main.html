@@ -10,28 +10,56 @@
     <link rel="stylesheet" href="/css/test.css">
 </head>
 <body class="main-background">
-    <!--버튼-->
-    <div class="shift-button-container">
-        <a href="/select" class="shift-button">
-            <img src="/image/1_mainPage/shift.png" alt="error">
+    <!-- 좌측 하단 심볼N 이미지 -->
+    <div class="symbol-logo" onclick="toggleSidebar()">
+        <img src="/image/1_mainPage/심볼N.png" alt="심볼N">
+    </div>
+
+    <!-- 사이드바 추가 (body 태그 안 어디든) -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <div class="sidebar-close" onclick="closeSidebar()">×</div>
+            <div class="sidebar-menu">
+                <div class="menu-item" data-delay="0" data-link="/introduce"><i>STORY</i></div>
+                <div class="menu-item" data-delay="200" data-link="/select"><i>CHOOSE YOUR TRIP</i></div>
+                <div class="menu-item" data-delay="400" data-link="/find"><i>SHOW RESULTS</i></div>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+
+    <!-- 우측 중간 화살표 버튼 (새로 추가) -->
+    <div class="arrow-button-container">
+        <a href="/introduce" class="arrow-btn">
+            <img src="/image/1_mainPage/화살표.png" alt="소개 페이지로 이동">
         </a>
     </div>
 
-    <div class="logo">
-        <a href="/introduce" class = "introduceLogo">
-            <img src = "/image/1_mainPage/introduceLogo.png" alt = "error">
-        </a>
-    </div>
-
-    <!-- 하단 우측 버튼 추가 -->
+    <!-- 하단 중앙 결과보기 버튼
     <div class="bottom-right-btn">
         <a href="/find" class="find-btn">결과보기</a>
     </div>
+    -->
 
-    <!-- 백그라운드 글자 -->
-    <div class="scrolling-image">
-        <img src="/image/test.png" alt="Scrolling Image">
-        <img src="/image/test.png" alt="Scrolling Image">
+    <!-- 우측 하단 사운드 토글 버튼 -->
+    <div class="sound-toggle-container">
+        <button class="sound-toggle-btn" onclick="toggleSound()">
+            <img src="/image/1_mainPage/사운드 ON.png" alt="사운드 켜기" id="sound-btn-img">
+        </button>
     </div>
+
+    <script src="/js/music-manager.js"></script>
+    <script src="/js/1_main.js"></script>
+
+    <!-- 사운드 토글 함수 -->
+    <script>
+        function toggleSound() {
+            if (window.musicManager) {
+                window.musicManager.toggleMute();
+            }
+        }
+    </script>
+
 </body>
 </html>
