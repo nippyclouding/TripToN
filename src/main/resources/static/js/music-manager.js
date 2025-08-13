@@ -127,25 +127,16 @@ class MusicManager {
         }
     }
 
-    // 사운드 버튼 업데이트
+    // 기존 updateSoundButtons() 함수를 다음으로 교체
     updateSoundButtons() {
-        const soundButtons = document.querySelectorAll('.sound-toggle-btn img');
-        console.log('🎵 사운드 버튼 업데이트 - 버튼 수:', soundButtons.length);
+        console.log('🎵 사운드 버튼 업데이트 - 음소거 상태:', this.isMuted);
 
-        soundButtons.forEach(img => {
-            if (this.isMuted) {
-                // 음소거 상태 = ON 버튼 표시 (클릭하면 음악 켜짐)
-                img.src = '/image/1_mainPage/사운드 ON.png';
-                img.alt = '사운드 켜기';
-                console.log('🔊 버튼: ON 이미지 표시 (음악 꺼짐 상태)');
-            } else {
-                // 음악 재생 상태 = OFF 버튼 표시 (클릭하면 음악 꺼짐)
-                img.src = '/image/1_mainPage/사운드 OFF.png';
-                img.alt = '사운드 끄기';
-                console.log('🔇 버튼: OFF 이미지 표시 (음악 켜짐 상태)');
-            }
-        });
-        console.log('🎵 버튼 이미지 업데이트 완료');
+        // shared.js의 함수 호출하여 아이콘 업데이트
+        if (typeof updateSoundStatusIcon === 'function') {
+            updateSoundStatusIcon(this.isMuted);
+        }
+
+        console.log('🎵 사운드 상태 아이콘 업데이트 완료');
     }
 
     // 사용자 상호작용 후 음악 시작 (제거됨 - 버튼으로만 제어)

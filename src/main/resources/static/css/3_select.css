@@ -1,0 +1,515 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url('/image/3_selectPage/Background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* 중앙 가방 이미지 컨테이너 */
+.bag-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    cursor: pointer;
+}
+
+.bag-container img {
+    max-width: 400px;
+    max-height: 400px;
+    transition: transform 0.3s ease;
+}
+
+.bag-container img:hover {
+    transform: scale(1.1);
+}
+
+/* 하단 컨트롤 영역 */
+.bottom-controls {
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    z-index: 10;
+}
+
+.arrow-btn {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    border-radius: 0 !important;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.arrow-btn:focus,
+.arrow-btn:active,
+.arrow-btn:hover {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+}
+
+.arrow-btn:hover {
+    transform: scale(1.1);
+}
+
+.arrow-btn img {
+    width: 25px;
+    height: 20px;
+}
+
+/* about 버튼 - 뭉뚝한 사각형 완전 제거 */
+.about-btn {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.about-btn:focus,
+.about-btn:active,
+.about-btn:hover {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+}
+
+.about-btn img {
+    width: 80px;
+    height: auto;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.about-btn:hover {
+    transform: scale(1.1);
+}
+
+.about-btn:hover img {
+    opacity: 1;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+}
+
+.about-btn:active {
+    transform: scale(0.95);
+}
+
+.moving-text {
+    pointer-events: none;
+}
+
+.moving-text img {
+    height: auto;
+    width: auto;
+    max-height: 400px;
+}
+
+/* 가방 이미지 슬라이드 애니메이션 */
+.bag-slide-left {
+    animation: slideLeft 0.5s ease-in-out;
+}
+
+.bag-slide-right {
+    animation: slideRight 0.5s ease-in-out;
+}
+
+@keyframes slideLeft {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideRight {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ============================
+   아이템 소개 모달
+   ============================ */
+
+.item-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-modal.show {
+    display: flex;
+}
+
+.modal-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+}
+
+.modal-content {
+    position: relative;
+    max-width: 80%;
+    max-height: 80%;
+    z-index: 3001;
+    animation: modalFadeIn 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* 모달 버튼 컨테이너 */
+.modal-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+/* 화살표 버튼 (선택하기) - 뭉뚝한 사각형 완전 제거 */
+.modal-arrow-btn {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.modal-arrow-btn:focus,
+.modal-arrow-btn:active,
+.modal-arrow-btn:hover:focus,
+.modal-arrow-btn:hover {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+}
+
+.modal-arrow-btn img {
+    width: 60px;
+    height: auto;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+.modal-arrow-btn:hover {
+    transform: scale(1.1);
+}
+
+.modal-arrow-btn:hover img {
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
+}
+
+.modal-arrow-btn:active {
+    transform: scale(0.95);
+}
+
+/* 닫기 버튼 - 뭉뚝한 사각형 완전 제거 */
+.modal-close-btn {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.modal-close-btn:focus,
+.modal-close-btn:active,
+.modal-close-btn:hover:focus,
+.modal-close-btn:hover {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+}
+
+.modal-close-btn img {
+    width: 50px;
+    height: auto;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+.modal-close-btn:hover {
+    transform: scale(1.1);
+}
+
+.modal-close-btn:hover img {
+    opacity: 1;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
+}
+
+.modal-close-btn:active {
+    transform: scale(0.95);
+}
+
+/* 모달 페이드인 애니메이션 */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ESC 키나 배경 클릭으로 닫을 때 애니메이션 */
+.item-modal.closing .modal-content {
+    animation: modalFadeOut 0.3s ease-in;
+}
+
+@keyframes modalFadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+/* 모든 버튼의 기본 스타일 제거 - 뭉뚝한 사각형 완전 제거 */
+button {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+button:focus,
+button:active,
+button:hover,
+button:visited {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+
+/* 폼 요소의 기본 스타일도 제거 */
+form {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+input[type="hidden"] {
+    border: none;
+    outline: none;
+}
+
+/* 추가 보장 - 모든 버튼 상태에서 뭉뚝한 사각형 제거 */
+.modal-arrow-btn,
+.modal-close-btn,
+.about-btn,
+.arrow-btn {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-focus-ring-color: transparent !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+
+/* ============================
+   버튼 컨테이너 완전 제거 - 강력한 리셋
+   ============================ */
+
+/* 모든 button 요소의 기본 스타일 완전 제거 */
+button,
+input[type="submit"],
+input[type="button"] {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background: none !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    border-style: none !important;
+    border-width: 0 !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    outline-style: none !important;
+    outline-width: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font: inherit !important;
+    color: inherit !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    display: inline-block !important;
+    position: relative !important;
+}
+
+/* 모든 상태에서 네모 컨테이너 제거 */
+button:hover,
+button:focus,
+button:active,
+button:visited,
+input[type="submit"]:hover,
+input[type="submit"]:focus,
+input[type="submit"]:active {
+    background: none !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    border-style: none !important;
+    border-width: 0 !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    outline-style: none !important;
+    outline-width: 0 !important;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+/* 특정 버튼들에 대한 강력한 리셋 */
+.modal-arrow-btn,
+.modal-close-btn,
+.about-btn,
+.arrow-btn {
+    all: unset !important;
+    display: inline-block !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+}
+
+/* 폼 컨테이너도 투명하게 */
+form {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline-block !important;
+}
+
+/* 브라우저별 특수 처리 */
+button::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner {
+    border: 0 !important;
+    padding: 0 !important;
+}
+
+/* 웹킷 기반 브라우저 (Chrome, Safari) */
+button::-webkit-button,
+input[type="submit"]::-webkit-button {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* 터치 디바이스에서 하이라이트 제거 */
+* {
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    -khtml-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}

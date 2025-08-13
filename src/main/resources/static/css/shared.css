@@ -1,0 +1,174 @@
+/* ============================
+   공통 컴포넌트 스타일
+   ============================ */
+
+/* 좌측 하단 - 심볼N 로고 */
+.symbol-logo {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.symbol-logo img {
+    width: 60px;
+    height: auto;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.symbol-logo:hover img {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* 우측 하단에 배치 (기존 위치 유지) */
+.sound-toggle-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;  /* 우측 하단 유지 */
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 5px;  /* 아이콘과 로고 사이 간격 */
+}
+
+.sound-toggle-btn {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;  /* 내부 요소들 간격 */
+}
+
+/* 사운드 상태 아이콘 (line.png 또는 dot.gif) */
+.sound-status-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+/* 사운드 로고 */
+.sound-logo {
+    width: 40px;  /* soundLogo 크기 */
+    height: 40px;
+    object-fit: contain;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.sound-toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+.sound-toggle-btn:hover .sound-status-icon,
+.sound-toggle-btn:hover .sound-logo {
+    opacity: 1;
+}
+
+.sound-toggle-btn:active {
+    transform: scale(0.95);
+}
+/* ============================
+   사이드바 스타일
+   ============================ */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 300px;
+    height: 100vh;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    z-index: 2000;
+    transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar-content {
+    padding: 40px 30px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.sidebar-close:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.sidebar-menu {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.menu-item {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    padding: 15px 0;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateX(-30px);
+}
+
+.menu-item:hover {
+    color: #3498db;
+    border-bottom-color: #3498db;
+    transform: translateX(10px);
+}
+
+.menu-item.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    z-index: 1500;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.sidebar-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}

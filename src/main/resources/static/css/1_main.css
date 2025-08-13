@@ -79,44 +79,7 @@ body.main-background {
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-/* ============================
-   우측 하단 - 사운드 토글 버튼
-   ============================ */
-.sound-toggle-container {
-    position: fixed;
-    bottom: 30px;            /* 심볼N과 같은 높이 */
-    right: 30px;             /* 심볼N과 대칭 위치 */
-    z-index: 1000;
-}
 
-.sound-toggle-btn {
-    background: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.sound-toggle-btn img {
-    width: 60px;
-    height: 60px;            /* 세로도 고정 */
-    object-fit: contain;     /* 비율 유지하면서 맞춤 */
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-}
-
-.sound-toggle-btn:hover {
-    transform: scale(1.1);
-}
-
-.sound-toggle-btn:hover img {
-    opacity: 1;              /* 호버시 완전 불투명 */
-}
-
-.sound-toggle-btn:active {
-    transform: scale(0.95);
-}
 
 /* ============================
    중앙 하단 - 화살표 버튼 (수정됨)

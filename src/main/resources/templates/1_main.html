@@ -8,11 +8,12 @@
     <title>Document</title>
     <link rel="stylesheet" href="/css/1_main.css">
     <link rel="stylesheet" href="/css/test.css">
+    <link rel="stylesheet" href="/css/shared.css">
 </head>
 <body class="main-background">
     <!-- 좌측 하단 심볼N 이미지 -->
     <div class="symbol-logo" onclick="toggleSidebar()">
-        <img src="/image/1_mainPage/심볼N.png" alt="심볼N">
+        <img src="/image/sharedImage/심볼N.png" alt="심볼N">
     </div>
 
     <!-- 사이드바 추가 (body 태그 안 어디든) -->
@@ -45,12 +46,15 @@
     <!-- 우측 하단 사운드 토글 버튼 -->
     <div class="sound-toggle-container">
         <button class="sound-toggle-btn" onclick="toggleSound()">
-            <img src="/image/1_mainPage/사운드 ON.png" alt="사운드 켜기" id="sound-btn-img">
+            <img id="sound-status-icon" class="sound-status-icon" src="/image/sharedImage/line.png" alt="음악 정지">
+            <img class="sound-logo" src="/image/sharedImage/soundLogo.png" alt="사운드 컨트롤">
         </button>
     </div>
 
     <script src="/js/music-manager.js"></script>
     <script src="/js/1_main.js"></script>
+    <script src="/js/shared.js"></script>
+
 
     <!-- 사운드 토글 함수 -->
     <script>

@@ -127,17 +127,19 @@ public class MainController {
         }
 
         model.addAttribute("selectedColor", selectedColor);
-        return "9_transform";
+        return "7_transform";
     }
     // 색깔 변환 유틸리티 메서드
     private Color convertStringToColor(String colorString) {
         switch (colorString.toLowerCase()) {
             case "red":
-                return Color.Red;
+                return Color.a;
             case "green":
-                return Color.Green;
+                return Color.b;
             case "blue":
-                return Color.Blue;
+                return Color.c;
+            case "black":
+                return Color.d;
             default:
                 throw new IllegalArgumentException("올바르지 않은 색깔입니다: " + colorString);
         }
@@ -186,7 +188,7 @@ public class MainController {
 
         // allLuggages 모델 추가 제거됨 (전체 결과는 별도 페이지에서 처리)
 
-        return "7_result";
+        return "8_result";
     }
 
 
@@ -194,7 +196,7 @@ public class MainController {
     public String find(Model model) {
         List<Luggage> allLuggages = luggageService.findAll();
         model.addAttribute("allLuggages", allLuggages);  // ← "luggages"를 "allLuggages"로 변경
-        return "8_find";
+        return "9_find";
     }
 
 
