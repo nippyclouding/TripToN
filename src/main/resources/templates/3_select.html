@@ -12,85 +12,84 @@
 </head>
 <body>
 
-    <!-- 좌측 하단 심볼N 이미지 -->
-    <div class="symbol-logo" onclick="toggleSidebar()">
-        <img src="/image/sharedImage/심볼N.png" alt="심볼N">
-    </div>
+<!-- 좌측 하단 심볼N 이미지 -->
+<div class="symbol-logo" onclick="toggleSidebar()">
+    <img src="/image/sharedImage/심볼N.png" alt="심볼N">
+</div>
 
-    <!-- 사이드바 -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-content">
-            <div class="sidebar-close" onclick="closeSidebar()">×</div>
-            <div class="sidebar-menu">
-                <div class="menu-item" data-delay="0" data-link="/introduce"><i>STORY</i></div>
-                <div class="menu-item" data-delay="200" data-link="/select"><i>CHOOSE YOUR TRIP</i></div>
-                <div class="menu-item" data-delay="400" data-link="/find"><i>SHOW RESULTS</i></div>
+<!-- 사이드바 -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-content">
+        <div class="sidebar-close" onclick="closeSidebar()">×</div>
+        <div class="sidebar-menu">
+            <div class="menu-item" data-delay="0" data-link="/introduce"><i>STORY</i></div>
+            <div class="menu-item" data-delay="200" data-link="/select"><i>CHOOSE YOUR TRIP</i></div>
+            <div class="menu-item" data-delay="400" data-link="/find"><i>SHOW RESULTS</i></div>
+        </div>
+    </div>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- 우측 하단 사운드 토글 버튼 -->
+<div class="sound-toggle-container">
+    <div class="sound-toggle-btn" onclick="toggleSound()">
+        <img id="sound-status-icon" class="sound-status-icon" src="/image/sharedImage/line.png" alt="음악 정지">
+        <img class="sound-logo" src="/image/sharedImage/soundLogo.png" alt="사운드 컨트롤">
+    </div>
+</div>
+
+<!-- 중앙에 보여질 가방 이미지 -->
+<div class="bag-container">
+    <img id="bag-image" src="/image/3_selectPage/베개가방_기본.png" alt="Bag">
+</div>
+
+<!-- 아이템 소개 모달 -->
+<div class="item-modal" id="itemModal">
+    <div class="modal-background" onclick="closeItemModal()"></div>
+    <div class="modal-content">
+        <img id="item-introduce-image" src="" alt="Item Introduction">
+
+        <!-- 버튼 컨테이너 추가 -->
+        <div class="modal-buttons">
+            <!-- 화살표 버튼 (폼 제출용) -->
+            <form id="luggage-form" method="post" action="/select" style="display: inline;">
+                <input type="hidden" id="luggage-input" name="luggage" value="">
+                <div class="modal-arrow-btn" onclick="document.getElementById('luggage-form').submit();">
+                    <img src="/image/3_selectPage/화살표>.png" alt="선택하기">
+                </div>
+            </form>
+
+            <!-- 닫기 버튼 -->
+            <div class="modal-close-btn" onclick="closeItemModal()">
+                <img src="/image/3_selectPage/CLOSE.png" alt="닫기">
             </div>
         </div>
     </div>
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+</div>
 
-    <!-- 우측 하단 사운드 토글 버튼 -->
-    <div class="sound-toggle-container">
-        <button class="sound-toggle-btn" onclick="toggleSound()">
-            <img id="sound-status-icon" class="sound-status-icon" src="/image/sharedImage/line.png" alt="음악 정지">
-            <img class="sound-logo" src="/image/sharedImage/soundLogo.png" alt="사운드 컨트롤">
-        </button>
+
+<!-- 하단 컨트롤 영역 -->
+<div class="bottom-controls">
+    <div class="arrow-btn" id="prev-btn">
+        <img src="/image/3_selectPage/화살표<.png" alt="Previous">
     </div>
 
-    <!-- 중앙에 보여질 가방 이미지 -->
-    <div class="bag-container">
-        <img id="bag-image" src="/image/3_selectPage/베개가방_기본.png" alt="Bag">
+    <!-- about 버튼으로 변경 -->
+    <div class="about-btn" id="about-btn" onclick="openItemModal()">
+        <img src="/image/3_selectPage/ABOUT.png" alt="About">
     </div>
 
-    <!-- 아이템 소개 모달 -->
-    <div class="item-modal" id="itemModal">
-        <div class="modal-background" onclick="closeItemModal()"></div>
-        <div class="modal-content">
-            <img id="item-introduce-image" src="" alt="Item Introduction">
-
-            <!-- 버튼 컨테이너 추가 -->
-            <div class="modal-buttons">
-                <!-- 화살표 버튼 (폼 제출용) -->
-                <form id="luggage-form" method="post" action="/select" style="display: inline;">
-                    <input type="hidden" id="luggage-input" name="luggage" value="">
-                    <button type="submit" class="modal-arrow-btn">
-                        <img src="/image/3_selectPage/화살표>.png" alt="선택하기">
-                    </button>
-                </form>
-
-                <!-- 닫기 버튼 -->
-                <button class="modal-close-btn" onclick="closeItemModal()">
-                    <img src="/image/3_selectPage/CLOSE.png" alt="닫기">
-                </button>
-            </div>
-        </div>
+    <div class="arrow-btn" id="next-btn">
+        <img src="/image/3_selectPage/화살표>.png" alt="Next">
     </div>
+</div>
 
+<div class="moving-text">
+    <img src="/image/3_selectPage/BackgroundText.png" alt="Moving Text">
+</div>
 
-    <!-- 하단 컨트롤 영역 -->
-    <!-- 하단 컨트롤 영역 -->
-    <div class="bottom-controls">
-        <button class="arrow-btn" id="prev-btn">
-            <img src="/image/3_selectPage/화살표<.png" alt="Previous">
-        </button>
-
-        <!-- about 버튼으로 변경 -->
-        <button class="about-btn" id="about-btn" onclick="openItemModal()">
-            <img src="/image/3_selectPage/ABOUT.png" alt="About">
-        </button>
-
-        <button class="arrow-btn" id="next-btn">
-            <img src="/image/3_selectPage/화살표>.png" alt="Next">
-        </button>
-    </div>
-
-    <div class="moving-text">
-        <img src="/image/3_selectPage/BackgroundText.png" alt="Moving Text">
-    </div>
-
-    <!-- 공통 스크립트들 -->
-    <script src="/js/music-manager.js"></script>
-    <script src="/js/shared.js"></script>
+<!-- 공통 스크립트들 -->
+<script src="/js/music-manager.js"></script>
+<script src="/js/shared.js"></script>
 </body>
 </html>

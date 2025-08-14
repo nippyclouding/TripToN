@@ -1,1 +1,29 @@
-introduce page here
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduce Page</title>
+    <link rel="stylesheet" href="/css/2_introduce.css">
+</head>
+<body>
+<div class="container">
+    <h1>환영합니다!</h1>
+    <p>여행을 준비하는 당신을 위한 특별한 서비스입니다.</p>
+
+    <!-- 사운드 컨트롤 버튼 -->
+    <div class="sound-control">
+        <img id="soundButton"
+             src="/image/2_introducePage/사운드 OFF.png"
+             alt="Sound Control"
+             draggable="false">
+        <div class="drag-hint">← 드래그하여 사운드 토글 →</div>
+    </div>
+
+    <!-- 펑 효과를 위한 파티클 컨테이너 -->
+    <div id="particleContainer"></div>
+</div>
+
+<script src="/js/2_introduce.js"></script>
+</body>
+</html>

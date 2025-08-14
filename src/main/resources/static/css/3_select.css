@@ -25,8 +25,8 @@ body {
 }
 
 .bag-container img {
-    max-width: 400px;
-    max-height: 400px;
+    max-width: 500px;
+    max-height: 500px;
     transition: transform 0.3s ease;
 }
 
@@ -46,28 +46,19 @@ body {
     z-index: 10;
 }
 
+/* 화살표 버튼 - 완전 투명 처리 */
 .arrow-btn {
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
     background: transparent !important;
     border: none !important;
     outline: none !important;
-    border-radius: 0 !important;
-    cursor: pointer;
-    transition: transform 0.3s ease;
     padding: 0 !important;
     margin: 0 !important;
-}
-
-.arrow-btn:focus,
-.arrow-btn:active,
-.arrow-btn:hover {
-    outline: none !important;
-    border: none !important;
     box-shadow: none !important;
-    background: transparent !important;
     border-radius: 0 !important;
+    overflow: visible !important;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: inline-block;
 }
 
 .arrow-btn:hover {
@@ -77,32 +68,25 @@ body {
 .arrow-btn img {
     width: 25px;
     height: 20px;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: block;
 }
 
-/* about 버튼 - 뭉뚝한 사각형 완전 제거 */
+/* about 버튼 - 완전 투명 처리 */
 .about-btn {
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
     background: transparent !important;
     border: none !important;
     outline: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    cursor: pointer;
-    transition: transform 0.3s ease;
     padding: 0 !important;
     margin: 0 !important;
-}
-
-.about-btn:focus,
-.about-btn:active,
-.about-btn:hover {
-    outline: none !important;
-    border: none !important;
     box-shadow: none !important;
-    background: transparent !important;
     border-radius: 0 !important;
+    overflow: visible !important;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: inline-block;
 }
 
 .about-btn img {
@@ -111,6 +95,10 @@ body {
     opacity: 0.8;
     transition: all 0.3s ease;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: block;
 }
 
 .about-btn:hover {
@@ -133,7 +121,7 @@ body {
 .moving-text img {
     height: auto;
     width: auto;
-    max-height: 400px;
+    max-height: 500px;
 }
 
 /* 가방 이미지 슬라이드 애니메이션 */
@@ -218,7 +206,8 @@ body {
 }
 
 .modal-content img {
-    width: 100%;
+    width: 80%;
+    max-width: 600px;
     height: auto;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -233,31 +222,19 @@ body {
     margin-top: 30px;
 }
 
-/* 화살표 버튼 (선택하기) - 뭉뚝한 사각형 완전 제거 */
+/* 모달 화살표 버튼 - 완전 투명 처리 */
 .modal-arrow-btn {
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
     background: transparent !important;
     border: none !important;
     outline: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    cursor: pointer;
-    transition: transform 0.3s ease;
     padding: 0 !important;
     margin: 0 !important;
-}
-
-.modal-arrow-btn:focus,
-.modal-arrow-btn:active,
-.modal-arrow-btn:hover:focus,
-.modal-arrow-btn:hover {
-    outline: none !important;
-    border: none !important;
     box-shadow: none !important;
-    background: transparent !important;
     border-radius: 0 !important;
+    overflow: visible !important;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: inline-block;
 }
 
 .modal-arrow-btn img {
@@ -265,6 +242,11 @@ body {
     height: auto;
     transition: all 0.3s ease;
     filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    display: block;
 }
 
 .modal-arrow-btn:hover {
@@ -279,31 +261,19 @@ body {
     transform: scale(0.95);
 }
 
-/* 닫기 버튼 - 뭉뚝한 사각형 완전 제거 */
+/* 모달 닫기 버튼 - 완전 투명 처리 */
 .modal-close-btn {
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
     background: transparent !important;
     border: none !important;
     outline: none !important;
-    box-shadow: none !important;
-    border-radius: 0 !important;
-    cursor: pointer;
-    transition: transform 0.3s ease;
     padding: 0 !important;
     margin: 0 !important;
-}
-
-.modal-close-btn:focus,
-.modal-close-btn:active,
-.modal-close-btn:hover:focus,
-.modal-close-btn:hover {
-    outline: none !important;
-    border: none !important;
     box-shadow: none !important;
-    background: transparent !important;
     border-radius: 0 !important;
+    overflow: visible !important;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: inline-block;
 }
 
 .modal-close-btn img {
@@ -312,6 +282,11 @@ body {
     transition: all 0.3s ease;
     opacity: 0.8;
     filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    display: block;
 }
 
 .modal-close-btn:hover {
@@ -355,38 +330,28 @@ body {
     }
 }
 
-/* 모든 버튼의 기본 스타일 제거 - 뭉뚝한 사각형 완전 제거 */
-button {
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
+/* 사운드 토글 버튼도 투명 처리 */
+.sound-toggle-btn {
     background: transparent !important;
     border: none !important;
     outline: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
     padding: 0 !important;
     margin: 0 !important;
-}
-
-button:focus,
-button:active,
-button:hover,
-button:visited {
-    outline: none !important;
-    border: none !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-    background: transparent !important;
+    overflow: visible !important;
+    cursor: pointer;
+    display: inline-block;
 }
 
-/* 폼 요소의 기본 스타일도 제거 */
+/* 폼 요소도 투명 처리 */
 form {
     margin: 0;
     padding: 0;
     border: none;
     outline: none;
-    background: transparent;
+    background: transparent !important;
+    display: inline-block;
 }
 
 input[type="hidden"] {
@@ -394,122 +359,40 @@ input[type="hidden"] {
     outline: none;
 }
 
-/* 추가 보장 - 모든 버튼 상태에서 뭉뚝한 사각형 제거 */
-.modal-arrow-btn,
-.modal-close-btn,
-.about-btn,
-.arrow-btn {
-    -webkit-tap-highlight-color: transparent !important;
-    -webkit-focus-ring-color: transparent !important;
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    user-select: none !important;
+/* 작은 화면용 반응형 스타일 */
+@media screen and (max-width: 768px) {
+    .modal-arrow-btn img {
+        width: 40px;
+        height: auto;
+    }
+
+    .modal-close-btn img {
+        width: 35px;
+        height: auto;
+    }
+
+    .arrow-btn img {
+        width: 20px;
+        height: 16px;
+    }
+
+    .modal-content {
+        max-width: 90%;
+        max-height: 90%;
+    }
+
+    .modal-content img {
+        width: 90%;
+    }
 }
 
-/* ============================
-   버튼 컨테이너 완전 제거 - 강력한 리셋
-   ============================ */
+@media screen and (max-width: 480px) {
+    .modal-buttons {
+        gap: 15px;
+        margin-top: 20px;
+    }
 
-/* 모든 button 요소의 기본 스타일 완전 제거 */
-button,
-input[type="submit"],
-input[type="button"] {
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
-    background: none !important;
-    background-color: transparent !important;
-    border: 0 !important;
-    border-style: none !important;
-    border-width: 0 !important;
-    border-radius: 0 !important;
-    outline: none !important;
-    outline-style: none !important;
-    outline-width: 0 !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    font: inherit !important;
-    color: inherit !important;
-    text-decoration: none !important;
-    cursor: pointer !important;
-    display: inline-block !important;
-    position: relative !important;
-}
-
-/* 모든 상태에서 네모 컨테이너 제거 */
-button:hover,
-button:focus,
-button:active,
-button:visited,
-input[type="submit"]:hover,
-input[type="submit"]:focus,
-input[type="submit"]:active {
-    background: none !important;
-    background-color: transparent !important;
-    border: 0 !important;
-    border-style: none !important;
-    border-width: 0 !important;
-    border-radius: 0 !important;
-    outline: none !important;
-    outline-style: none !important;
-    outline-width: 0 !important;
-    box-shadow: none !important;
-    -webkit-tap-highlight-color: transparent !important;
-}
-
-/* 특정 버튼들에 대한 강력한 리셋 */
-.modal-arrow-btn,
-.modal-close-btn,
-.about-btn,
-.arrow-btn {
-    all: unset !important;
-    display: inline-block !important;
-    cursor: pointer !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    background: transparent !important;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    -webkit-appearance: none !important;
-    -moz-appearance: none !important;
-    appearance: none !important;
-}
-
-/* 폼 컨테이너도 투명하게 */
-form {
-    background: transparent !important;
-    border: none !important;
-    outline: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    display: inline-block !important;
-}
-
-/* 브라우저별 특수 처리 */
-button::-moz-focus-inner,
-input[type="submit"]::-moz-focus-inner {
-    border: 0 !important;
-    padding: 0 !important;
-}
-
-/* 웹킷 기반 브라우저 (Chrome, Safari) */
-button::-webkit-button,
-input[type="submit"]::-webkit-button {
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-}
-
-/* 터치 디바이스에서 하이라이트 제거 */
-* {
-    -webkit-tap-highlight-color: transparent !important;
-    -webkit-touch-callout: none !important;
-    -webkit-user-select: none !important;
-    -khtml-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
-    user-select: none !important;
+    .bottom-controls {
+        gap: 20px;
+    }
 }
