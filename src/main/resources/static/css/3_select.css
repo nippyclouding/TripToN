@@ -121,7 +121,7 @@ body {
 .moving-text img {
     height: auto;
     width: auto;
-    max-height: 500px;
+    max-height: 1000px;
 }
 
 /* 가방 이미지 슬라이드 애니메이션 */
@@ -189,8 +189,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(13px);
     cursor: pointer;
 }
 
@@ -209,8 +209,7 @@ body {
     width: 80%;
     max-width: 600px;
     height: auto;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
 }
 
 /* 모달 버튼 컨테이너 */
@@ -394,5 +393,309 @@ input[type="hidden"] {
 
     .bottom-controls {
         gap: 20px;
+    }
+}
+
+/* ============================
+   사용자 입력 모달 스타일
+   ============================ */
+
+.input-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 4000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.input-modal.show {
+    display: flex;
+}
+
+.input-modal-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(13px);
+}
+
+/* 모달 외부 상단 타이틀 */
+.input-modal-title {
+    position: relative;
+    z-index: 4002;
+    margin-bottom: 20px;
+    text-align: center;
+    color: white;
+}
+
+.input-modal-title h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    letter-spacing: -0.5px;
+}
+
+.input-modal-title p {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    letter-spacing: -0.5px;
+}
+
+.input-modal-content {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);        /* 원래대로 */
+    backdrop-filter: blur(20px);                  /* 추가 */
+    border-radius: 20px;                         /* 추가 */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* 추가 */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); /* 추가 */
+    padding: 40px;
+    max-width: 600px;
+    width: 90%;
+    min-height: 400px;
+    z-index: 4001;
+    animation: inputModalFadeIn 0.4s ease-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 네모 상자 안쪽 이미지 */
+.input-modal-inner-title {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.input-modal-inner-title img {
+    max-width: 300px;
+    height: auto;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+}
+
+.input-modal-body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-container {
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.input-container textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    padding: 25px;
+    color: white;
+    font-size: 18px;
+    resize: vertical;
+    min-height: 180px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    font-family: inherit;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.input-container textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+}
+
+.input-container textarea:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.input-modal-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* 입력 모달 화살표 버튼 */
+.input-modal-arrow-btn {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.input-modal-arrow-btn img {
+    width: 60px;
+    height: auto;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    display: block;
+}
+
+.input-modal-arrow-btn:hover {
+    transform: scale(1.1);
+}
+
+.input-modal-arrow-btn:hover img {
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
+}
+
+.input-modal-arrow-btn:active {
+    transform: scale(0.95);
+}
+
+/* 입력 모달 닫기 버튼 */
+.input-modal-close-btn {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.input-modal-close-btn img {
+    width: 50px;
+    height: auto;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    display: block;
+}
+
+.input-modal-close-btn:hover {
+    transform: scale(1.1);
+}
+
+.input-modal-close-btn:hover img {
+    opacity: 1;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
+}
+
+.input-modal-close-btn:active {
+    transform: scale(0.95);
+}
+
+/* 입력 모달 애니메이션 */
+@keyframes inputModalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.input-modal.closing .input-modal-content {
+    animation: inputModalFadeOut 0.3s ease-in;
+}
+
+.input-modal.closing .input-modal-title {
+    animation: inputModalFadeOut 0.3s ease-in;
+}
+
+@keyframes inputModalFadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+}
+
+/* 입력 모달 반응형 스타일 */
+@media screen and (max-width: 768px) {
+    .input-modal-content {
+        padding: 30px 20px;
+        margin: 20px;
+        max-width: 550px;
+        min-height: 350px;
+    }
+    
+    .input-modal-title h2,
+    .input-modal-title p {
+        font-size: 22px;
+    }
+    
+    .input-modal-inner-title img {
+        max-width: 250px;
+    }
+    
+    .input-container textarea {
+        padding: 20px;
+        font-size: 16px;
+        min-height: 150px;
+    }
+    
+    .input-modal-arrow-btn img {
+        width: 45px;
+    }
+    
+    .input-modal-close-btn img {
+        width: 40px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .input-modal-content {
+        padding: 25px 15px;
+        min-height: 320px;
+    }
+    
+    .input-modal-title h2,
+    .input-modal-title p {
+        font-size: 18px;
+    }
+    
+    .input-modal-inner-title img {
+        max-width: 200px;
+    }
+    
+    .input-modal-buttons {
+        gap: 15px;
+    }
+    
+    .input-container textarea {
+        font-size: 14px;
+        min-height: 130px;
     }
 }

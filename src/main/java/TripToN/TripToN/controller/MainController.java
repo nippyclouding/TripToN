@@ -42,7 +42,7 @@ public class MainController {
     }
 
     @PostMapping("/select")
-    public String selectItem(@RequestParam String luggage, HttpSession session, Model model){
+    public String selectItem(@RequestParam String luggage, HttpSession session){
         session.setAttribute("selectedLuggageType", luggage);
         return "4_concern";
     }

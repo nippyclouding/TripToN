@@ -49,15 +49,12 @@
     <div class="modal-content">
         <img id="item-introduce-image" src="" alt="Item Introduction">
 
-        <!-- 버튼 컨테이너 추가 -->
+        <!-- 버튼 컨테이너 -->
         <div class="modal-buttons">
-            <!-- 화살표 버튼 (폼 제출용) -->
-            <form id="luggage-form" method="post" action="/select" style="display: inline;">
-                <input type="hidden" id="luggage-input" name="luggage" value="">
-                <div class="modal-arrow-btn" onclick="document.getElementById('luggage-form').submit();">
-                    <img src="/image/3_selectPage/화살표>.png" alt="선택하기">
-                </div>
-            </form>
+            <!-- 화살표 버튼 (입력창 열기용) -->
+            <div class="modal-arrow-btn" onclick="showInputModal()">
+                <img src="/image/3_selectPage/화살표>.png" alt="선택하기">
+            </div>
 
             <!-- 닫기 버튼 -->
             <div class="modal-close-btn" onclick="closeItemModal()">
@@ -67,6 +64,46 @@
     </div>
 </div>
 
+
+<!-- 사용자 입력 모달 -->
+<div class="input-modal" id="inputModal">
+    <div class="input-modal-background"></div>
+    
+    <!-- 모달 외부 상단 헤더 텍스트 -->
+    <div class="input-modal-title">
+        <h2>당신의 배게는</h2>
+        <p>너무 많은 걱정을 품고있지 않나요?</p>
+    </div>
+    
+    <div class="input-modal-content">
+        <!-- 네모 상자 안쪽 이미지 -->
+        <div class="input-modal-inner-title">
+            <img src="/image/3_selectPage/당신의 생각을 입력해보세요.png" alt="당신의 생각을 입력해보세요">
+        </div>
+        
+        <div class="input-modal-body">
+            <form id="concern-form" method="post" action="/concern">
+                <input type="hidden" id="luggage-input" name="luggage" value="">
+                <input type="hidden" id="concern-luggage-input" name="luggage" value="">
+                <div class="input-container">
+                    <textarea id="concern-input" name="concern" placeholder="EX) 내일 그 일 어떻게 하지..." rows="6"></textarea>
+                </div>
+                
+                <div class="input-modal-buttons">
+                    <!-- 제출 화살표 버튼 -->
+                    <div class="input-modal-arrow-btn" onclick="submitConcern()">
+                        <img src="/image/3_selectPage/화살표>.png" alt="제출하기">
+                    </div>
+
+                    <!-- 닫기 버튼 -->
+                    <div class="input-modal-close-btn" onclick="closeInputModal()">
+                        <img src="/image/3_selectPage/CLOSE.png" alt="닫기">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- 하단 컨트롤 영역 -->
 <div class="bottom-controls">

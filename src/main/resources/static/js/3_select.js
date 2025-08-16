@@ -24,17 +24,20 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentIndex = 0;
     let isAnimating = false;
 
-    // 화면 중앙 위치 계산 (기존 moving text용)
     function setPosition() {
         const windowHeight = window.innerHeight;
         const centerY = windowHeight / 2;
+        const imageHeight = 800; // 현재 설정된 이미지 높이
 
-        movingText.style.top = (centerY - 200) + 'px';
         movingText.style.position = 'fixed';
         movingText.style.left = '0px';
         movingText.style.width = '100%';
         movingText.style.zIndex = '-1';
         movingText.style.pointerEvents = 'none';
+        movingText.style.top = (centerY - imageHeight/2) + 'px';
+
+        // 이미지에도 직접 적용
+        img.style.top = '0px';  // 컨테이너 기준으로 0
     }
 
     // 애니메이션 시작 (기존 moving text용)
@@ -51,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             img.style.left = currentPosition + 'px';
             img.style.position = 'absolute';
-            img.style.maxHeight = '400px';
+            img.style.maxHeight = '800px';
 
             requestAnimationFrame(moveText);
         }
@@ -117,6 +120,51 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 300);
     }
 
+    // 입력 모달 열기 함수
+    window.showInputModal = function() {
+        const inputModal = document.getElementById('inputModal');
+        const luggageInput = document.getElementById('concern-luggage-input');
+        const currentLuggage = document.getElementById('luggage-input').value;
+        
+        // 현재 선택된 가방 정보를 입력 모달로 전달
+        luggageInput.value = currentLuggage;
+        
+        // 입력 모달 표시
+        inputModal.classList.add('show');
+        
+        // 텍스트 영역에 포커스
+        setTimeout(() => {
+            document.getElementById('concern-input').focus();
+        }, 100);
+    }
+
+    // 입력 모달 닫기 함수
+    window.closeInputModal = function() {
+        const inputModal = document.getElementById('inputModal');
+        
+        // 닫기 애니메이션
+        inputModal.classList.add('closing');
+        
+        setTimeout(() => {
+            inputModal.classList.remove('show', 'closing');
+            // 입력 내용 초기화
+            document.getElementById('concern-input').value = '';
+        }, 300);
+    }
+
+    // 걱정 제출 함수
+    window.submitConcern = function() {
+        const concernText = document.getElementById('concern-input').value.trim();
+        
+        if (concernText === '') {
+            alert('걱정을 입력해주세요.');
+            return;
+        }
+        
+        // 폼 제출
+        document.getElementById('concern-form').submit();
+    }
+
     // 다음 버튼 클릭
     nextBtn.addEventListener('click', function() {
         currentIndex = (currentIndex + 1) % bagImages.length;
@@ -137,8 +185,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // ESC 키로 모달 닫기
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            const modal = document.getElementById('itemModal');
-            if (modal.classList.contains('show')) {
+            const itemModal = document.getElementById('itemModal');
+            const inputModal = document.getElementById('inputModal');
+            
+            if (inputModal.classList.contains('show')) {
+                closeInputModal();
+            } else if (itemModal.classList.contains('show')) {
                 closeItemModal();
             }
         }
