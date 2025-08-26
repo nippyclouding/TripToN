@@ -1,4 +1,4 @@
-/* 기본 스타일 리셋 */
+/* 기본 스타일 초기화 */
 * {
     margin: 0;
     padding: 0;
@@ -6,191 +6,123 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-family: Arial, sans-serif;
+    background-color: #000000; /* 검정색 배경 */
     overflow: hidden;
+    width: 100vw;
+    height: 100vh;
 }
 
+/* 컨테이너 - 전체 화면을 차지하며 중앙 정렬 */
 .container {
-    text-align: center;
-    color: white;
-    z-index: 1;
-    position: relative;
-}
-
-h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    animation: fadeInUp 1s ease-out;
-}
-
-p {
-    font-size: 1.2rem;
-    margin-bottom: 3rem;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-    animation: fadeInUp 1s ease-out 0.3s both;
-}
-
-/* 사운드 컨트롤 스타일 */
-.sound-control {
-    position: relative;
-    display: inline-block;
-    animation: fadeInUp 1s ease-out 0.6s both;
-}
-
-#soundButton {
-    width: 120px;
-    height: 120px;
-    cursor: grab;
-    transition: all 0.3s ease;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-    border-radius: 50%;
-    user-select: none;
-    -webkit-user-drag: none;
-}
-
-#soundButton:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));
-}
-
-#soundButton:active,
-#soundButton.dragging {
-    cursor: grabbing;
-    transform: scale(0.95);
-}
-
-.drag-hint {
-    margin-top: 1rem;
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.8);
-    font-style: italic;
-    transition: opacity 0.3s ease;
-}
-
-#soundButton.dragging + .drag-hint {
-    opacity: 0.5;
-}
-
-/* 파티클 컨테이너 */
-#particleContainer {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
-/* 파티클 애니메이션 */
-.particle {
+/* 중앙 배치되는 이미지 스타일 - 원래 크기로 */
+.center-image {
     position: absolute;
-    width: 10px;
-    height: 10px;
-    background: radial-gradient(circle, #fff 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    animation: explode 0.8s ease-out forwards;
-}
-
-.particle.colorful {
-    background: radial-gradient(circle, #ff6b6b 0%, transparent 70%);
-}
-
-.particle.colorful:nth-child(2n) {
-    background: radial-gradient(circle, #4ecdc4 0%, transparent 70%);
-}
-
-.particle.colorful:nth-child(3n) {
-    background: radial-gradient(circle, #45b7d1 0%, transparent 70%);
-}
-
-.particle.colorful:nth-child(4n) {
-    background: radial-gradient(circle, #f9ca24 0%, transparent 70%);
-}
-
-.particle.colorful:nth-child(5n) {
-    background: radial-gradient(circle, #6c5ce7 0%, transparent 70%);
-}
-
-@keyframes explode {
-    0% {
-        transform: scale(0) rotate(0deg);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.2) rotate(180deg);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(0) rotate(360deg);
-        opacity: 0;
-    }
-}
-
-/* 페이드인 애니메이션 */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* 토글 애니메이션 */
-.sound-toggle {
-    animation: soundToggle 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-@keyframes soundToggle {
-    0% {
-        transform: scale(1) rotate(0deg);
-    }
-    25% {
-        transform: scale(1.2) rotate(-10deg);
-    }
-    50% {
-        transform: scale(0.8) rotate(5deg);
-    }
-    75% {
-        transform: scale(1.1) rotate(-3deg);
-    }
-    100% {
-        transform: scale(1) rotate(0deg);
-    }
-}
-
-/* 드래그 중 시각적 피드백 */
-.drag-indicator {
-    position: absolute;
-    width: 150px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 2px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    max-width: 400px;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+    z-index: 1;
+}
+
+/* 비디오는 화면 꽉차게 */
+.center-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: 5;
+}
+
+/* 클릭 가능한 요소 스타일 */
+.clickable {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* 비디오 호버 효과 */
+.center-video.clickable:hover {
+    transform: scale(1.02);
+    filter: brightness(1.1);
+}
+
+.center-video.clickable:active {
+    transform: scale(0.98);
+    filter: brightness(0.9);
+}
+
+/* 이미지 호버 효과 (기존 유지) */
+.center-image.clickable:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+.center-image.clickable:active {
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+/* 숨김 클래스 */
+.hidden {
+    display: none !important;
+}
+
+
+
+/* After 이미지 애니메이션 - 이전 중앙 배치로 */
+.after-image {
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transform: translate(-50%, -50%) scale(0.1);
+    transition: all 0.4s ease-out;
+    z-index: 10; /* 비디오보다 위에 표시 */
 }
 
-.drag-indicator.active {
+.after-image.show {
     opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    animation: quickBounceIn 0.4s ease-out;
 }
 
-.drag-progress {
-    height: 100%;
-    background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
-    border-radius: 2px;
-    width: 0%;
-    transition: width 0.1s ease;
+/* 더 빠른 바운스 애니메이션 - 중앙 배치 */
+@keyframes quickBounceIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.1);
+    }
+    60% {
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+    80% {
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* 페이드 아웃 애니메이션 */
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .center-image,
+    .center-video {
+        max-width: 300px;
+        max-height: 300px;
+    }
 }

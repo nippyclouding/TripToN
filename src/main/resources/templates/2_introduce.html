@@ -7,23 +7,17 @@
     <link rel="stylesheet" href="/css/2_introduce.css">
 </head>
 <body>
-<div class="container">
-    <h1>환영합니다!</h1>
-    <p>여행을 준비하는 당신을 위한 특별한 서비스입니다.</p>
-
-    <!-- 사운드 컨트롤 버튼 -->
-    <div class="sound-control">
-        <img id="soundButton"
-             src="/image/2_introducePage/사운드 OFF.png"
-             alt="Sound Control"
-             draggable="false">
-        <div class="drag-hint">← 드래그하여 사운드 토글 →</div>
+    <div class="container">
+        <!-- 비디오 요소 (첫 프레임 정지 상태) -->
+        <video id="boomVideo" class="center-video clickable" preload="auto" muted>
+            <source src="/image/2_introducePage/boom.mp4" type="video/mp4">
+            브라우저가 비디오를 지원하지 않습니다.
+        </video>
+        
+        <!-- After 이미지 (처음에는 숨김) -->
+        <img id="afterImage" src="/image/2_introducePage/after.png" alt="After" class="center-image after-image hidden">
     </div>
-
-    <!-- 펑 효과를 위한 파티클 컨테이너 -->
-    <div id="particleContainer"></div>
-</div>
-
-<script src="/js/2_introduce.js"></script>
+    
+    <script src="/js/2_introduce.js"></script>
 </body>
 </html>
