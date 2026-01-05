@@ -5,14 +5,14 @@
 /* 좌측 하단 - 심볼N 로고 */
 .symbol-logo {
     position: fixed;
-    bottom: 30px;
-    left: 30px;
+    bottom: min(30px, 3vh);
+    left: min(30px, 3vw);
     z-index: 1000;
     cursor: pointer;
 }
 
 .symbol-logo img {
-    width: 60px;
+    width: clamp(40px, 8vw, 60px);
     height: auto;
     opacity: 0.8;
     transition: all 0.3s ease;
@@ -26,12 +26,12 @@
 /* 우측 하단에 배치 (기존 위치 유지) */
 .sound-toggle-container {
     position: fixed;
-    bottom: 30px;
-    right: 30px;  /* 우측 하단 유지 */
+    bottom: min(30px, 3vh);
+    right: min(30px, 3vw);  
     z-index: 1000;
     display: flex;
     align-items: center;
-    gap: 5px;  /* 아이콘과 로고 사이 간격 */
+    gap: clamp(3px, 1vw, 5px);  
 }
 
 .sound-toggle-btn {
@@ -42,13 +42,13 @@
     transition: transform 0.2s ease;
     display: flex;
     align-items: center;
-    gap: 5px;  /* 내부 요소들 간격 */
+    gap: clamp(3px, 1vw, 5px);  
 }
 
 /* 사운드 상태 아이콘 (line.png 또는 dot.gif) */
 .sound-status-icon {
-    width: 20px;
-    height: 20px;
+    width: clamp(16px, 3vw, 20px);
+    height: clamp(16px, 3vw, 20px);
     object-fit: contain;
     opacity: 0.8;
     transition: opacity 0.3s ease;
@@ -56,8 +56,8 @@
 
 /* 사운드 로고 */
 .sound-logo {
-    width: 40px;  /* soundLogo 크기 */
-    height: 40px;
+    width: clamp(30px, 6vw, 40px);  
+    height: clamp(30px, 6vw, 40px);
     object-fit: contain;
     opacity: 0.8;
     transition: opacity 0.3s ease;
@@ -77,77 +77,67 @@
     transform: scale(0.95);
 }
 /* ============================
-   사이드바 스타일
+   전체 화면 블러 + 좌측 메뉴
    ============================ */
 
 .sidebar {
     position: fixed;
     top: 0;
-    left: -300px;
-    width: 300px;
+    left: 0;
+    width: 100vw;
     height: 100vh;
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    background: rgba(128, 128, 128, 0.15);
+    backdrop-filter: blur(15px);
     z-index: 2000;
-    transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+    pointer-events: none;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
 }
 
 .sidebar.open {
-    left: 0;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .sidebar-content {
-    padding: 40px 30px;
+    padding: clamp(30px, 5vw, 50px) clamp(40px, 6vw, 60px);
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.sidebar-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 30px;
-    height: 30px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.sidebar-close:hover {
-    background: rgba(255,255,255,0.3);
-}
-
 .sidebar-menu {
-    margin-top: 80px;
+    margin-top: clamp(5px, 1vh, 15px);
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: clamp(25px, 4vh, 35px);
+    align-items: flex-start;
 }
 
 .menu-item {
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-    font-family: 'Arial', sans-serif;
     cursor: pointer;
-    padding: 15px 0;
-    border-bottom: 2px solid transparent;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
     opacity: 0;
-    transform: translateX(-30px);
+    transform: translateX(-40px);
 }
 
-.menu-item:hover {
-    color: #3498db;
-    border-bottom-color: #3498db;
-    transform: translateX(10px);
+.menu-item img {
+    width: auto;
+    height: clamp(70px, 12vh, 110px);
+    transition: transform 0.3s ease;
+    filter: none;
+    transform-origin: top left;
+    scale: 1.1 1.1;
+}
+
+.menu-item:hover img {
+    transform: scale(1.05);
+    filter: none;
 }
 
 .menu-item.show {
@@ -156,19 +146,27 @@
 }
 
 .sidebar-overlay {
+    display: none;
+}
+
+/* 좌측 하단 로고 - 사이드바보다 앞에 */
+.symbol-logo-outside {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.5);
-    z-index: 1500;
-    opacity: 0;
-    visibility: hidden;
+    bottom: min(30px, 3vh);
+    left: min(30px, 3vw);
+    z-index: 2001;
+    cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.sidebar-overlay.show {
+.symbol-logo-outside img {
+    width: clamp(40px, 8vw, 60px);
+    height: auto;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.symbol-logo-outside:hover img {
     opacity: 1;
-    visibility: visible;
+    transform: scale(1.1);
 }

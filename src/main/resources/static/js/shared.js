@@ -1,7 +1,6 @@
-// 공통 사이드바 기능
+// 전체 화면 블러 + 좌측 메뉴
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
 
     if (sidebar.classList.contains('open')) {
         closeSidebar();
@@ -12,15 +11,10 @@ function toggleSidebar() {
 
 function openSidebar() {
     const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
     const menuItems = document.querySelectorAll('.menu-item');
 
     if (sidebar) {
         sidebar.classList.add('open');
-    }
-
-    if (overlay) {
-        overlay.classList.add('show');
     }
 
     menuItems.forEach((item, index) => {
@@ -33,15 +27,15 @@ function openSidebar() {
 
 function closeSidebar() {
     const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
     const menuItems = document.querySelectorAll('.menu-item');
 
     menuItems.forEach(item => {
         item.classList.remove('show');
     });
 
-    sidebar.classList.remove('open');
-    overlay.classList.remove('show');
+    if (sidebar) {
+        sidebar.classList.remove('open');
+    }
 }
 
 // ESC 키로 사이드바 닫기

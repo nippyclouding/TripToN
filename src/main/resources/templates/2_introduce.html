@@ -1,29 +1,143 @@
-<!DOCTYPE html>
-<html lang="ko">
+<!doctype html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Introduce Page</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
     <link rel="stylesheet" href="/css/2_introduce.css">
 </head>
 <body>
-<div class="container">
-    <h1>환영합니다!</h1>
-    <p>여행을 준비하는 당신을 위한 특별한 서비스입니다.</p>
+    <!-- 동영상 섹션 -->
+    <section class="video-section">
+        <video id="background-video" autoplay muted loop>
+            <source src="/image/2_introducePage/dream6.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="gradient-overlay"></div>
+    </section>
 
-    <!-- 사운드 컨트롤 버튼 -->
-    <div class="sound-control">
-        <img id="soundButton"
-             src="/image/2_introducePage/사운드 OFF.png"
-             alt="Sound Control"
-             draggable="false">
-        <div class="drag-hint">← 드래그하여 사운드 토글 →</div>
-    </div>
+    <!-- 첫 번째 텍스트 이미지 섹션 -->
+    <section class="text-section">
+        <img src="/image/2_introducePage/text.png" alt="Introduction Text" class="text-image">
+    </section>
 
-    <!-- 펑 효과를 위한 파티클 컨테이너 -->
-    <div id="particleContainer"></div>
-</div>
+    <!-- text1.png 섹션 -->
+    <section class="text1-section">
+        <img src="/image/2_introducePage/text1.png" alt="First Text" class="text1-image">
+    </section>
 
-<script src="/js/2_introduce.js"></script>
+    <!-- 스크롤 연장 구간 1 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- 두 번째 텍스트 이미지 섹션 -->
+    <section class="text2-section">
+        <img src="/image/2_introducePage/text2.png" alt="Second Text" class="text2-image">
+    </section>
+
+    <!-- 스크롤 연장 구간 2 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- 1.webm 섹션 -->
+    <section class="webm1-section">
+        <div class="webm-item" data-item="1">
+            <video class="webm-video">
+                <source src="/image/2_introducePage/1.webm" type="video/webm">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <!-- item1.png 팝업 -->
+        <div class="item-popup" id="item1-popup">
+            <img src="/image/2_introducePage/item1.png" alt="Item 1" class="item-image">
+        </div>
+    </section>
+
+    <!-- 스크롤 연장 구간 3 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- 2.webm 섹션 -->
+    <section class="webm2-section">
+        <div class="webm-item" data-item="2">
+            <video class="webm-video">
+                <source src="/image/2_introducePage/2.webm" type="video/webm">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <!-- item2.png 팝업 -->
+        <div class="item-popup" id="item2-popup">
+            <img src="/image/2_introducePage/item2.png" alt="Item 2" class="item-image">
+        </div>
+    </section>
+
+    <!-- 스크롤 연장 구간 4 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- 3.webm 섹션 -->
+    <section class="webm3-section">
+        <div class="webm-item" data-item="3">
+            <video class="webm-video">
+                <source src="/image/2_introducePage/3.webm" type="video/webm">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <!-- item3.png 팝업 -->
+        <div class="item-popup" id="item3-popup">
+            <img src="/image/2_introducePage/item3.png" alt="Item 3" class="item-image">
+        </div>
+    </section>
+
+    <!-- 스크롤 연장 구간 5 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- text3.png 섹션 -->
+    <section class="text3-section">
+        <img src="/image/2_introducePage/text3.png" alt="Third Text" class="text3-image">
+    </section>
+
+    <!-- 스크롤 연장 구간 6 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- dream1.mp4와 text4.png 섹션 -->
+    <section class="dream1-section">
+        <video id="dream1-video" autoplay muted loop>
+            <source src="/image/2_introducePage/Dream1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <img src="/image/2_introducePage/text4.png" alt="Fourth Text" class="text4-image">
+    </section>
+
+    <!-- 스크롤 연장 구간 7 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- logo.png 섹션 -->
+    <section class="logo-section">
+        <img src="/image/2_introducePage/logo.png" alt="Logo" class="logo-image">
+    </section>
+
+    <!-- 스크롤 연장 구간 8 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- item.gif 섹션 -->
+    <section class="item-gif-section">
+        <img src="/image/2_introducePage/item.gif" alt="Item GIF" class="item-gif" id="item-gif">
+    </section>
+
+    <!-- 스크롤 연장 구간 9 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- text5.png와 화살표 섹션 -->
+    <section class="final-text-section">
+        <img src="/image/2_introducePage/text5.png" alt="Final Text" class="text5-image">
+        <button class="arrow-button" onclick="location.href='/select'">
+            <img src="/image/2_introducePage/arrow.png" alt="Arrow" class="arrow-image">
+        </button>
+    </section>
+
+    <!-- 마지막 검정 배경 섹션 -->
+    <section class="final-section">
+    </section>
+
+    <script src="/js/2_introduce.js"></script>
 </body>
 </html>

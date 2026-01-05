@@ -1,116 +1,61 @@
 package TripToN.TripToN.service;
 
+import TripToN.TripToN.LuggageRepository;
+import TripToN.TripToN.domain.*;
 
-
-import TripToN.TripToN.domain.Color;
-import TripToN.TripToN.domain.luggages.*;
-import TripToN.TripToN.domain.response.*;
-import TripToN.TripToN.repository.LuggageRepository;
-
+import TripToN.TripToN.service.responseService.ResponseService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class LuggageService {
 
     private final LuggageRepository luggageRepository;
+    private final ResponseService responseService; //구현체 변경 가능, Concern의 response 필드 채우기 전용
 
 
-
+    //findAll()
     public List<Luggage> findAll() {
         return luggageRepository.findAll();
     }
 
+    //findById()
     public Luggage findById(Long id) {
         return luggageRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("데이터를 찾을 수 없습니다"));
     }
 
-    @Transactional
-    public void put(LuggageA luggage) {
-        ResponseA response = new ResponseA();
-        luggage.setResponse(response);
+    //save()
+    @Transactional(readOnly = false)
+    public Luggage saveLuggage(Luggage luggage) {
+        // 검증
+        if (!luggage.isComplete()) {
+            StringBuilder missing = new StringBuilder("Incomplete luggage: ");
+            if (luggage.getConcern() == null) missing.append("concern is null, ");
+            else if (luggage.getConcern().getResponse() == null) missing.append("response is null, ");
 
-        if(luggage.getConcern().length()<25){
-            luggage.setAnswer(response.getResponses().get(0));
+            throw new IllegalStateException(missing.toString());
         }
-        else if(luggage.getConcern().length()>=25 && luggage.getConcern().length()<50){
-            luggage.setAnswer(response.getResponses().get(1));
 
-        }
-        else if(luggage.getConcern().length()>=50 && luggage.getConcern().length()<75){
-            luggage.setAnswer(response.getResponses().get(2));
-        }
-        else if(luggage.getConcern().length()>=75 && luggage.getConcern().length()<=100){
-            luggage.setAnswer(response.getResponses().get(3));
-        }
-        luggageRepository.save(luggage);
-    }
+        log.info("Saving complete luggage with id: {}, type: {}",
+                luggage.getLID(), luggage.getLuggageType());
 
-    @Transactional
-    public void put(LuggageB luggage) {
-        ResponseB response = new ResponseB();
-        luggage.setResponse(response);
-
-        if(luggage.getConcern().length()<25){
-            luggage.setAnswer(response.getResponses().get(0));
-        }
-        else if(luggage.getConcern().length()>=25 && luggage.getConcern().length()<50){
-            luggage.setAnswer(response.getResponses().get(1));
-        }
-        else if(luggage.getConcern().length()>=50 && luggage.getConcern().length()<75){
-            luggage.setAnswer(response.getResponses().get(2));
-        }
-        else if(luggage.getConcern().length()>=75 && luggage.getConcern().length()<=100){
-            luggage.setAnswer(response.getResponses().get(3));
-        }
-        luggageRepository.save(luggage);
-    }
-
-    @Transactional
-    public void put(LuggageC luggage) {
-        ResponseC response = new ResponseC();
-        luggage.setResponse(response);
-
-        if(luggage.getConcern().length()<25){
-            luggage.setAnswer(response.getResponses().get(0));
-        }
-        else if(luggage.getConcern().length()>=25 && luggage.getConcern().length()<50){
-            luggage.setAnswer(response.getResponses().get(1));
-        }
-        else if(luggage.getConcern().length()>=50 && luggage.getConcern().length()<75){
-            luggage.setAnswer(response.getResponses().get(2));
-        }
-        else if(luggage.getConcern().length()>=75 && luggage.getConcern().length()<=100){
-            luggage.setAnswer(response.getResponses().get(3));
-        }
-        luggageRepository.save(luggage);
+        return luggageRepository.save(luggage);
     }
 
 
-    @Transactional
-    public void updateColorA(LuggageA luggage, Color color) {
-        luggage.setColor(color);
-        luggageRepository.save(luggage);
-    }
 
-
-    @Transactional
-    public void updateColorB(LuggageB luggage, Color color) {
-        luggage.setColor(color);
-        luggageRepository.save(luggage);
-    }
-
-
-    @Transactional
-    public void updateColorC(LuggageC luggage, Color color) {
-        luggage.setColor(color);
-        luggageRepository.save(luggage);
+    // 실제 비즈니스 로직 - Concern에 Response 할당 : AI 응답 등 여러가지 기능
+    public String setResponse(Concern concern) {
+        String response = responseService.response(concern);
+        return response;
     }
 
 }

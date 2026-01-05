@@ -1,0 +1,341 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>고민 상세 정보</title>
+    <link rel="stylesheet" href="/css/luggage_detail.css">
+</head>
+<body>
+<div class="container">
+    <!-- 헤더 -->
+    <div class="header">
+        <h1>고민의 결과</h1>
+        <button onclick="history.back()" class="back-btn">← 목록으로 돌아가기</button>
+    </div>
+    
+    <!-- 메인 콘텐츠 -->
+    <div class="main-content">
+        <!-- 가방 이미지 섹션 -->
+        <div class="luggage-section">
+            <div class="luggage-image-container">
+                <img th:src="@{'/image/sharedImage/item' + ${luggage.luggageType.ordinal() + 1} + '.png'}" 
+                     th:alt="${luggage.luggageType}" 
+                     class="luggage-image"/>
+            </div>
+            <p class="luggage-type" th:text="'가방 타입: ' + ${luggage.luggageType}"></p>
+        </div>
+        
+        <!-- 정보 섹션 -->
+        <div class="info-section">
+            <!-- 사용자 정보 -->
+            <div class="info-card">
+                <div class="card-header">
+                    <h2>👤 사용자 정보</h2>
+                </div>
+                <div class="card-content">
+                    <p><strong>이름:</strong> <span th:text="${luggage.concern.userName}"></span></p>
+                    <p><strong>등록일시:</strong> <span th:text="${#temporals.format(luggage.dateTime, 'yyyy년 MM월 dd일 HH:mm')}"></span></p>
+                </div>
+            </div>
+            
+            <!-- 고민 내용 -->
+            <div class="info-card">
+                <div class="card-header">
+                    <h2>💭 고민 내용</h2>
+                </div>
+                <div class="card-content">
+                    <div class="concern-box">
+                        <p th:text="${luggage.concern.concern}"></p>
+                    </div>
+                    <div class="weight-info">
+                        <span class="weight-label">고민의 무게:</span>
+                        <span class="weight-value" th:text="${luggage.concern.weight}" 
+                              th:classappend="${luggage.concern.weight == T(TripToN.TripToN.domain.Weight).HEAVY} ? 'heavy' : 
+                                             (${luggage.concern.weight == T(TripToN.TripToN.domain.Weight).MEDIUM} ? 'medium' : 'light')"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI 응답 -->
+            <div class="info-card">
+                <div class="card-header">
+                    <h2>🎒 가방의 조언</h2>
+                </div>
+                <div class="card-content">
+                    <div class="response-box">
+                        <p th:text="${luggage.concern.response}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 하단 버튼 -->
+    <div class="bottom-actions">
+        <button onclick="location.href='/result'" class="action-btn primary">전체 목록 보기</button>
+        <button onclick="location.href='/'" class="action-btn secondary">새 고민 등록하기</button>
+    </div>
+</div>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 헤더 */
+.header {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    color: #4a5568;
+    font-size: 28px;
+}
+
+.back-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+    background: #545b62;
+}
+
+/* 메인 콘텐츠 */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+/* 가방 섹션 */
+.luggage-section {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    height: fit-content;
+}
+
+.luggage-image-container {
+    margin-bottom: 20px;
+}
+
+.luggage-image {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.luggage-type {
+    color: #666;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* 정보 섹션 */
+.info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    padding: 15px 20px;
+}
+
+.card-header h2 {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.card-content p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.card-content strong {
+    color: #4a5568;
+}
+
+/* 고민 내용 박스 */
+.concern-box {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 4px solid #007bff;
+}
+
+.concern-box p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #495057;
+}
+
+/* 무게 정보 */
+.weight-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.weight-label {
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.weight-value {
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.weight-value.light {
+    background: #d4edda;
+    color: #155724;
+}
+
+.weight-value.medium {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.weight-value.heavy {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* 응답 박스 */
+.response-box {
+    background: #e8f5e8;
+    border: 1px solid #c3e6c3;
+    border-radius: 10px;
+    padding: 15px;
+    border-left: 4px solid #28a745;
+}
+
+.response-box p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #495057;
+    font-style: italic;
+}
+
+/* 하단 액션 버튼 */
+.bottom-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.action-btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.action-btn.primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.action-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.action-btn.secondary {
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+}
+
+.action-btn.secondary:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .luggage-image {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .bottom-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .action-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+</style>
+</body>
+</html>

@@ -6,34 +6,44 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Roboto+Condensed:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/1_main.css">
     <link rel="stylesheet" href="/css/test.css">
     <link rel="stylesheet" href="/css/shared.css">
 </head>
 <body class="main-background">
-    <!-- 좌측 하단 심볼N 이미지 -->
-    <div class="symbol-logo" onclick="toggleSidebar()">
-        <img src="/image/sharedImage/심볼N.png" alt="심볼N">
+    <!-- 좌측 하단 심볼N 이미지 (외부용 - 사이드바 닫혔을 때만 보임) -->
+    <div class="symbol-logo-outside" onclick="toggleSidebar()">
+        <img src="/image/sharedImage/symbolN.png" alt="심볼N">
     </div>
 
-    <!-- 사이드바 추가 (body 태그 안 어디든) -->
-    <div class="sidebar" id="sidebar">
+    <!-- 전체 화면 블러 + 좌측 메뉴 -->
+    <div class="sidebar" id="sidebar" onclick="event.target === this && closeSidebar()">
         <div class="sidebar-content">
-            <div class="sidebar-close" onclick="closeSidebar()">×</div>
             <div class="sidebar-menu">
-                <div class="menu-item" data-delay="0" data-link="/introduce"><i>STORY</i></div>
-                <div class="menu-item" data-delay="200" data-link="/select"><i>CHOOSE YOUR TRIP</i></div>
-                <div class="menu-item" data-delay="400" data-link="/find"><i>SHOW RESULTS</i></div>
+                <div class="menu-item" data-delay="0" data-link="/">
+                    <img src="/image/sharedImage/button_home.png" alt="HOME">
+                </div>
+                <div class="menu-item" data-delay="100" data-link="/introduce">
+                    <img src="/image/sharedImage/button_story.png" alt="STORY">
+                </div>
+                <div class="menu-item" data-delay="200" data-link="/select">
+                    <img src="/image/sharedImage/button_choose.png" alt="CHOOSE">
+                </div>
+                <div class="menu-item" data-delay="300" data-link="/result">
+                    <img src="/image/sharedImage/button_n.png" alt="N'">
+                </div>
             </div>
         </div>
     </div>
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
 
     <!-- 우측 중간 화살표 버튼 (새로 추가) -->
     <div class="arrow-button-container">
         <a href="/introduce" class="arrow-btn">
-            <img src="/image/1_mainPage/화살표.png" alt="소개 페이지로 이동">
+            <img src="/image/1_mainPage/arrow.png" alt="소개 페이지로 이동">
         </a>
     </div>
 

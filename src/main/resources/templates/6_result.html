@@ -1,0 +1,92 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>전체 고민 목록</title>
+    <link rel="stylesheet" href="/css/6_result.css">
+    <link rel="stylesheet" href="/css/shared.css">
+</head>
+<body>
+    <!-- 배경 이미지 -->
+    <div class="background"></div>
+    
+    <!-- 좌측 하단 심볼N 로고 (외부용 - 사이드바 닫혔을 때만 보임) -->
+    <div class="symbol-logo-outside" onclick="toggleSidebar()">
+        <img src="/image/sharedImage/symbolN.png" alt="심볼N">
+    </div>
+    
+    <!-- 메인 컨테이너 -->
+    <div class="container">
+        <!-- 잠수함 이미지 -->
+        <div class="submarine-container">
+            <img src="/image/6_resultPage/submarine.png" alt="submarine" class="submarine" id="submarine">
+        </div>
+        
+        <!-- 가방 이미지들 (숨겨진 상태로 시작) -->
+        <div class="luggage-circle" id="luggageCircle">
+            <div th:each="luggage, iterStat : ${luggageList}" 
+                 class="luggage-item" 
+                 th:data-lid="${luggage.LID}"
+                 th:data-username="${luggage.concern.userName}"
+                 th:data-password="${luggage.concern.password}">
+                <img th:src="@{'/image/sharedImage/item' + ${luggage.luggageType.ordinal() + 1} + '.png'}" 
+                     th:alt="${luggage.luggageType}" 
+                     class="luggage-img"/>
+                <div class="username-label" th:text="${luggage.concern.userName}"></div>
+            </div>
+        </div>
+        
+        <!-- 페이지네이션 화살표 -->
+        <div class="pagination-controls" id="paginationControls">
+            <button class="page-arrow prev-arrow" id="prevPage">
+                <span>&lt;</span>
+            </button>
+            <div class="page-info" id="pageInfo">
+                <span id="currentPage">1</span> / <span id="totalPages">1</span>
+            </div>
+            <button class="page-arrow next-arrow" id="nextPage">
+                <span>&gt;</span>
+            </button>
+        </div>
+        
+        <!-- 비밀번호 입력 박스 -->
+        <div class="password-box" id="passwordBox">
+            <h3 id="passwordTitle"></h3>
+            <input type="password" id="passwordInput" placeholder="비밀번호를 입력하세요">
+            <button id="passwordSubmit">확인</button>
+            <div class="error-msg" id="errorMsg">잘못된 비밀번호입니다.</div>
+        </div>
+        
+        <!-- 응답 표시 박스 -->
+        <div class="response-box" id="responseBox">
+            <h3 id="responseTitle"></h3>
+            <div id="responseContent"></div>
+        </div>
+    </div>
+
+    <!-- 전체 화면 블러 + 좌측 메뉴 -->
+    <div class="sidebar" id="sidebar" onclick="event.target === this && closeSidebar()">
+        <div class="sidebar-content">
+            <div class="sidebar-menu">
+                <div class="menu-item" data-delay="0" data-link="/">
+                    <img src="/image/sharedImage/button_home.png" alt="HOME">
+                </div>
+                <div class="menu-item" data-delay="100" data-link="/introduce">
+                    <img src="/image/sharedImage/button_story.png" alt="STORY">
+                </div>
+                <div class="menu-item" data-delay="200" data-link="/select">
+                    <img src="/image/sharedImage/button_choose.png" alt="CHOOSE">
+                </div>
+                <div class="menu-item" data-delay="300" data-link="/result">
+                    <img src="/image/sharedImage/button_n.png" alt="N'">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/6_result.js"></script>
+    <script src="/js/shared.js"></script>
+</body>
+</html>

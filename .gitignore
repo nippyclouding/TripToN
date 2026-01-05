@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Environment & Sensitive Files ###
+.env
+.env.local
+.env.*.local
+src/main/resources/application-local.properties
+src/main/resources/application-dev.properties

@@ -34,7 +34,7 @@ function openSidebar() {
         const delay = parseInt(item.dataset.delay) || 0;
         setTimeout(() => {
             item.classList.add('show');
-            console.log('메뉴 아이템 표시:', item.textContent); // 디버그용
+            console.log('메뉴 아이템 표시:', item.querySelector('img').alt); // 디버그용
         }, delay);
     });
 }
@@ -62,7 +62,7 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// 메뉴 클릭시 페이지 이동
+// 메뉴 아이템 클릭시 페이지 이동
 document.querySelectorAll('.menu-item').forEach(item => {
     item.addEventListener('click', function() {
         const link = this.dataset.link;

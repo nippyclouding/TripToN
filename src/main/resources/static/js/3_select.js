@@ -9,16 +9,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 가방 이미지 배열
     const bagImages = [
-        '/image/3_selectPage/베개가방_기본.png',
-        '/image/3_selectPage/서류가방_기본.png',
-        '/image/3_selectPage/세탁바구니가방_기본.png'
+        '/image/3_selectPage/item1.png',  // 베개가방
+        '/image/3_selectPage/item2.png',  // 서류가방
+        '/image/3_selectPage/item3.png'   // 세탁바구니가방
     ];
 
-    // 아이템 소개 이미지 배열 (a, b, c 순서)
+    // 아이템 소개 이미지 배열
     const introduceImages = [
-        '/image/3_selectPage/itemIntroduce1.png', // 베개가방 (a)
-        '/image/3_selectPage/itemIntroduce2.png', // 서류가방 (b)
-        '/image/3_selectPage/itemIntroduce3.png'  // 세탁바구니가방 (c)
+        '/image/3_selectPage/itemIntroduce1.png', // 베개가방 -> item1
+        '/image/3_selectPage/itemIntroduce2.png', // 서류가방 -> item2  
+        '/image/3_selectPage/itemIntroduce3.png'  // 세탁바구니가방 -> item3
     ];
 
     let currentIndex = 0;
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 입력 모달 열기 함수
     window.showInputModal = function() {
         const inputModal = document.getElementById('inputModal');
-        const luggageInput = document.getElementById('concern-luggage-input');
+        const luggageInput = document.getElementById('luggage-input');
         const currentLuggage = document.getElementById('luggage-input').value;
         
         // 현재 선택된 가방 정보를 입력 모달로 전달
@@ -131,6 +131,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 입력 모달 표시
         inputModal.classList.add('show');
+        
+        // body 스크롤 허용
+        document.body.style.overflow = 'auto';
         
         // 텍스트 영역에 포커스
         setTimeout(() => {
@@ -149,19 +152,43 @@ document.addEventListener('DOMContentLoaded', function() {
             inputModal.classList.remove('show', 'closing');
             // 입력 내용 초기화
             document.getElementById('concern-input').value = '';
+            document.getElementById('username-input').value = '';
+            document.getElementById('password-input').value = '';
         }, 300);
     }
 
     // 걱정 제출 함수
     window.submitConcern = function() {
         const concernText = document.getElementById('concern-input').value.trim();
+        const usernameText = document.getElementById('username-input').value.trim();
+        const passwordText = document.getElementById('password-input').value.trim();
         
+        // 입력 검증
         if (concernText === '') {
             alert('걱정을 입력해주세요.');
+            document.getElementById('concern-input').focus();
             return;
         }
         
-        // 폼 제출
+        if (usernameText === '') {
+            alert('사용자 이름을 입력해주세요.');
+            document.getElementById('username-input').focus();
+            return;
+        }
+        
+        if (passwordText === '') {
+            alert('비밀번호를 입력해주세요.');
+            document.getElementById('password-input').focus();
+            return;
+        }
+        
+        if (passwordText.length > 4) {
+            alert('비밀번호는 최대 4자리까지 입력 가능합니다.');
+            document.getElementById('password-input').focus();
+            return;
+        }
+        
+        // 모든 검증 통과 시 폼 제출
         document.getElementById('concern-form').submit();
     }
 
@@ -192,6 +219,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 closeInputModal();
             } else if (itemModal.classList.contains('show')) {
                 closeItemModal();
+            } else {
+                closeSidebar(); // 사이드바도 ESC로 닫기
+            }
+        }
+    });
+
+    // Enter 키로 폼 제출 (검증 포함)
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            const inputModal = document.getElementById('inputModal');
+            if (inputModal.classList.contains('show')) {
+                e.preventDefault(); // 기본 Enter 동작 방지
+                submitConcern(); // 검증과 함께 제출
             }
         }
     });
@@ -202,4 +242,73 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 브라우저 크기 변경 시 위치 재조정
     window.addEventListener('resize', setPosition);
+});
+
+// ============================
+// 사이드바 토글 함수 (1_main.js와 동일)
+// ============================
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    if (sidebar.classList.contains('open')) {
+        closeSidebar();
+    } else {
+        openSidebar();
+    }
+}
+
+// 사이드바 열기
+function openSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const menuItems = document.querySelectorAll('.menu-item');
+
+    console.log('사이드바 열기 시도'); // 디버그용
+
+    if (sidebar) {
+        sidebar.classList.add('open');
+        console.log('사이드바 열림'); // 디버그용
+    }
+
+    if (overlay) {
+        overlay.classList.add('show');
+    } else {
+        console.log('오버레이를 찾을 수 없음'); // 디버그용
+    }
+
+    // 메뉴 아이템들을 순차적으로 나타내기
+    menuItems.forEach((item, index) => {
+        const delay = parseInt(item.dataset.delay) || 0;
+        setTimeout(() => {
+            item.classList.add('show');
+            console.log('메뉴 아이템 표시:', item.querySelector('img').alt); // 디버그용
+        }, delay);
+    });
+}
+
+// 사이드바 닫기
+function closeSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const menuItems = document.querySelectorAll('.menu-item');
+
+    // 메뉴 아이템들 숨기기
+    menuItems.forEach(item => {
+        item.classList.remove('show');
+    });
+
+    // 사이드바와 오버레이 숨기기
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+}
+
+// 메뉴 아이템 클릭시 페이지 이동
+document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', function() {
+        const link = this.dataset.link;
+        if (link) {
+            window.location.href = link;
+        }
+    });
 });

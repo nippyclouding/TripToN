@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고민 정보 확인</title>
+    <link rel="stylesheet" href="/css/6_info.css">
+</head>
+<body>
+<div class="container">
+    <h1>당신의 고민 정보</h1>
+    
+    <div class="info-section">
+        <h2>당신의 고민은:</h2>
+        <p class="concern-text" th:text="${concern?.concern}">고민 내용이 여기에 표시됩니다</p>
+    </div>
+    
+
+    
+    <div class="info-section">
+        <h2>조언:</h2>
+        <p class="advice-text" th:text="${concern?.response}">AI의 조언이 여기에 표시됩니다</p>
+    </div>
+    
+    <div class="button-section">
+        <button type="button" onclick="location.href='/result'" class="next-btn">다음 단계로</button>
+    </div>
+</div>
+</body>
+</html>

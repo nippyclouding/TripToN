@@ -1,0 +1,111 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('/image/sharedImage/Background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    font-size: 32px;
+}
+
+.info-section {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.info-section h2 {
+    color: white;
+    margin-bottom: 10px;
+    font-size: 18px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.concern-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid rgba(0, 123, 255, 0.8);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.weight-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 123, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 10px 15px;
+    border-radius: 10px;
+    display: inline-block;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 123, 255, 0.3);
+}
+
+.advice-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid rgba(40, 167, 69, 0.8);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.button-section {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.next-btn {
+    background: rgba(0, 123, 255, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: white;
+    padding: 12px 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.next-btn:hover {
+    background: rgba(0, 123, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}

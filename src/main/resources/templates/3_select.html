@@ -12,23 +12,30 @@
 </head>
 <body>
 
-<!-- 좌측 하단 심볼N 이미지 -->
-<div class="symbol-logo" onclick="toggleSidebar()">
-    <img src="/image/sharedImage/심볼N.png" alt="심볼N">
+<!-- 좌측 하단 심볼N 이미지 (외부용 - 사이드바 닫혔을 때만 보임) -->
+<div class="symbol-logo-outside" onclick="toggleSidebar()">
+    <img src="/image/sharedImage/symbolN.png" alt="심볼N">
 </div>
 
-<!-- 사이드바 -->
-<div class="sidebar" id="sidebar">
+<!-- 전체 화면 블러 + 좌측 메뉴 -->
+<div class="sidebar" id="sidebar" onclick="event.target === this && closeSidebar()">
     <div class="sidebar-content">
-        <div class="sidebar-close" onclick="closeSidebar()">×</div>
         <div class="sidebar-menu">
-            <div class="menu-item" data-delay="0" data-link="/introduce"><i>STORY</i></div>
-            <div class="menu-item" data-delay="200" data-link="/select"><i>CHOOSE YOUR TRIP</i></div>
-            <div class="menu-item" data-delay="400" data-link="/find"><i>SHOW RESULTS</i></div>
+            <div class="menu-item" data-delay="0" data-link="/">
+                <img src="/image/sharedImage/button_home.png" alt="HOME">
+            </div>
+            <div class="menu-item" data-delay="100" data-link="/introduce">
+                <img src="/image/sharedImage/button_story.png" alt="STORY">
+            </div>
+            <div class="menu-item" data-delay="200" data-link="/select">
+                <img src="/image/sharedImage/button_choose.png" alt="CHOOSE">
+            </div>
+            <div class="menu-item" data-delay="300" data-link="/result">
+                <img src="/image/sharedImage/button_n.png" alt="N'">
+            </div>
         </div>
     </div>
 </div>
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
 <!-- 우측 하단 사운드 토글 버튼 -->
 <div class="sound-toggle-container">
@@ -40,7 +47,7 @@
 
 <!-- 중앙에 보여질 가방 이미지 -->
 <div class="bag-container">
-    <img id="bag-image" src="/image/3_selectPage/베개가방_기본.png" alt="Bag">
+    <img id="bag-image" src="/image/3_selectPage/item1.png" alt="Bag">
 </div>
 
 <!-- 아이템 소개 모달 -->
@@ -53,7 +60,7 @@
         <div class="modal-buttons">
             <!-- 화살표 버튼 (입력창 열기용) -->
             <div class="modal-arrow-btn" onclick="showInputModal()">
-                <img src="/image/3_selectPage/화살표>.png" alt="선택하기">
+                <img src="/image/3_selectPage/arrow22.png" alt="선택하기">
             </div>
 
             <!-- 닫기 버튼 -->
@@ -76,23 +83,28 @@
     </div>
     
     <div class="input-modal-content">
-        <!-- 네모 상자 안쪽 이미지 -->
-        <div class="input-modal-inner-title">
-            <img src="/image/3_selectPage/당신의 생각을 입력해보세요.png" alt="당신의 생각을 입력해보세요">
+        <!-- 모달 컨테이너 상단 이미지 -->
+        <div class="input-modal-inner-image">
+            <img src="/image/3_selectPage/enterYourThoughts.png" alt="당신의 생각을 입력해보세요">
         </div>
-        
         <div class="input-modal-body">
             <form id="concern-form" method="post" action="/concern">
-                <input type="hidden" id="luggage-input" name="luggage" value="">
-                <input type="hidden" id="concern-luggage-input" name="luggage" value="">
+                <input type="hidden" id="luggage-input" name="luggageType" value="">
                 <div class="input-container">
-                    <textarea id="concern-input" name="concern" placeholder="EX) 내일 그 일 어떻게 하지..." rows="6"></textarea>
+                    <textarea id="concern-input" name="concern" placeholder="EX) 내일 그 일 어떻게 하지..." rows="6" maxlength="120"></textarea>
+                </div>
+                <div class="input-container">
+                    <input type="text" id="username-input" name="userName" placeholder="이름을 입력하세요">
+                </div>
+
+                <div class="input-container">
+                    <input type="password" id="password-input" name="password" placeholder="비밀번호 (최대 4자리)" maxlength="4">
                 </div>
                 
                 <div class="input-modal-buttons">
                     <!-- 제출 화살표 버튼 -->
                     <div class="input-modal-arrow-btn" onclick="submitConcern()">
-                        <img src="/image/3_selectPage/화살표>.png" alt="제출하기">
+                        <img src="/image/3_selectPage/arrow22.png" alt="제출하기">
                     </div>
 
                     <!-- 닫기 버튼 -->
@@ -108,7 +120,7 @@
 <!-- 하단 컨트롤 영역 -->
 <div class="bottom-controls">
     <div class="arrow-btn" id="prev-btn">
-        <img src="/image/3_selectPage/화살표<.png" alt="Previous">
+        <img src="/image/3_selectPage/arrow11.png" alt="Previous">
     </div>
 
     <!-- about 버튼으로 변경 -->
@@ -117,7 +129,7 @@
     </div>
 
     <div class="arrow-btn" id="next-btn">
-        <img src="/image/3_selectPage/화살표>.png" alt="Next">
+        <img src="/image/3_selectPage/arrow22.png" alt="Next">
     </div>
 </div>
 
