@@ -6,6 +6,8 @@ import TripToN.TripToN.domain.*;
 import TripToN.TripToN.service.responseService.ResponseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,11 @@ public class LuggageService {
     //findAll()
     public List<Luggage> findAll() {
         return luggageRepository.findAll();
+    }
+
+    //페이징 조회 (최신순)
+    public Page<Luggage> findAllPaged(int page, int size) {
+        return luggageRepository.findAllByOrderByDateTimeDesc(PageRequest.of(page, size));
     }
 
     //findById()
@@ -52,10 +59,8 @@ public class LuggageService {
 
 
 
-    // 실제 비즈니스 로직 - Concern에 Response 할당 : AI 응답 등 여러가지 기능
-    public String setResponse(Concern concern) {
-        String response = responseService.response(concern);
-        return response;
+    // 외부 서비스를 통해 응답 생성 (AI 응답 등)
+    public String generateResponse(Concern concern) {
+        return responseService.response(concern);
     }
-
 }

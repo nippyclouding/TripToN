@@ -25,7 +25,7 @@ class UserServiceTest {
         Concern concern = new Concern(userName, concernText, password);
         ResponseService responseService = new DefaultService();
         String response = responseService.response(concern);
-        concern.setResponse(response);
+        concern.assignResponse(response);
 
         // then - Concern 검증
         assertThat(concern.getUserName()).isEqualTo(userName);

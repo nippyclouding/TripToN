@@ -68,8 +68,8 @@ public class MainController {
             Concern requestedConcern = new Concern(userName, concern, password); // 고민 객체 생성
 
             //응답 생성 (gemini, default 방식 등..)
-            String getResponse = luggageService.setResponse(requestedConcern);
-            requestedConcern.setResponse(getResponse); // 응답 할당
+            String response = luggageService.generateResponse(requestedConcern);
+            requestedConcern.assignResponse(response);
 
             //DB와 세션에 luggage 저장
             Luggage luggage = new Luggage(requestedConcern, convertluggageType);
@@ -108,12 +108,37 @@ public class MainController {
         return "5_info";
     }
 
-    //결과 페이지 조회
+    //결과 페이지 조회 (첫 페이지만 서버사이드 렌더링)
     @GetMapping("/result")
     public String result(Model model){
-        List<Luggage> luggageList = luggageService.findAll();
-        model.addAttribute("luggageList", luggageList);
+        org.springframework.data.domain.Page<Luggage> page = luggageService.findAllPaged(0, 5);
+        model.addAttribute("luggageList", page.getContent());
+        model.addAttribute("currentPage", 0);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalElements", page.getTotalElements());
         return "6_result";
+    }
+
+    //페이징 API (AJAX용)
+    @GetMapping("/api/luggage")
+    @ResponseBody
+    public Map<String, Object> getLuggagePaged(@RequestParam(defaultValue = "0") int page) {
+        org.springframework.data.domain.Page<Luggage> luggagePage = luggageService.findAllPaged(page, 5);
+        List<Map<String, Object>> items = luggagePage.getContent().stream().map(l -> {
+            Map<String, Object> item = new java.util.HashMap<>();
+            item.put("lid", l.getLID());
+            item.put("username", l.getConcern().getUserName());
+            item.put("luggageTypeOrdinal", l.getLuggageType().ordinal() + 1);
+            item.put("luggageType", l.getLuggageType().name());
+            return item;
+        }).toList();
+
+        Map<String, Object> result = new java.util.HashMap<>();
+        result.put("content", items);
+        result.put("currentPage", luggagePage.getNumber());
+        result.put("totalPages", luggagePage.getTotalPages());
+        result.put("totalElements", luggagePage.getTotalElements());
+        return result;
     }
 
     @GetMapping("/{lid}")

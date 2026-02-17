@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Embeddable
-@Getter @Setter @EqualsAndHashCode
+@Getter @EqualsAndHashCode
 public class Concern {
 
     private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
@@ -37,6 +37,13 @@ public class Concern {
         this.userName = userName;
         this.concern = concern;
         this.password = PASSWORD_ENCODER.encode(password);
+    }
+
+    public void assignResponse(String response) {
+        if (response == null || response.isBlank()) {
+            throw new IllegalArgumentException("응답이 비어있습니다");
+        }
+        this.response = response;
     }
 
     public boolean matchPassword(String rawPassword) {

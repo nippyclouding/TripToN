@@ -29,8 +29,7 @@
             <div th:each="luggage, iterStat : ${luggageList}" 
                  class="luggage-item" 
                  th:data-lid="${luggage.LID}"
-                 th:data-username="${luggage.concern.userName}"
-                 th:data-password="${luggage.concern.password}">
+                 th:data-username="${luggage.concern.userName}">
                 <img th:src="@{'/image/sharedImage/item' + ${luggage.luggageType.ordinal() + 1} + '.png'}" 
                      th:alt="${luggage.luggageType}" 
                      class="luggage-img"/>
@@ -44,7 +43,7 @@
                 <span>&lt;</span>
             </button>
             <div class="page-info" id="pageInfo">
-                <span id="currentPage">1</span> / <span id="totalPages">1</span>
+                <span id="currentPage">1</span> / <span id="totalPages" th:text="${totalPages}">1</span>
             </div>
             <button class="page-arrow next-arrow" id="nextPage">
                 <span>&gt;</span>

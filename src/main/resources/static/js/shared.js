@@ -11,10 +11,15 @@ function toggleSidebar() {
 
 function openSidebar() {
     const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
     const menuItems = document.querySelectorAll('.menu-item');
 
     if (sidebar) {
         sidebar.classList.add('open');
+    }
+
+    if (overlay) {
+        overlay.classList.add('show');
     }
 
     menuItems.forEach((item, index) => {
@@ -27,6 +32,7 @@ function openSidebar() {
 
 function closeSidebar() {
     const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
     const menuItems = document.querySelectorAll('.menu-item');
 
     menuItems.forEach(item => {
@@ -35,6 +41,10 @@ function closeSidebar() {
 
     if (sidebar) {
         sidebar.classList.remove('open');
+    }
+
+    if (overlay) {
+        overlay.classList.remove('show');
     }
 }
 
@@ -64,14 +74,7 @@ function toggleSound() {
     }
 }
 
-// 기존 toggleSound 함수는 그대로 유지
-function toggleSound() {
-    if (window.musicManager) {
-        window.musicManager.toggleMute();
-    }
-}
-
-// 사운드 상태 아이콘 업데이트 함수 추가
+// 사운드 상태 아이콘 업데이트 함수
 function updateSoundStatusIcon(isMuted) {
     const statusIcon = document.getElementById('sound-status-icon');
     if (statusIcon) {

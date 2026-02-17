@@ -12,7 +12,7 @@ class LuggageTest {
 
     private Concern createConcernWithResponse() {
         Concern concern = new Concern("홍길동", "취업 고민", "1234");
-        concern.setResponse("조언");
+        concern.assignResponse("조언");
         return concern;
     }
 

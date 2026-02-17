@@ -109,7 +109,7 @@ class ConcernTest {
             Concern concern = new Concern("홍길동", "취업 고민", "1234");
 
             // when
-            concern.setResponse("따뜻한 조언입니다.");
+            concern.assignResponse("따뜻한 조언입니다.");
 
             // then
             assertThat(concern.getResponse()).isEqualTo("따뜻한 조언입니다.");

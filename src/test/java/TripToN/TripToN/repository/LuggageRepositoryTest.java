@@ -22,7 +22,7 @@ class LuggageRepositoryTest {
 
     private Luggage createLuggage(String userName, String concernText, LuggageType type) {
         Concern concern = new Concern(userName, concernText, "1234");
-        concern.setResponse("테스트 응답");
+        concern.assignResponse("테스트 응답");
         return new Luggage(concern, type);
     }
 

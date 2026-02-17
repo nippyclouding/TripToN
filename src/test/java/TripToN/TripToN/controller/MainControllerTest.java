@@ -14,6 +14,9 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -35,7 +38,7 @@ class MainControllerTest {
 
     private Luggage createTestLuggage() {
         Concern concern = new Concern("홍길동", "취업 고민", "1234");
-        concern.setResponse("AI 조언");
+        concern.assignResponse("AI 조언");
         return new Luggage(concern, LuggageType.LUGGAGE);
     }
 
@@ -86,7 +89,7 @@ class MainControllerTest {
         void successfulSubmission() throws Exception {
             // given
             Luggage luggage = createTestLuggage();
-            given(luggageService.setResponse(any(Concern.class))).willReturn("AI 조언");
+            given(luggageService.generateResponse(any(Concern.class))).willReturn("AI 조언");
             given(luggageService.saveLuggage(any(Luggage.class))).willReturn(luggage);
 
             // when & then
@@ -99,7 +102,7 @@ class MainControllerTest {
                     .andExpect(view().name("5_info"))
                     .andExpect(model().attributeExists("concern"));
 
-            then(luggageService).should().setResponse(any(Concern.class));
+            then(luggageService).should().generateResponse(any(Concern.class));
             then(luggageService).should().saveLuggage(any(Luggage.class));
         }
 
@@ -172,9 +175,9 @@ class MainControllerTest {
         void luggageBTypeWorks() throws Exception {
             // given
             Concern concern = new Concern("김철수", "고민", "1234");
-            concern.setResponse("응답");
+            concern.assignResponse("응답");
             Luggage luggage = new Luggage(concern, LuggageType.CART);
-            given(luggageService.setResponse(any(Concern.class))).willReturn("응답");
+            given(luggageService.generateResponse(any(Concern.class))).willReturn("응답");
             given(luggageService.saveLuggage(any(Luggage.class))).willReturn(luggage);
 
             // when & then
@@ -192,9 +195,9 @@ class MainControllerTest {
         void luggageCTypeWorks() throws Exception {
             // given
             Concern concern = new Concern("이영희", "고민", "1234");
-            concern.setResponse("응답");
+            concern.assignResponse("응답");
             Luggage luggage = new Luggage(concern, LuggageType.BAG);
-            given(luggageService.setResponse(any(Concern.class))).willReturn("응답");
+            given(luggageService.generateResponse(any(Concern.class))).willReturn("응답");
             given(luggageService.saveLuggage(any(Luggage.class))).willReturn(luggage);
 
             // when & then
@@ -262,7 +265,8 @@ class MainControllerTest {
         void returnsResultPageWithList() throws Exception {
             // given
             List<Luggage> list = List.of(createTestLuggage());
-            given(luggageService.findAll()).willReturn(list);
+            Page<Luggage> page = new PageImpl<>(list);
+            given(luggageService.findAllPaged(0, 5)).willReturn(page);
 
             // when & then
             mockMvc.perform(get("/result"))
@@ -275,7 +279,8 @@ class MainControllerTest {
         @DisplayName("데이터가 없으면 빈 리스트를 반환한다")
         void returnsEmptyList() throws Exception {
             // given
-            given(luggageService.findAll()).willReturn(Collections.emptyList());
+            Page<Luggage> emptyPage = new PageImpl<>(Collections.emptyList());
+            given(luggageService.findAllPaged(0, 5)).willReturn(emptyPage);
 
             // when & then
             mockMvc.perform(get("/result"))

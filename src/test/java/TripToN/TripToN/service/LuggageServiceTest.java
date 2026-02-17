@@ -38,7 +38,7 @@ class LuggageServiceTest {
 
     private Luggage createCompleteLuggage(String userName, String concernText, LuggageType type) {
         Concern concern = new Concern(userName, concernText, "1234");
-        concern.setResponse("테스트 응답");
+        concern.assignResponse("테스트 응답");
         return new Luggage(concern, type);
     }
 
@@ -163,7 +163,7 @@ class LuggageServiceTest {
     }
 
     @Nested
-    @DisplayName("setResponse()")
+    @DisplayName("generateResponse()")
     class SetResponse {
 
         @Test
@@ -174,7 +174,7 @@ class LuggageServiceTest {
             given(responseService.response(concern)).willReturn("AI 조언입니다.");
 
             // when
-            String response = luggageService.setResponse(concern);
+            String response = luggageService.generateResponse(concern);
 
             // then
             assertThat(response).isEqualTo("AI 조언입니다.");
@@ -189,7 +189,7 @@ class LuggageServiceTest {
             given(responseService.response(concern)).willReturn(null);
 
             // when
-            String response = luggageService.setResponse(concern);
+            String response = luggageService.generateResponse(concern);
 
             // then
             assertThat(response).isNull();
