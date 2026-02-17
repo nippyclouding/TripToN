@@ -3,6 +3,8 @@ package TripToN.TripToN.service.responseService;
 import TripToN.TripToN.config.dto.GeminiRequest;
 import TripToN.TripToN.config.dto.GeminiResponse;
 import TripToN.TripToN.domain.Concern;
+import TripToN.TripToN.domain.Luggage;
+import TripToN.TripToN.domain.LuggageType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -67,7 +69,7 @@ class GeminiServiceTest {
     }
 
     private Concern createTestConcern(String text) {
-        return new Concern("홍길동", text, "1234");
+        return Luggage.create("홍길동", text, "1234", LuggageType.LUGGAGE).getConcern();
     }
 
     @Nested

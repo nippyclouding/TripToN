@@ -37,9 +37,9 @@ class MainControllerTest {
     private LuggageService luggageService;
 
     private Luggage createTestLuggage() {
-        Concern concern = new Concern("홍길동", "취업 고민", "1234");
-        concern.assignResponse("AI 조언");
-        return new Luggage(concern, LuggageType.LUGGAGE);
+        Luggage luggage = Luggage.create("홍길동", "취업 고민", "1234", LuggageType.LUGGAGE);
+        luggage.assignResponse("AI 조언");
+        return luggage;
     }
 
     @Nested
@@ -174,9 +174,8 @@ class MainControllerTest {
         @DisplayName("LuggageB 타입으로 정상 등록된다")
         void luggageBTypeWorks() throws Exception {
             // given
-            Concern concern = new Concern("김철수", "고민", "1234");
-            concern.assignResponse("응답");
-            Luggage luggage = new Luggage(concern, LuggageType.CART);
+            Luggage luggage = Luggage.create("김철수", "고민", "1234", LuggageType.CART);
+            luggage.assignResponse("응답");
             given(luggageService.generateResponse(any(Concern.class))).willReturn("응답");
             given(luggageService.saveLuggage(any(Luggage.class))).willReturn(luggage);
 
@@ -194,9 +193,8 @@ class MainControllerTest {
         @DisplayName("LuggageC 타입으로 정상 등록된다")
         void luggageCTypeWorks() throws Exception {
             // given
-            Concern concern = new Concern("이영희", "고민", "1234");
-            concern.assignResponse("응답");
-            Luggage luggage = new Luggage(concern, LuggageType.BAG);
+            Luggage luggage = Luggage.create("이영희", "고민", "1234", LuggageType.BAG);
+            luggage.assignResponse("응답");
             given(luggageService.generateResponse(any(Concern.class))).willReturn("응답");
             given(luggageService.saveLuggage(any(Luggage.class))).willReturn(luggage);
 
@@ -244,8 +242,12 @@ class MainControllerTest {
         @Test
         @DisplayName("세션의 Luggage에 concern이 null이면 /select로 리다이렉트한다")
         void redirectsWhenConcernNull() throws Exception {
-            // given
-            Luggage luggage = new Luggage(null, LuggageType.LUGGAGE);
+            // given - use reflection to create a Luggage with null concern
+            Luggage luggage = Luggage.create("홍길동", "고민", "1234", LuggageType.LUGGAGE);
+            java.lang.reflect.Field concernField = Luggage.class.getDeclaredField("concern");
+            concernField.setAccessible(true);
+            concernField.set(luggage, null);
+
             MockHttpSession session = new MockHttpSession();
             session.setAttribute("saveLuggage", luggage);
 

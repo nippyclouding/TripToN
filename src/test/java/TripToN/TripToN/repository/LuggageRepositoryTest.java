@@ -1,6 +1,5 @@
 package TripToN.TripToN.repository;
 
-import TripToN.TripToN.domain.Concern;
 import TripToN.TripToN.domain.Luggage;
 import TripToN.TripToN.domain.LuggageType;
 import org.junit.jupiter.api.DisplayName;
@@ -21,9 +20,9 @@ class LuggageRepositoryTest {
     private LuggageRepository luggageRepository;
 
     private Luggage createLuggage(String userName, String concernText, LuggageType type) {
-        Concern concern = new Concern(userName, concernText, "1234");
-        concern.assignResponse("테스트 응답");
-        return new Luggage(concern, type);
+        Luggage luggage = Luggage.create(userName, concernText, "1234", type);
+        luggage.assignResponse("테스트 응답");
+        return luggage;
     }
 
     @Nested
@@ -74,8 +73,8 @@ class LuggageRepositoryTest {
             // then
             assertThat(found.getConcern().getPassword()).startsWith("$2a$");
             assertThat(found.getConcern().getPassword()).isNotEqualTo("1234");
-            assertThat(found.getConcern().matchPassword("1234")).isTrue();
-            assertThat(found.getConcern().matchPassword("wrong")).isFalse();
+            assertThat(found.matchPassword("1234")).isTrue();
+            assertThat(found.matchPassword("wrong")).isFalse();
         }
     }
 

@@ -37,9 +37,9 @@ class LuggageServiceTest {
     private LuggageService luggageService;
 
     private Luggage createCompleteLuggage(String userName, String concernText, LuggageType type) {
-        Concern concern = new Concern(userName, concernText, "1234");
-        concern.assignResponse("테스트 응답");
-        return new Luggage(concern, type);
+        Luggage luggage = Luggage.create(userName, concernText, "1234", type);
+        luggage.assignResponse("테스트 응답");
+        return luggage;
     }
 
     @Nested
@@ -136,8 +136,7 @@ class LuggageServiceTest {
         @DisplayName("response가 없는 Luggage 저장 시 IllegalStateException이 발생한다")
         void throwsExceptionWhenResponseMissing() {
             // given
-            Concern concern = new Concern("홍길동", "취업 고민", "1234");
-            Luggage luggage = new Luggage(concern, LuggageType.LUGGAGE);
+            Luggage luggage = Luggage.create("홍길동", "취업 고민", "1234", LuggageType.LUGGAGE);
 
             // when & then
             assertThatThrownBy(() -> luggageService.saveLuggage(luggage))
@@ -149,9 +148,12 @@ class LuggageServiceTest {
 
         @Test
         @DisplayName("concern이 null인 Luggage 저장 시 IllegalStateException이 발생한다")
-        void throwsExceptionWhenConcernNull() {
-            // given
-            Luggage luggage = new Luggage(null, LuggageType.BAG);
+        void throwsExceptionWhenConcernNull() throws Exception {
+            // given - use reflection to create a Luggage with null concern
+            Luggage luggage = Luggage.create("홍길동", "고민", "1234", LuggageType.BAG);
+            java.lang.reflect.Field concernField = Luggage.class.getDeclaredField("concern");
+            concernField.setAccessible(true);
+            concernField.set(luggage, null);
 
             // when & then
             assertThatThrownBy(() -> luggageService.saveLuggage(luggage))
@@ -170,7 +172,8 @@ class LuggageServiceTest {
         @DisplayName("ResponseService를 호출하여 응답 문자열을 반환한다")
         void delegatesToResponseService() {
             // given
-            Concern concern = new Concern("홍길동", "취업 고민", "1234");
+            Luggage luggage = Luggage.create("홍길동", "취업 고민", "1234", LuggageType.LUGGAGE);
+            Concern concern = luggage.getConcern();
             given(responseService.response(concern)).willReturn("AI 조언입니다.");
 
             // when
@@ -185,7 +188,8 @@ class LuggageServiceTest {
         @DisplayName("ResponseService가 null을 반환하면 null을 그대로 전달한다")
         void returnsNullWhenServiceReturnsNull() {
             // given
-            Concern concern = new Concern("홍길동", "취업 고민", "1234");
+            Luggage luggage = Luggage.create("홍길동", "취업 고민", "1234", LuggageType.LUGGAGE);
+            Concern concern = luggage.getConcern();
             given(responseService.response(concern)).willReturn(null);
 
             // when

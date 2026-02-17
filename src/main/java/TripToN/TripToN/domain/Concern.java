@@ -33,7 +33,7 @@ public class Concern {
     protected Concern() {
     }
 
-    public Concern(String userName, String concern, String password) {
+    Concern(String userName, String concern, String password) {
         this.userName = userName;
         this.concern = concern;
         this.password = PASSWORD_ENCODER.encode(password);

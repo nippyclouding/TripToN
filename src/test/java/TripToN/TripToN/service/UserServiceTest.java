@@ -1,6 +1,5 @@
 package TripToN.TripToN.service;
 
-import TripToN.TripToN.domain.Concern;
 import TripToN.TripToN.domain.Luggage;
 import TripToN.TripToN.domain.LuggageType;
 import TripToN.TripToN.service.responseService.DefaultService;
@@ -14,26 +13,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserServiceTest {
 
     @Test
-    @DisplayName("전체 흐름: 사용자 입력 → Concern 생성 → 응답 생성 → Luggage 생성")
+    @DisplayName("전체 흐름: 사용자 입력 → Luggage 생성 → 응답 생성 → 응답 할당")
     void fullUserFlow() {
         // given
         String userName = "홍길동";
         String concernText = "취업이 안 돼서 고민입니다";
         String password = "1234";
 
-        // when - Concern 생성 및 응답 할당
-        Concern concern = new Concern(userName, concernText, password);
+        // when - Luggage 생성 (Aggregate Root가 Concern 생성을 관장)
+        Luggage luggage = Luggage.create(userName, concernText, password, LuggageType.LUGGAGE);
         ResponseService responseService = new DefaultService();
-        String response = responseService.response(concern);
-        concern.assignResponse(response);
+        String response = responseService.response(luggage.getConcern());
+        luggage.assignResponse(response);
 
         // then - Concern 검증
-        assertThat(concern.getUserName()).isEqualTo(userName);
-        assertThat(concern.matchPassword(password)).isTrue();
-        assertThat(concern.getResponse()).isNotBlank();
-
-        // when - Luggage 생성
-        Luggage luggage = new Luggage(concern, LuggageType.LUGGAGE);
+        assertThat(luggage.getConcern().getUserName()).isEqualTo(userName);
+        assertThat(luggage.matchPassword(password)).isTrue();
+        assertThat(luggage.getConcern().getResponse()).isNotBlank();
 
         // then - Luggage 검증
         assertThat(luggage.isComplete()).isTrue();
@@ -44,11 +40,8 @@ class UserServiceTest {
     @Test
     @DisplayName("응답 없이 Luggage 생성 시 isComplete가 false이다")
     void luggageWithoutResponseIsIncomplete() {
-        // given
-        Concern concern = new Concern("홍길동", "고민", "1234");
-
-        // when
-        Luggage luggage = new Luggage(concern, LuggageType.BAG);
+        // given & when
+        Luggage luggage = Luggage.create("홍길동", "고민", "1234", LuggageType.BAG);
 
         // then
         assertThat(luggage.isComplete()).isFalse();

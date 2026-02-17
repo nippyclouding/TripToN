@@ -1,6 +1,8 @@
 package TripToN.TripToN.service.responseService;
 
 import TripToN.TripToN.domain.Concern;
+import TripToN.TripToN.domain.Luggage;
+import TripToN.TripToN.domain.LuggageType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,7 +16,7 @@ class DefaultServiceTest {
     private final DefaultService defaultService = new DefaultService();
 
     private Concern createConcernWithText(String text) {
-        return new Concern("홍길동", text, "1234");
+        return Luggage.create("홍길동", text, "1234", LuggageType.LUGGAGE).getConcern();
     }
 
     @Nested

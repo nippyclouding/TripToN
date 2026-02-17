@@ -2,14 +2,11 @@ package TripToN.TripToN.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Getter
-@Setter
 public class Luggage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,26 +17,34 @@ public class Luggage {
 
     private LocalDateTime dateTime;
 
-
     @Enumerated(EnumType.STRING)
     private LuggageType luggageType;
-
-    //최종 생성
-    public Luggage(Concern concern, LuggageType luggageType) {
-        this.concern = concern;
-        this.luggageType = luggageType;
-        dateTime = LocalDateTime.now();
-    }
 
     //JPA 전용 기본 생성자
     protected Luggage() {
     }
 
-    // concern 내부가 null인지 검증
-    // 서비스 계층에서 사용자 입력을 토대로 Luggage 객체를 생성하고 DB에 넣을 때 검증하는 메서드
-    public boolean isComplete() {
-        return concern != null &&
-                concern.getResponse() != null;
+    // Aggregate Root가 Concern 생성을 관장하는 팩토리 메서드
+    public static Luggage create(String userName, String concern, String password, LuggageType luggageType) {
+        Luggage luggage = new Luggage();
+        luggage.concern = new Concern(userName, concern, password);
+        luggage.luggageType = luggageType;
+        luggage.dateTime = LocalDateTime.now();
+        return luggage;
+    }
 
+    // Aggregate Root가 내부 Concern의 응답 할당을 관장
+    public void assignResponse(String response) {
+        this.concern.assignResponse(response);
+    }
+
+    // 비밀번호 검증도 Aggregate Root를 통해서
+    public boolean matchPassword(String rawPassword) {
+        return this.concern.matchPassword(rawPassword);
+    }
+
+    // 응답이 할당되었는지 검증
+    public boolean isComplete() {
+        return concern != null && concern.getResponse() != null;
     }
 }

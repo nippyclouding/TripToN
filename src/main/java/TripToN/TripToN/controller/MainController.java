@@ -63,16 +63,15 @@ public class MainController {
                 return "3_select";
             }
 
-            //DDD 관점에서는 컨트롤러에서 도메인을 생성하면 안되지만, 단순한 프로젝트이기에 컨트롤러에서 도메인 객체 생성
-            LuggageType convertluggageType = convertToLuggageType(luggageType); // luggageType 데이터 조회
-            Concern requestedConcern = new Concern(userName, concern, password); // 고민 객체 생성
+            // Aggregate Root(Luggage)가 Concern 생성을 관장
+            LuggageType convertluggageType = convertToLuggageType(luggageType);
+            Luggage luggage = Luggage.create(userName, concern, password, convertluggageType);
 
-            //응답 생성 (gemini, default 방식 등..)
-            String response = luggageService.generateResponse(requestedConcern);
-            requestedConcern.assignResponse(response);
+            // 응답 생성 후 Aggregate Root를 통해 할당
+            String response = luggageService.generateResponse(luggage.getConcern());
+            luggage.assignResponse(response);
 
-            //DB와 세션에 luggage 저장
-            Luggage luggage = new Luggage(requestedConcern, convertluggageType);
+            // DB와 세션에 저장
             Luggage saveLuggage = luggageService.saveLuggage(luggage);
 
             //세션에 사용자 luggage 저장, model에 사용자 고민 담아 프론트로 전달
@@ -161,7 +160,7 @@ public class MainController {
             String password = request.get("password");
 
             Luggage luggage = luggageService.findById(lid);
-            boolean isValid = luggage.getConcern().matchPassword(password);
+            boolean isValid = luggage.matchPassword(password);
 
             return Map.of("success", isValid);
         } catch (Exception e) {
