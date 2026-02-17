@@ -158,24 +158,24 @@ AI 호출 실패 시 고민 길이 기반의 기본 응답으로 자동 대체�
 ```
 [사용자 입력]                    [서버]                         [외부 API]
      |                            |                               |
-     |  가방타입 + 고민 + 이름     |                               |
-     |  + 비밀번호                 |                               |
+     |  가방타입 + 고민 + 이름     |                                  |
+     |  + 비밀번호                 |                                |
      |--------------------------->|                               |
-     |                            |  1. 입력값 검증                |
+     |                            |  1. 입력값 검증                  |
      |                            |  2. LuggageType 변환           |
-     |                            |  3. Concern 객체 생성          |
+     |                            |  3. Concern 객체 생성           |
      |                            |                               |
-     |                            |  4. 프롬프트 구성 & API 호출    |
+     |                            |  4. 프롬프트 구성 & API 호출      |
      |                            |------------------------------>|
      |                            |                               |  Gemini AI
-     |                            |       AI 응답 (300자 이내)      |
+     |                            |       AI 응답 (300자 이내)       |
      |                            |<------------------------------|
      |                            |                               |
-     |                            |  5. Concern에 응답 할당         |
-     |                            |  6. Luggage 생성 & DB 저장     |
-     |                            |  7. 세션에 저장                |
+     |                            |  5. Concern에 응답 할당          |
+     |                            |  6. Luggage 생성 & DB 저장      |
+     |                            |  7. 세션에 저장                  |
      |                            |                               |
-     |   고민 + AI 응답 표시       |                               |
+     |   고민 + AI 응답 표시       |                                  |
      |<---------------------------|                               |
 ```
 
@@ -337,11 +337,11 @@ H2 인메모리 데이터베이스를 사용하므로 MySQL 없이 테스트를 
 ```
            /\
           /통합\            ← UserServiceTest (전체 흐름 검증)
-         /------\
-        / 슬라이스 \         ← MainControllerTest, LuggageRepositoryTest
-       /----------\           (Spring 컨텍스트 일부만 로드)
+         /-----\
+        / 슬라이스\         ← MainControllerTest, LuggageRepositoryTest
+       /---------\           (Spring 컨텍스트 일부만 로드)
       / 단위 테스트  \       ← ConcernTest, LuggageTest, LuggageServiceTest,
-     /--------------\          DefaultServiceTest, GeminiServiceTest
+     /-------------\          DefaultServiceTest, GeminiServiceTest
 ```
 
 | 계층 | 테스트 방식 | 검증 대상 | Spring 로드 |
