@@ -1,6 +1,8 @@
-package TripToN.TripToN.service.responseService;
+package TripToN.TripToN.config;
 
-import TripToN.TripToN.service.responseService.geminiService.GeminiService;
+import TripToN.TripToN.service.responseService.DefaultService;
+import TripToN.TripToN.service.responseService.GeminiService;
+import TripToN.TripToN.service.responseService.ResponseService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,7 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 @Slf4j
 @Configuration
@@ -24,14 +26,12 @@ public class ServiceConfig {
     @ConditionalOnProperty(name = "gemini.enabled", havingValue = "true")
     @Primary
     public ResponseService geminiResponseService(
-            @Autowired WebClient geminiWebClient,
+            @Autowired RestClient geminiRestClient,
             @Value("${gemini.api.key}") String apiKey) {
 
-        log.info("=== Creating GeminiService Bean ===");
-        log.info("API Key provided: {}", apiKey != null && !apiKey.isEmpty() ? "YES" : "NO");
-        log.info("API Key length: {}", apiKey != null ? apiKey.length() : 0);
+        log.info("Creating GeminiService - API Key provided: {}", apiKey != null && !apiKey.isEmpty() ? "YES" : "NO");
 
-        return new GeminiService(geminiWebClient, apiKey);
+        return new GeminiService(geminiRestClient, apiKey);
     }
 
 }

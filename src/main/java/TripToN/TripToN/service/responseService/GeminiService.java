@@ -1,14 +1,11 @@
-package TripToN.TripToN.service.responseService.geminiService;
+package TripToN.TripToN.service.responseService;
 
-
-
+import TripToN.TripToN.config.dto.GeminiRequest;
+import TripToN.TripToN.config.dto.GeminiResponse;
 import TripToN.TripToN.domain.Concern;
-import TripToN.TripToN.service.responseService.DefaultService;
-import TripToN.TripToN.service.responseService.ResponseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
@@ -16,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GeminiService implements ResponseService {
 
-    private final WebClient geminiWebClient;
+    private final RestClient geminiRestClient;
     private final String apiKey;
 
     @Override
@@ -25,10 +22,7 @@ public class GeminiService implements ResponseService {
         String userName = concern.getUserName();
 
         try {
-            log.info("=== Gemini API Call Started ===");
-            log.info("API Key length: {}", apiKey != null ? apiKey.length() : "NULL");
-            log.info("API Key first 10 chars: {}", apiKey != null && apiKey.length() >= 10 ? apiKey.substring(0, 10) : "N/A");
-            log.info("User: {}, Concern: {}", userName, concernText);
+            log.info("Gemini API call started - User: {}", userName);
             String prompt = createPrompt(concernText, userName);
 
             GeminiRequest request = new GeminiRequest(
@@ -37,21 +31,12 @@ public class GeminiService implements ResponseService {
                     ))
             );
 
-            Mono<GeminiResponse> responseMono = geminiWebClient.post()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/models/gemini-2.5-flash-lite:generateContent")
-                            .queryParam("key", apiKey)
-                            .build())
-                    .bodyValue(request)
+            GeminiResponse response = geminiRestClient.post()
+                    .uri("/models/gemini-2.5-flash-lite:generateContent?key={key}", apiKey)
+                    .body(request)
                     .retrieve()
-                    .bodyToMono(GeminiResponse.class);
+                    .body(GeminiResponse.class);
 
-            GeminiResponse response = responseMono.block();
-
-            log.info("Received response from Gemini API");
-            log.info("Response is null: {}", response == null);
-
-            // 검증 성공 시 AI 응답 리턴
             if (response != null &&
                     response.getCandidates() != null &&
                     !response.getCandidates().isEmpty()) {
@@ -66,12 +51,20 @@ public class GeminiService implements ResponseService {
                 return aiResponse.trim();
             }
 
-            // 검증 실패 시 기본 응답 리턴
+            log.warn("Gemini API returned empty response, falling back to default");
             return new DefaultService().response(concern);
 
+        } catch (org.springframework.web.client.HttpClientErrorException e) {
+            log.error("Gemini API client error ({}): {}", e.getStatusCode(), e.getMessage());
+            return new DefaultService().response(concern);
+        } catch (org.springframework.web.client.HttpServerErrorException e) {
+            log.error("Gemini API server error ({}): {}", e.getStatusCode(), e.getMessage());
+            return new DefaultService().response(concern);
+        } catch (org.springframework.web.client.ResourceAccessException e) {
+            log.error("Gemini API network error: {}", e.getMessage());
+            return new DefaultService().response(concern);
         } catch (Exception e) {
-            // 예외 발생 시 기본 응답 리턴
-            log.error("Error calling Gemini API: {}", e.getMessage(), e);
+            log.error("Unexpected error calling Gemini API: {}", e.getMessage(), e);
             return new DefaultService().response(concern);
         }
     }

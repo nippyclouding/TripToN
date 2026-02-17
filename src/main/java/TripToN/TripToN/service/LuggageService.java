@@ -1,6 +1,6 @@
 package TripToN.TripToN.service;
 
-import TripToN.TripToN.LuggageRepository;
+import TripToN.TripToN.repository.LuggageRepository;
 import TripToN.TripToN.domain.*;
 
 import TripToN.TripToN.service.responseService.ResponseService;

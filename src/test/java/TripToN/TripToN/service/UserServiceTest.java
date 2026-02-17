@@ -1,30 +1,56 @@
 package TripToN.TripToN.service;
 
-import org.junit.jupiter.api.*;
-public class UserServiceTest {
+import TripToN.TripToN.domain.Concern;
+import TripToN.TripToN.domain.Luggage;
+import TripToN.TripToN.domain.LuggageType;
+import TripToN.TripToN.service.responseService.DefaultService;
+import TripToN.TripToN.service.responseService.ResponseService;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-    @BeforeAll  // 클래스의 모든 테스트 실행 전에 처음 한 번만 실행하는 메서드
-    static void 전체_테스트_시작_전() {
-        System.out.println("Start all tests");
+import static org.assertj.core.api.Assertions.assertThat;
+
+@DisplayName("사용자 흐름 통합 테스트 (단위)")
+class UserServiceTest {
+
+    @Test
+    @DisplayName("전체 흐름: 사용자 입력 → Concern 생성 → 응답 생성 → Luggage 생성")
+    void fullUserFlow() {
+        // given
+        String userName = "홍길동";
+        String concernText = "취업이 안 돼서 고민입니다";
+        String password = "1234";
+
+        // when - Concern 생성 및 응답 할당
+        Concern concern = new Concern(userName, concernText, password);
+        ResponseService responseService = new DefaultService();
+        String response = responseService.response(concern);
+        concern.setResponse(response);
+
+        // then - Concern 검증
+        assertThat(concern.getUserName()).isEqualTo(userName);
+        assertThat(concern.matchPassword(password)).isTrue();
+        assertThat(concern.getResponse()).isNotBlank();
+
+        // when - Luggage 생성
+        Luggage luggage = new Luggage(concern, LuggageType.LUGGAGE);
+
+        // then - Luggage 검증
+        assertThat(luggage.isComplete()).isTrue();
+        assertThat(luggage.getDateTime()).isNotNull();
+        assertThat(luggage.getLuggageType()).isEqualTo(LuggageType.LUGGAGE);
     }
 
-    @BeforeEach // 각 테스트 메서드 실행 전마다 실행하는 메서드
-    void 각_테스트_시작_전() {
-        System.out.println("Start a test");
-    }
+    @Test
+    @DisplayName("응답 없이 Luggage 생성 시 isComplete가 false이다")
+    void luggageWithoutResponseIsIncomplete() {
+        // given
+        Concern concern = new Concern("홍길동", "고민", "1234");
 
-    @Test// 메서드가 테스트임을 JUnit에게 알려준다, @Test가 없다면 실행 x
-    void 테스트() {
-        System.out.println("This is test");
-    }
+        // when
+        Luggage luggage = new Luggage(concern, LuggageType.BAG);
 
-    @AfterEach // 각 테스트 메서드 실행 후마다 메서드 실행
-    void 각_테스트_종료_후() {
-        System.out.println("This test is over");
-    }
-
-    @AfterAll // 클래스의 모든 테스트 실행 후에 한 번만 실행
-    static void 전체_테스트_종료_후() {
-        System.out.println("All tests are over");
+        // then
+        assertThat(luggage.isComplete()).isFalse();
     }
 }

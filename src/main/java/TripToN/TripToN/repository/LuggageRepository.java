@@ -1,4 +1,4 @@
-package TripToN.TripToN;
+package TripToN.TripToN.repository;
 
 import TripToN.TripToN.domain.Luggage;
 import org.springframework.data.jpa.repository.JpaRepository;

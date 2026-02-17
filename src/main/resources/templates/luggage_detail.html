@@ -49,12 +49,6 @@
                     <div class="concern-box">
                         <p th:text="${luggage.concern.concern}"></p>
                     </div>
-                    <div class="weight-info">
-                        <span class="weight-label">고민의 무게:</span>
-                        <span class="weight-value" th:text="${luggage.concern.weight}" 
-                              th:classappend="${luggage.concern.weight == T(TripToN.TripToN.domain.Weight).HEAVY} ? 'heavy' : 
-                                             (${luggage.concern.weight == T(TripToN.TripToN.domain.Weight).MEDIUM} ? 'medium' : 'light')"></span>
-                    </div>
                 </div>
             </div>
             
@@ -218,40 +212,6 @@ body {
     font-size: 16px;
     line-height: 1.7;
     color: #495057;
-}
-
-/* 무게 정보 */
-.weight-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.weight-label {
-    font-weight: 600;
-    color: #4a5568;
-}
-
-.weight-value {
-    padding: 5px 12px;
-    border-radius: 15px;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.weight-value.light {
-    background: #d4edda;
-    color: #155724;
-}
-
-.weight-value.medium {
-    background: #fff3cd;
-    color: #856404;
-}
-
-.weight-value.heavy {
-    background: #f8d7da;
-    color: #721c24;
 }
 
 /* 응답 박스 */

@@ -1,4 +1,4 @@
-package TripToN.TripToN.service.responseService.geminiService;
+package TripToN.TripToN.config.dto;
 
 
 

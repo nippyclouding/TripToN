@@ -1,4 +1,4 @@
-package TripToN.TripToN;
+package TripToN.TripToN.controller;
 
 import TripToN.TripToN.domain.Concern;
 import TripToN.TripToN.domain.Luggage;
@@ -11,11 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import static TripToN.TripToN.domain.Concern.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -70,7 +67,7 @@ public class MainController {
             LuggageType convertluggageType = convertToLuggageType(luggageType); // luggageType 데이터 조회
             Concern requestedConcern = new Concern(userName, concern, password); // 고민 객체 생성
 
-            //응답 생성 (chatGPT, gemini, default 방식 등..)
+            //응답 생성 (gemini, default 방식 등..)
             String getResponse = luggageService.setResponse(requestedConcern);
             requestedConcern.setResponse(getResponse); // 응답 할당
 
@@ -100,12 +97,14 @@ public class MainController {
 
     // 입력한 고민 페이지 조회
     @GetMapping("/info")
-    public String color(HttpSession session, Model model){
-        //세션에 저장할 때와 같은 이름으로 꺼내야 한다.
+    public String showInfo(HttpSession session, Model model){
         Luggage luggage = (Luggage) session.getAttribute("saveLuggage");
 
-        Concern concern = luggage.getConcern();
-        if(concern!=null) model.addAttribute("concern", concern);
+        if (luggage == null || luggage.getConcern() == null) {
+            return "redirect:/select";
+        }
+
+        model.addAttribute("concern", luggage.getConcern());
         return "5_info";
     }
 
@@ -119,23 +118,30 @@ public class MainController {
 
     @GetMapping("/{lid}")
     public String getLuggageDetail(@PathVariable Long lid, Model model) {
-        Luggage luggage = luggageService.findById(lid);
-        model.addAttribute("luggage", luggage);
-        return "luggage_detail"; // 상세 페이지 템플릿
+        try {
+            Luggage luggage = luggageService.findById(lid);
+            model.addAttribute("luggage", luggage);
+            return "luggage_detail";
+        } catch (IllegalArgumentException e) {
+            return "redirect:/result";
+        }
     }
 
     //비밀번호 AJAX로 검증
     @PostMapping("/verify-password")
     @ResponseBody
     public Map<String, Boolean> verifyPassword(@RequestBody Map<String, String> request) {
-        Long lid = Long.parseLong(request.get("lid"));
-        String password = request.get("password");
+        try {
+            Long lid = Long.parseLong(request.get("lid"));
+            String password = request.get("password");
 
-        Luggage luggage = luggageService.findById(lid);
-        boolean isValid = luggage != null &&
-                luggage.getConcern().getPassword().equals(password);
+            Luggage luggage = luggageService.findById(lid);
+            boolean isValid = luggage.getConcern().matchPassword(password);
 
-        return Map.of("success", isValid);
+            return Map.of("success", isValid);
+        } catch (Exception e) {
+            return Map.of("success", false);
+        }
     }
 
     // Luggage의 Concern response 반환
