@@ -80,6 +80,39 @@ GEMINI_API_KEY=AIzaSyxxxxxxxxxxxxxxxxxxxxxxx DB_PASSWORD=mypassword ./gradlew bo
 
 ---
 
+## API 문서 (Swagger UI)
+
+이 프로젝트는 **Spring MVC 기반의 서버사이드 렌더링(Thymeleaf) 애플리케이션**이지만,
+일부 엔드포인트는 REST API 형태로도 제공되며, Swagger UI를 통해 전체 엔드포인트를 한눈에 조회할 수 있습니다.
+
+> MVC 엔드포인트(뷰 반환)는 Swagger UI에서 직접 실행하면 HTML 응답이 반환됩니다.
+> REST API 엔드포인트(`/api/**`, `/verify-password`)는 Swagger UI에서 직접 테스트 가능합니다.
+
+### 접속 URL
+
+| 항목 | URL |
+|------|-----|
+| Swagger UI | `http://localhost:8080/swagger-ui/index.html` |
+| OpenAPI JSON | `http://localhost:8080/v3/api-docs` |
+
+### 사용 방법
+
+1. 애플리케이션 실행 후 브라우저에서 `http://localhost:8080/swagger-ui/index.html` 접속
+2. 엔드포인트 목록에서 원하는 항목 클릭하여 펼치기
+3. **Try it out** 버튼 클릭
+4. 필요한 파라미터 입력 후 **Execute** 클릭
+5. 하단 **Response body**에서 결과 확인
+
+### REST API 엔드포인트 (Swagger에서 직접 테스트 가능)
+
+| Method | Endpoint | 설명 | 요청 예시 |
+|--------|----------|------|----------|
+| GET | `/api/luggage` | 가방 목록 페이지네이션 조회 | `?page=0` |
+| GET | `/api/luggage/{lid}/response` | 특정 가방의 AI 응답 조회 | `lid`: 가방 ID |
+| POST | `/verify-password` | 비밀번호 검증 | `{"lid": 1, "password": "1234"}` |
+
+---
+
 ## 기술 스택
 
 | 분류 | 기술 |
@@ -293,6 +326,7 @@ src/main/java/TripToN/TripToN/
 └── config/
     ├── ServiceConfig.java                   # 조건부 빈 설정
     ├── GeminiConfig.java                    # RestClient 설정
+    ├── SwaggerConfig.java                   # SpringDoc OpenAPI 설정
     └── dto/
         ├── GeminiRequest.java               # API 요청 DTO
         └── GeminiResponse.java              # API 응답 DTO

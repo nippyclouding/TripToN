@@ -1,12 +1,15 @@
 package TripToN.TripToN.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Luggage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +22,6 @@ public class Luggage {
 
     @Enumerated(EnumType.STRING)
     private LuggageType luggageType;
-
-    //JPA 전용 기본 생성자
-    protected Luggage() {
-    }
 
     // Aggregate Root가 Concern 생성을 관장하는 팩토리 메서드
     public static Luggage create(String userName, String concern, String password, LuggageType luggageType) {

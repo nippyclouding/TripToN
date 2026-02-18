@@ -3,14 +3,13 @@ package TripToN.TripToN.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Embeddable
 @Getter @EqualsAndHashCode
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Concern {
 
     private static final BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
@@ -28,10 +27,6 @@ public class Concern {
 
     @Column(columnDefinition = "TEXT")
     private String response;
-
-    //JPA 전용 생성자
-    protected Concern() {
-    }
 
     Concern(String userName, String concern, String password) {
         this.userName = userName;
