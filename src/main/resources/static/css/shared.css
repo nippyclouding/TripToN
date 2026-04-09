@@ -1,4 +1,13 @@
 /* ============================
+   공통 초기화
+   ============================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ============================
    공통 컴포넌트 스타일
    ============================ */
 
@@ -37,12 +46,17 @@
 .sound-toggle-btn {
     background: transparent;
     border: none;
+    outline: none;
     padding: 0;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
     cursor: pointer;
     transition: transform 0.2s ease;
     display: flex;
     align-items: center;
-    gap: clamp(3px, 1vw, 5px);  
+    gap: clamp(3px, 1vw, 5px);
 }
 
 /* 사운드 상태 아이콘 (line.png 또는 dot.gif) */
@@ -195,6 +209,23 @@
    좌측 하단 - 심볼N 로고
    ============================ */
 
+/* 공통 심볼 로고 이미지 스타일 */
+.symbol-logo img,
+.symbol-logo-outside img,
+.symbol-logo-inside img {
+    width: clamp(40px, 8vw, 60px);
+    height: auto;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.symbol-logo:hover img,
+.symbol-logo-outside:hover img,
+.symbol-logo-inside:hover img {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
 /* 외부용 - 사이드바 닫혔을 때 */
 .symbol-logo-outside {
     position: fixed;
@@ -212,34 +243,10 @@
     visibility: hidden;
 }
 
-.symbol-logo-outside img {
-    width: clamp(40px, 8vw, 60px);
-    height: auto;
-    opacity: 0.8;
-    transition: all 0.3s ease;
-}
-
-.symbol-logo-outside:hover img {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
 /* 사이드바 내부 좌측 하단 로고 */
 .symbol-logo-inside {
     position: absolute;
     bottom: min(30px, 3vh);
     left: min(30px, 3vw);
     cursor: pointer;
-}
-
-.symbol-logo-inside img {
-    width: clamp(40px, 8vw, 60px);
-    height: auto;
-    opacity: 0.8;
-    transition: all 0.3s ease;
-}
-
-.symbol-logo-inside:hover img {
-    opacity: 1;
-    transform: scale(1.1);
 }

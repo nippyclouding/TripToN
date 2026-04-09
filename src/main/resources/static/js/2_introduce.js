@@ -176,27 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function checkInitialScroll() {
         window.dispatchEvent(new Event('scroll'));
     }
-    
+
     // 초기 스크롤 상태 확인
     setTimeout(checkInitialScroll, 100);
-    
-    // dream1 동영상 메타데이터 로드 후 재생 보장
-    dream1Video.addEventListener('loadedmetadata', function() {
-        dream1Video.play();
-    });
-    
-    // dream1 동영상 일시정지 방지
-    dream1Video.addEventListener('pause', function() {
-        dream1Video.play();
-    });
-    
-    // 동영상 메타데이터 로드 후 재생 보장 (기존 dream6)
-    video.addEventListener('loadedmetadata', function() {
-        video.play();
-    });
-    
-    // 동영상 일시정지 방지 (기존 dream6)
-    video.addEventListener('pause', function() {
-        video.play();
-    });
 });

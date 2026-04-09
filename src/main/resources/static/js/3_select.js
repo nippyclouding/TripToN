@@ -209,18 +209,16 @@ document.addEventListener('DOMContentLoaded', function() {
         openItemModal();
     });
 
-    // ESC 키로 모달 닫기
+    // ESC 키로 모달 닫기 (사이드바는 shared.js에서 처리)
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             const itemModal = document.getElementById('itemModal');
             const inputModal = document.getElementById('inputModal');
-            
+
             if (inputModal.classList.contains('show')) {
                 closeInputModal();
             } else if (itemModal.classList.contains('show')) {
                 closeItemModal();
-            } else {
-                closeSidebar(); // 사이드바도 ESC로 닫기
             }
         }
     });
