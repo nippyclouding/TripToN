@@ -1,9 +1,0 @@
-.git
-.gitignore
-.idea
-*.md
-build/
-.gradle/
-*.log
-node_modules/
-.DS_Store
