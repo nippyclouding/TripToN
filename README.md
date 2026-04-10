@@ -108,7 +108,7 @@ GEMINI_API_KEY=AIzaSyxxxxxxxxxxxxxxxxxxxxxxx DB_PASSWORD=mypassword ./gradlew bo
 | Method | Endpoint | 설명 | 요청 예시 |
 |--------|----------|------|----------|
 | GET | `/api/luggage` | 가방 목록 페이지네이션 조회 | `?page=0` |
-| GET | `/api/luggage/{lid}/response` | 특정 가방의 AI 응답 조회 | `lid`: 가방 ID |
+| GET | `/api/luggage/{lid}/aiResponse` | 특정 가방의 AI 응답 조회 | `lid`: 가방 ID |
 | POST | `/verify-password` | 비밀번호 검증 | `{"lid": 1, "password": "1234"}` |
 
 ---
@@ -251,7 +251,7 @@ Strategy 패턴으로 구현되어 있으며, `gemini.enabled` 설정에 따라 
     v             v
   GET /api/     에러 메시지
   luggage/{lid}
-  /response
+  /aiResponse
     |
     v
   AI 응답 표시
@@ -277,7 +277,7 @@ Strategy 패턴으로 구현되어 있으며, `gemini.enabled` 설정에 따라 
 | userName | String | max 20, NotBlank | 사용자 이름 |
 | concern | String | max 120, NotBlank | 고민 내용 |
 | password | String | BCrypt 해싱, 60자 | 열람 비밀번호 (BCrypt로 해싱 저장) |
-| response | String | TEXT | AI 생성 응답 |
+| aiResponse | String | TEXT | AI 생성 응답 |
 
 ---
 
@@ -300,7 +300,7 @@ Strategy 패턴으로 구현되어 있으며, `gemini.enabled` 설정에 따라 
 | Method | Endpoint | 설명 |
 |--------|----------|------|
 | POST | `/verify-password` | 비밀번호 검증 |
-| GET | `/api/luggage/{lid}/response` | AI 응답 조회 |
+| GET | `/api/luggage/{lid}/aiResponse` | AI 응답 조회 |
 
 ---
 
@@ -398,7 +398,7 @@ H2 인메모리 데이터베이스를 사용하므로 MySQL 없이 테스트를 
 | 테스트 클래스 | 테스트 수 | 검증 내용 |
 |---|---|---|
 | `ConcernTest` | 7 | BCrypt 해싱 동작, 동일 비밀번호의 다른 해시 생성, 비밀번호 매칭(정상/오류/빈값), 필드 초기화 |
-| `LuggageTest` | 5 | 생성 시 dateTime 자동 설정, isComplete 로직(concern/response null 체크), LuggageType enum 검증 |
+| `LuggageTest` | 5 | 생성 시 dateTime 자동 설정, isComplete 로직(concern/aiResponse null 체크), LuggageType enum 검증 |
 
 - Spring 없이 `new`로 객체를 직접 생성하여 테스트 → 밀리초 단위로 실행
 - 비밀번호 평문 저장, salt 고정, NullPointerException 등의 버그를 잡아냄
@@ -445,7 +445,7 @@ H2 인메모리 데이터베이스를 사용하므로 MySQL 없이 테스트를 
 | `UserServiceTest` | 2 | 사용자 입력 → Concern 생성 → 응답 생성 → Luggage 생성 전체 흐름 |
 
 - 여러 도메인 객체가 함께 동작하는 **E2E 비즈니스 흐름** 검증
-- response 없이 Luggage 생성 시 `isComplete() == false` 확인
+- aiResponse 없이 Luggage 생성 시 `isComplete() == false` 확인
 
 ### 테스트 작성 패턴
 

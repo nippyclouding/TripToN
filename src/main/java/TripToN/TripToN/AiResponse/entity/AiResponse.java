@@ -1,4 +1,4 @@
-package TripToN.TripToN.response.entity;
+package TripToN.TripToN.AiResponse.entity;
 
 import TripToN.TripToN.concern.entity.Concern;
 import jakarta.persistence.*;
@@ -18,8 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "RESPONSES")
-public class Response {
-
+public class AiResponse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "response_id")
