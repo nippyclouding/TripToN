@@ -1,0 +1,38 @@
+package TripToN.TripToN.response.entity;
+
+import TripToN.TripToN.concern.entity.Concern;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@EntityListeners(AuditingEntityListener.class)
+@Table(name = "RESPONSES")
+public class Response {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "response_id")
+    private Long responseId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "concern_id", nullable = false)
+    private Concern concern;
+
+    @Column(columnDefinition = "TEXT")
+    private String responseContent;
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+}
