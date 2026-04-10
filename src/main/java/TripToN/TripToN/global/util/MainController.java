@@ -1,4 +1,4 @@
-package TripToN.TripToN.global.controller;
+package TripToN.TripToN.global.util;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
