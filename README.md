@@ -1,4 +1,4 @@
-# TripToN
+# server
 
 고민을 가방에 담아 AI 상담사에게 맡기는 서비스
 
@@ -18,8 +18,8 @@
 ### 1. 저장소 클론
 
 ```bash
-git clone https://github.com/your-username/TripToN.git
-cd TripToN
+git clone https://github.com/your-username/server.git
+cd server
 ```
 
 ### 2. MySQL 데이터베이스 생성
@@ -55,7 +55,7 @@ $env:GEMINI_API_KEY="your_api_key"; $env:DB_PASSWORD="your_db_password"; ./gradl
 
 ```bash
 ./gradlew bootJar
-GEMINI_API_KEY=your_api_key DB_PASSWORD=your_db_password java -jar build/libs/TripToN-0.0.1-SNAPSHOT.jar
+GEMINI_API_KEY=your_api_key DB_PASSWORD=your_db_password java -jar build/libs/server-0.0.1-SNAPSHOT.jar
 ```
 
 ### 5. 접속
@@ -307,7 +307,7 @@ Strategy 패턴으로 구현되어 있으며, `gemini.enabled` 설정에 따라 
 ## 프로젝트 구조
 
 ```
-src/main/java/TripToN/TripToN/
+src/main/java/server/server/
 ├── TripToNApplication.java                  # Spring Boot 진입점
 ├── controller/
 │   └── MainController.java                  # 페이지 및 API 엔드포인트
@@ -331,7 +331,7 @@ src/main/java/TripToN/TripToN/
         ├── GeminiRequest.java               # API 요청 DTO
         └── GeminiResponse.java              # API 응답 DTO
 
-src/test/java/TripToN/TripToN/
+src/test/java/server/server/
 ├── TripToNApplicationTests.java             # 컨텍스트 로드 테스트
 ├── controller/
 │   └── MainControllerTest.java              # 컨트롤러 테스트 (MockMvc)
