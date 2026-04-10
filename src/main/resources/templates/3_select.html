@@ -46,6 +46,9 @@
     <div class="input-modal" id="inputModal">
         <div class="input-modal-background"></div>
 
+        <!-- 좌측 자물쇠 버튼 -->
+        <div class="lock-btn" id="lock-btn" onclick="toggleLock()">🔓</div>
+
         <!-- 모달 외부 상단 헤더 텍스트 -->
         <div class="input-modal-title">
             <h2>당신의 배게는</h2>
@@ -60,15 +63,12 @@
             <div class="input-modal-body">
                 <form id="concern-form" method="post" action="/concern">
                     <input type="hidden" id="luggage-input" name="luggageType" value="">
+                    <input type="hidden" id="locked-input" name="isLocked" value="false">
                     <div class="input-container">
-                        <textarea id="concern-input" name="concern" placeholder="EX) 내일 그 일 어떻게 하지..." rows="6" maxlength="120"></textarea>
+                        <input type="text" id="title-input" name="concernTitle" placeholder="고민 제목을 입력해주세요" maxlength="50">
                     </div>
                     <div class="input-container">
-                        <input type="text" id="username-input" name="userName" placeholder="이름을 입력하세요">
-                    </div>
-
-                    <div class="input-container">
-                        <input type="password" id="password-input" name="password" placeholder="비밀번호 (최대 4자리)" maxlength="4">
+                        <textarea id="concern-input" name="concernContent" placeholder="EX) 내일 그 일 어떻게 하지..." rows="6" maxlength="120"></textarea>
                     </div>
 
                     <div class="input-modal-buttons">
