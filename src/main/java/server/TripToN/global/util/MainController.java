@@ -16,4 +16,14 @@ public class MainController {
     public String main() {
         return "1_main";
     }
+    @GetMapping("/story")
+    public String story() { return "2_introduce"; }
+    @GetMapping("/choose")
+    public String choose() { return "3_select"; }
+
+    @GetMapping("/signup")
+    public String signup() { return "signup"; }
+
+    @GetMapping("/result")
+    public String result() { return "6_result"; }
 }

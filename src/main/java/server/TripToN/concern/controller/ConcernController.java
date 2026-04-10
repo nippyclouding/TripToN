@@ -1,5 +1,6 @@
 package server.TripToN.concern.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.web.bind.annotation.*;
 import server.TripToN.concern.dto.ConcernRequestDto;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import server.TripToN.global.util.Const;
 
 import java.util.List;
 
@@ -31,11 +33,13 @@ public class ConcernController {
 
     // 고민을 받아와서 저장, 응답 전달
     @PostMapping
-    public String saveConcern(@Valid @ModelAttribute ConcernRequestDto dto, Model model) {
-
-        AiResponseDto aiResponseDto = concernService.saveConcernAndGetAiResponse(dto);
+    public String saveConcern(@Valid @ModelAttribute ConcernRequestDto dto,
+                              Model model,
+                              HttpSession session) {
+        Long memberId = (Long) session.getAttribute(Const.MEMBER_SESSION_KEY);
+        AiResponseDto aiResponseDto = concernService.saveConcernAndGetAiResponse(dto, memberId);
         model.addAttribute("aiResponseDto", aiResponseDto);
-        return "redirect:5_info";
+        return "5_info";
     }
 
 }

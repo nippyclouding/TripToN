@@ -11,13 +11,11 @@ import server.TripToN.concern.entity.Concern;
 import server.TripToN.concern.repository.ConcernRepository;
 import server.TripToN.global.error.BusinessException;
 import server.TripToN.global.error.ErrorCode;
-import server.TripToN.global.security.CustomUserPrincipal;
 import server.TripToN.member.entity.Member;
 import server.TripToN.member.repository.MemberRepository;
 import server.TripToN.AiResponse.dto.AiResponseDto;
 import server.TripToN.AiResponse.entity.AiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,10 +31,7 @@ public class ConcernService {
     private final AiResponseService aiResponseService;
 
     @Transactional
-    public AiResponseDto saveConcernAndGetAiResponse(ConcernRequestDto dto) {
-        // 회원 조회
-        CustomUserPrincipal principal = (CustomUserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long memberId = principal.getId();
+    public AiResponseDto saveConcernAndGetAiResponse(ConcernRequestDto dto, Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUNT_ERROR));
 

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Roboto+Condensed:wght@100..900&display=swap');
+
 /* ============================
    공통 초기화
    ============================ */
@@ -181,6 +183,31 @@
 }
 
 .menu-item:active img {
+    transform: scale(0.95);
+}
+
+/* SIGNUP/IN 텍스트 메뉴 아이템 */
+.sidebar-text-item {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+    font-size: clamp(28px, 3.5vw, 46px);
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+    display: inline-block;
+    width: clamp(194px, 24vw, 324px);
+    text-align: center;
+}
+
+.menu-item-text:hover .sidebar-text-item {
+    transform: scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+    color: white;
+}
+
+.menu-item-text:active .sidebar-text-item {
     transform: scale(0.95);
 }
 

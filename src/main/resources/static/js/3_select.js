@@ -96,8 +96,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // 현재 인덱스에 맞는 소개 이미지 설정
         introduceImg.src = introduceImages[currentIndex];
 
-        // 현재 인덱스에 맞는 가방 값 설정
-        const luggageValues = ['LuggageA', 'LuggageB', 'LuggageC'];
+        // 현재 인덱스에 맞는 가방 값 설정 (enum: a, b, c)
+        const luggageValues = ['a', 'b', 'c'];
         luggageInput.value = luggageValues[currentIndex];
 
         // 모달 표시
@@ -144,51 +144,46 @@ document.addEventListener('DOMContentLoaded', function() {
     // 입력 모달 닫기 함수
     window.closeInputModal = function() {
         const inputModal = document.getElementById('inputModal');
-        
-        // 닫기 애니메이션
+
         inputModal.classList.add('closing');
-        
+
         setTimeout(() => {
             inputModal.classList.remove('show', 'closing');
-            // 입력 내용 초기화
+            document.getElementById('title-input').value = '';
             document.getElementById('concern-input').value = '';
-            document.getElementById('username-input').value = '';
-            document.getElementById('password-input').value = '';
+            // 자물쇠 초기화
+            document.getElementById('locked-input').value = 'false';
+            document.getElementById('lock-btn').textContent = '🔓';
         }, 300);
     }
 
-    // 걱정 제출 함수
+    // 자물쇠 토글
+    window.toggleLock = function() {
+        const lockedInput = document.getElementById('locked-input');
+        const lockBtn     = document.getElementById('lock-btn');
+        const isLocked    = lockedInput.value === 'true';
+
+        lockedInput.value    = isLocked ? 'false' : 'true';
+        lockBtn.textContent  = isLocked ? '🔓' : '🔒';
+    }
+
+    // 고민 제출 함수
     window.submitConcern = function() {
-        const concernText = document.getElementById('concern-input').value.trim();
-        const usernameText = document.getElementById('username-input').value.trim();
-        const passwordText = document.getElementById('password-input').value.trim();
-        
-        // 입력 검증
-        if (concernText === '') {
-            alert('걱정을 입력해주세요.');
+        const title   = document.getElementById('title-input').value.trim();
+        const content = document.getElementById('concern-input').value.trim();
+
+        if (title === '') {
+            alert('고민 제목을 입력해주세요.');
+            document.getElementById('title-input').focus();
+            return;
+        }
+
+        if (content === '') {
+            alert('고민 내용을 입력해주세요.');
             document.getElementById('concern-input').focus();
             return;
         }
-        
-        if (usernameText === '') {
-            alert('사용자 이름을 입력해주세요.');
-            document.getElementById('username-input').focus();
-            return;
-        }
-        
-        if (passwordText === '') {
-            alert('비밀번호를 입력해주세요.');
-            document.getElementById('password-input').focus();
-            return;
-        }
-        
-        if (passwordText.length > 4) {
-            alert('비밀번호는 최대 4자리까지 입력 가능합니다.');
-            document.getElementById('password-input').focus();
-            return;
-        }
-        
-        // 모든 검증 통과 시 폼 제출
+
         document.getElementById('concern-form').submit();
     }
 

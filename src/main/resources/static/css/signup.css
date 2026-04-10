@@ -1,0 +1,115 @@
+.signup-background {
+    min-height: 100vh;
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+}
+
+.signup-container {
+    width: min(420px, 90vw);
+    padding: clamp(40px, 6vw, 60px) clamp(30px, 5vw, 50px);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 탭 버튼 */
+.tab-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: clamp(36px, 5vh, 50px);
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.35);
+    cursor: pointer;
+    padding: 0;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+}
+
+.tab-btn.active {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tab-btn:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.tab-divider {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(24px, 3vw, 36px);
+    color: rgba(255, 255, 255, 0.2);
+}
+
+/* 폼 */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(16px, 2.5vh, 24px);
+}
+
+.form-section.hidden {
+    display: none;
+}
+
+.form-group {
+    width: 100%;
+}
+
+.form-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 10px 0;
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(14px, 1.8vw, 18px);
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.08em;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.form-input:focus {
+    border-bottom-color: rgba(255, 255, 255, 0.7);
+}
+
+.submit-btn {
+    margin-top: clamp(12px, 2vh, 20px);
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: clamp(10px, 1.5vh, 14px) 0;
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(14px, 1.8vw, 18px);
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.8);
+    color: white;
+}
+
+.submit-btn:active {
+    transform: scale(0.98);
+}
