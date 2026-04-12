@@ -6,7 +6,6 @@ import server.TripToN.AiResponse.repository.AiResponseRepository;
 import server.TripToN.concern.entity.Concern;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -16,7 +15,7 @@ public class AiResponseService {
     private final AiResponseRepository aiResponseRepository;
     private final GeminiClient geminiClient;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public AiResponse getResponse(Concern concern) {
         // 1. 대답 얻기
         String prompt = buildPrompt(concern);           // 프롬프트 생성

@@ -5,6 +5,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import server.TripToN.AiResponse.service.AiResponseService;
+import server.TripToN.comment.entity.Comment;
+import server.TripToN.concern.dto.ConcernDetailResponseDto;
 import server.TripToN.concern.dto.ConcernRequestDto;
 import server.TripToN.concern.dto.ConcernResponseDto;
 import server.TripToN.concern.entity.Concern;
@@ -20,7 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 @Service
 @Transactional(readOnly = true)
@@ -52,20 +54,44 @@ public class ConcernService {
             return AiResponseDto.builder()
                     .responseContent("현재 AI 모델 문제로 응답할 수 없습니다.")
                     .createdAt(LocalDateTime.now())
+                    .concernTitle(dto.getConcernTitle())
+                    .concernContent(dto.getConcernContent())
                     .build();
         }
         // 정상 응답
         else return AiResponseDto.builder()
                 .responseContent(aiResponse.getResponseContent())
                 .createdAt(aiResponse.getCreatedAt())
+                .concernTitle(dto.getConcernTitle())
+                .concernContent(dto.getConcernContent())
                 .build();
     }
 
-    public List<ConcernResponseDto> getConcerns(int page) {
+    public Page<ConcernResponseDto> getConcerns(int page) {
         Pageable pageable = PageRequest.of(page, 5, Sort.by("createdAt").descending());
         Page<Concern> concernPage = concernRepository.findAllWithMember(pageable);
-        return concernPage.getContent().stream()
-                .map(c -> ConcernResponseDto.from(c, c.getMember()))
-                .toList();
+        return concernPage.map(c -> ConcernResponseDto.from(c, c.getMember()));
+    }
+
+    public ConcernDetailResponseDto getConcernDetail(Long concernId) {
+        Concern concern = concernRepository.findConcernAndMemberAndCommentAndResponseByConcernId(concernId);
+
+        return ConcernDetailResponseDto.builder()
+                .memberId(concern.getMember().getMemberId())
+                .memberNickName(concern.getMember().getMemberNickName())
+                .concernTitle(concern.getConcernTitle())
+                .concernContent(concern.getConcernContent())
+                .isLocked(concern.isLocked())
+                .luggageType(concern.getLuggageType())
+                .createdAt(concern.getCreatedAt())
+                .updatedAt(concern.getUpdatedAt())
+                .responseContent(concern.getAiResponse() != null
+                        ? concern.getAiResponse().getResponseContent()
+                        : "AI 응답 없음")
+                .dtos(concern.getComments().stream()
+                        .map(Comment::toDto)
+                        .toList())
+                .build();
+
     }
 }

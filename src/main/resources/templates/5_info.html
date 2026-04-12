@@ -12,14 +12,13 @@
     
     <div class="info-section">
         <h2>당신의 고민은:</h2>
-        <p class="concern-text" th:text="${concern?.concern}">고민 내용이 여기에 표시됩니다</p>
+        <p class="concern-title" th:text="${aiResponseDto?.concernTitle}">고민 제목이 여기에 표시됩니다</p>
+        <p class="concern-text" th:text="${aiResponseDto?.concernContent}">고민 내용이 여기에 표시됩니다</p>
     </div>
-    
 
-    
     <div class="info-section">
         <h2>조언:</h2>
-        <p class="advice-text" th:text="${concern?.aiResponse}">AI의 조언이 여기에 표시됩니다</p>
+        <p class="advice-text" th:text="${aiResponseDto?.responseContent}">AI의 조언이 여기에 표시됩니다</p>
     </div>
     
     <div class="button-section">

@@ -1,5 +1,6 @@
 package server.TripToN.comment.entity;
 
+import server.TripToN.comment.dto.CommentResponseDto;
 import server.TripToN.concern.entity.Concern;
 import server.TripToN.global.util.BaseEntity;
 import server.TripToN.member.entity.Member;
@@ -30,4 +31,14 @@ public class Comment extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String commentContent;
+
+    public CommentResponseDto toDto() {
+        return CommentResponseDto.builder()
+                .commentId(this.commentId)
+                .commentContent(this.commentContent)
+                .createdAt(this.getCreatedAt())
+                .updatedAt(this.getUpdatedAt())
+                .commentMemberNickname(this.member.getMemberNickName())
+                .build();
+    }
 }

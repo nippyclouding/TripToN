@@ -25,5 +25,5 @@ public class MainController {
     public String signup() { return "signup"; }
 
     @GetMapping("/result")
-    public String result() { return "6_result"; }
+    public String result() { return "redirect:/concern"; }
 }
