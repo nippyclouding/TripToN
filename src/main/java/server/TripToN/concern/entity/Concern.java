@@ -1,11 +1,17 @@
 package server.TripToN.concern.entity;
 
+import org.apache.catalina.connector.Response;
+import server.TripToN.AiResponse.entity.AiResponse;
+import server.TripToN.comment.entity.Comment;
 import server.TripToN.global.util.BaseEntity;
 import server.TripToN.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,6 +28,12 @@ public class Concern extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
+
+    @OneToMany(mappedBy = "concern", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToOne(mappedBy = "concern", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private AiResponse aiResponse;
 
     private String concernTitle;
 

@@ -168,7 +168,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 고민 제출 함수
+    let isSubmitting = false;
+
     window.submitConcern = function() {
+        if (isSubmitting) return;
+
         const title   = document.getElementById('title-input').value.trim();
         const content = document.getElementById('concern-input').value.trim();
 
@@ -183,6 +187,13 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('concern-input').focus();
             return;
         }
+
+        isSubmitting = true;
+
+        const arrowBtn = document.querySelector('.input-modal-arrow-btn');
+        arrowBtn.style.opacity = '0.4';
+        arrowBtn.style.pointerEvents = 'none';
+        arrowBtn.querySelector('img').alt = '처리 중...';
 
         document.getElementById('concern-form').submit();
     }

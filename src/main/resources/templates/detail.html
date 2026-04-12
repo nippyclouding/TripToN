@@ -1,0 +1,98 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>고민 상세 정보</title>
+    <link rel="stylesheet" href="/css/luggage_detail.css">
+    <link rel="stylesheet" href="/css/shared.css">
+</head>
+<body>
+
+    <div th:replace="~{fragments/sidebar :: symbol-logo}"></div>
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="container">
+        <!-- 헤더 -->
+        <div class="header">
+            <h1>고민의 결과</h1>
+            <button onclick="history.back()" class="back-btn">← 목록으로 돌아가기</button>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="main-content">
+            <!-- 가방 이미지 섹션 -->
+            <div class="luggage-section">
+                <div class="luggage-image-container">
+                    <img th:src="|/image/sharedImage/item${concernDetailResponseDto.luggageType.ordinal() + 1}.png|"
+                         th:alt="${concernDetailResponseDto.luggageType}"
+                         class="luggage-image"/>
+                </div>
+                <p class="luggage-type" th:text="'가방 타입: ' + ${concernDetailResponseDto.luggageType}"></p>
+            </div>
+
+            <!-- 정보 섹션 -->
+            <div class="info-section">
+                <!-- 사용자 정보 -->
+                <div class="info-card">
+                    <div class="card-header">
+                        <h2>사용자 정보</h2>
+                    </div>
+                    <div class="card-content">
+                        <p><strong>닉네임:</strong> <span th:text="${concernDetailResponseDto.memberNickName}"></span></p>
+                        <p><strong>등록일시:</strong> <span th:text="${#temporals.format(concernDetailResponseDto.createdAt, 'yyyy년 MM월 dd일 HH:mm')}"></span></p>
+                    </div>
+                </div>
+
+                <!-- 고민 내용 -->
+                <div class="info-card">
+                    <div class="card-header">
+                        <h2>고민 내용</h2>
+                    </div>
+                    <div class="card-content">
+                        <p><strong th:text="${concernDetailResponseDto.concernTitle}"></strong></p>
+                        <div class="concern-box">
+                            <p th:text="${concernDetailResponseDto.concernContent}"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI 응답 -->
+                <div class="info-card">
+                    <div class="card-header">
+                        <h2>가방의 조언</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="response-box">
+                            <p th:text="${concernDetailResponseDto.responseContent}"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 댓글 -->
+                <div class="info-card" th:if="${not #lists.isEmpty(concernDetailResponseDto.dtos)}">
+                    <div class="card-header">
+                        <h2>댓글</h2>
+                    </div>
+                    <div class="card-content">
+                        <div th:each="comment : ${concernDetailResponseDto.dtos}" class="concern-box">
+                            <p><strong th:text="${comment.commentMemberNickname}"></strong></p>
+                            <p th:text="${comment.commentContent}"></p>
+                            <p><small th:text="${#temporals.format(comment.createdAt, 'yyyy.MM.dd HH:mm')}"></small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 하단 버튼 -->
+        <div class="bottom-actions">
+            <button onclick="location.href='/concern'" class="action-btn primary">전체 목록 보기</button>
+            <button onclick="location.href='/choose'" class="action-btn secondary">새 고민 등록하기</button>
+        </div>
+    </div>
+
+    <script src="/js/shared.js"></script>
+</body>
+</html>
