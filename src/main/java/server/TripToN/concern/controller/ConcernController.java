@@ -49,10 +49,16 @@ public class ConcernController {
 
     // 고민 상세 조회
     @GetMapping("/{concernId}")
-    public String getConcernDetail(@PathVariable Long concernId, Model model) {
-
+    public String getConcernDetail(@PathVariable Long concernId, Model model, HttpSession session) {
+        Long loginMemberId = (Long) session.getAttribute(Const.MEMBER_SESSION_KEY);
         ConcernDetailResponseDto dto = concernService.getConcernDetail(concernId); // 고민, 응답, 댓글, 회원 정보
+
+        Boolean isAccessAllowed = !dto.isLocked() || (loginMemberId != null && loginMemberId.equals(dto.getMemberId()));
+
         model.addAttribute(dto);
+        model.addAttribute("loginMemberId", loginMemberId);
+        model.addAttribute("concernId", concernId);
+        model.addAttribute("isAccessAllowed", isAccessAllowed);
         return "detail";
     }
 

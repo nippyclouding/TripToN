@@ -4,219 +4,363 @@
     box-sizing: border-box;
 }
 
-body {
+body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    color: #333;
 }
 
-.container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
+/* ===== 배경 (6_result 와 동일) ===== */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/image/6_resultPage/deepDark.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
 }
 
-/* 헤더 */
-.header {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+/* ===== 잠긴 글 오버레이 ===== */
+.locked-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.4);
 }
 
-.header h1 {
-    color: #4a5568;
-    font-size: 28px;
-}
-
-.back-btn {
-    background: #6c757d;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
-}
-
-.back-btn:hover {
-    background: #545b62;
-}
-
-/* 메인 콘텐츠 */
-.main-content {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 30px;
-    margin-bottom: 30px;
-}
-
-/* 가방 섹션 */
-.luggage-section {
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+.locked-box {
+    background: rgba(0, 0, 0, 0.88);
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-radius: 16px;
+    padding: 50px 60px;
     text-align: center;
-    height: fit-content;
+    color: white;
+    backdrop-filter: blur(12px);
 }
 
-.luggage-image-container {
-    margin-bottom: 20px;
+.lock-icon {
+    font-size: 52px;
+    margin-bottom: 18px;
+}
+
+.locked-box h2 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+.locked-box p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.65);
+    margin-bottom: 28px;
+}
+
+.locked-back-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    color: white;
+    font-size: 15px;
+    padding: 10px 28px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.locked-back-btn:hover {
+    background: rgba(255, 255, 255, 0.28);
+}
+
+/* ===== 중앙 가방 이미지 ===== */
+.luggage-center {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    text-align: center;
+    pointer-events: none;
 }
 
 .luggage-image {
-    width: 200px;
-    height: 200px;
+    width: 230px;
+    height: 230px;
     object-fit: contain;
-    border-radius: 10px;
+    filter: drop-shadow(0 0 28px rgba(255, 255, 255, 0.55));
 }
 
-.luggage-type {
-    color: #666;
+/* ===== 공통 패널 스타일 ===== */
+.panel {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    padding: 18px 20px;
+    color: white;
+    backdrop-filter: blur(12px);
+    overflow-y: auto;
+    z-index: 10;
+}
+
+/* 패널 헤더 */
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+}
+
+.panel-header h3 {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #ffffff;
 }
 
-/* 정보 섹션 */
-.info-section {
+.lock-badge {
+    font-size: 12px;
+    background: rgba(255, 200, 0, 0.2);
+    border: 1px solid rgba(255, 200, 0, 0.5);
+    border-radius: 20px;
+    padding: 2px 8px;
+    color: #ffd700;
+}
+
+/* ===== 좌측 상단: 고민 패널 ===== */
+.concern-panel {
+    top: 60px;
+    left: 50px;
+    width: 350px;
+    max-height: calc(50vh - 70px);
+}
+
+.panel-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.nickname {
+    font-size: 13px;
+    font-weight: 600;
+    color: #a8d8f0;
+}
+
+.date {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.concern-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.concern-content {
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.8);
+    word-break: break-word;
+}
+
+/* ===== 좌측 하단: AI 답변 패널 ===== */
+.ai-panel {
+    bottom: 60px;
+    left: 50px;
+    width: 350px;
+    max-height: calc(50vh - 70px);
+}
+
+.ai-content {
+    font-size: 13px;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.85);
+    font-style: italic;
+    word-break: break-word;
+}
+
+/* ===== 우측 상단: 댓글 패널 ===== */
+.comment-panel {
+    top: 60px;
+    right: 50px;
+    width: 350px;
+    max-height: calc(100vh - 120px);
+}
+
+/* 댓글 폼 */
+.comment-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
 }
 
-.info-card {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    overflow: hidden;
-}
-
-.card-header {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    padding: 15px 20px;
-}
-
-.card-header h2 {
+.comment-textarea {
+    width: 100%;
+    height: 90px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
     color: white;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 13px;
+    resize: none;
+    outline: none;
+    transition: border-color 0.2s;
 }
 
-.card-content {
-    padding: 20px;
+.comment-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
 }
 
-.card-content p {
-    margin-bottom: 10px;
-    line-height: 1.6;
+.comment-textarea:focus {
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.14);
 }
 
-.card-content strong {
-    color: #4a5568;
-}
-
-/* 고민 내용 박스 */
-.concern-box {
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-left: 4px solid #007bff;
-}
-
-.concern-box p {
-    font-size: 16px;
-    line-height: 1.7;
-    color: #495057;
-}
-
-/* 응답 박스 */
-.response-box {
-    background: #e8f5e8;
-    border: 1px solid #c3e6c3;
-    border-radius: 10px;
-    padding: 15px;
-    border-left: 4px solid #28a745;
-}
-
-.response-box p {
-    font-size: 16px;
-    line-height: 1.7;
-    color: #495057;
-    font-style: italic;
-}
-
-/* 하단 액션 버튼 */
-.bottom-actions {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.action-btn {
-    padding: 12px 30px;
-    border: none;
-    border-radius: 25px;
-    font-size: 16px;
+.comment-submit-btn {
+    align-self: flex-end;
+    padding: 8px 22px;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1.5px solid rgba(255, 255, 255, 0.45);
+    border-radius: 20px;
+    color: white;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: background 0.2s;
 }
 
-.action-btn.primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.comment-submit-btn:hover {
+    background: rgba(255, 255, 255, 0.32);
+}
+
+/* 로그인 필요 안내 */
+.login-required {
+    text-align: center;
+    padding: 16px 0;
+}
+
+.login-required p {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 12px;
+}
+
+.login-btn {
+    padding: 8px 22px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
     color: white;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
 }
 
-.action-btn.primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+.login-btn:hover {
+    background: rgba(255, 255, 255, 0.28);
 }
 
-.action-btn.secondary {
-    background: white;
-    color: #667eea;
-    border: 2px solid #667eea;
+/* 댓글 목록 */
+.comments-list {
+    margin-top: 18px;
 }
 
-.action-btn.secondary:hover {
-    background: #667eea;
+.comments-divider {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.45);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding-top: 12px;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+
+.comment-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.comment-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.comment-meta strong {
+    font-size: 13px;
+    color: #a8d8f0;
+}
+
+.comment-meta small {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.comment-item p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    word-break: break-word;
+}
+
+/* ===== 뒤로가기 버튼 (하단 중앙) ===== */
+.back-btn {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+    padding: 9px 26px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    border-radius: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
     color: white;
-    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.6);
 }
 
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-    .main-content {
-        grid-template-columns: 1fr;
-    }
+/* ===== 스크롤바 커스텀 ===== */
+.panel::-webkit-scrollbar {
+    width: 4px;
+}
 
-    .header {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
+.panel::-webkit-scrollbar-track {
+    background: transparent;
+}
 
-    .luggage-image {
-        width: 150px;
-        height: 150px;
-    }
-
-    .bottom-actions {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .action-btn {
-        width: 100%;
-        max-width: 300px;
-    }
+.panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 4px;
 }
