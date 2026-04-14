@@ -10,89 +10,200 @@
 </head>
 <body>
 
+    <!-- 배경 이미지 (concern 리스트와 동일) -->
+    <div class="background"></div>
+
     <div th:replace="~{fragments/sidebar :: symbol-logo}"></div>
     <div th:replace="~{fragments/sidebar :: sidebar}"></div>
 
-    <div class="container">
-        <!-- 헤더 -->
-        <div class="header">
-            <h1>고민의 결과</h1>
-            <button onclick="history.back()" class="back-btn">← 목록으로 돌아가기</button>
-        </div>
-
-        <!-- 메인 콘텐츠 -->
-        <div class="main-content">
-            <!-- 가방 이미지 섹션 -->
-            <div class="luggage-section">
-                <div class="luggage-image-container">
-                    <img th:src="|/image/sharedImage/item${concernDetailResponseDto.luggageType.ordinal() + 1}.png|"
-                         th:alt="${concernDetailResponseDto.luggageType}"
-                         class="luggage-image"/>
-                </div>
-                <p class="luggage-type" th:text="'가방 타입: ' + ${concernDetailResponseDto.luggageType}"></p>
-            </div>
-
-            <!-- 정보 섹션 -->
-            <div class="info-section">
-                <!-- 사용자 정보 -->
-                <div class="info-card">
-                    <div class="card-header">
-                        <h2>사용자 정보</h2>
-                    </div>
-                    <div class="card-content">
-                        <p><strong>닉네임:</strong> <span th:text="${concernDetailResponseDto.memberNickName}"></span></p>
-                        <p><strong>등록일시:</strong> <span th:text="${#temporals.format(concernDetailResponseDto.createdAt, 'yyyy년 MM월 dd일 HH:mm')}"></span></p>
-                    </div>
-                </div>
-
-                <!-- 고민 내용 -->
-                <div class="info-card">
-                    <div class="card-header">
-                        <h2>고민 내용</h2>
-                    </div>
-                    <div class="card-content">
-                        <p><strong th:text="${concernDetailResponseDto.concernTitle}"></strong></p>
-                        <div class="concern-box">
-                            <p th:text="${concernDetailResponseDto.concernContent}"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- AI 응답 -->
-                <div class="info-card">
-                    <div class="card-header">
-                        <h2>가방의 조언</h2>
-                    </div>
-                    <div class="card-content">
-                        <div class="response-box">
-                            <p th:text="${concernDetailResponseDto.responseContent}"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 댓글 -->
-                <div class="info-card" th:if="${not #lists.isEmpty(concernDetailResponseDto.dtos)}">
-                    <div class="card-header">
-                        <h2>댓글</h2>
-                    </div>
-                    <div class="card-content">
-                        <div th:each="comment : ${concernDetailResponseDto.dtos}" class="concern-box">
-                            <p><strong th:text="${comment.commentMemberNickname}"></strong></p>
-                            <p th:text="${comment.commentContent}"></p>
-                            <p><small th:text="${#temporals.format(comment.createdAt, 'yyyy.MM.dd HH:mm')}"></small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 하단 버튼 -->
-        <div class="bottom-actions">
-            <button onclick="location.href='/concern'" class="action-btn primary">전체 목록 보기</button>
-            <button onclick="location.href='/choose'" class="action-btn secondary">새 고민 등록하기</button>
+    <!-- ===== 잠긴 글 화면 ===== -->
+    <div th:if="${!isAccessAllowed}" class="locked-overlay">
+        <div class="locked-box">
+            <div class="lock-icon">&#128274;</div>
+            <h2>잠긴 글입니다</h2>
+            <p>작성자만 확인할 수 있는 글입니다.</p>
+            <button onclick="history.back()" class="locked-back-btn">돌아가기</button>
         </div>
     </div>
 
+    <!-- ===== 정상 콘텐츠 ===== -->
+    <div th:if="${isAccessAllowed}" class="page-content">
+
+        <!-- 중앙: 가방 이미지 -->
+        <div class="luggage-center">
+            <img th:src="|/image/sharedImage/item${concernDetailResponseDto.luggageTypeImageIndex}.png|"
+                 th:alt="${concernDetailResponseDto.luggageType}"
+                 class="luggage-image"/>
+        </div>
+
+        <!-- 좌측 상단: 고민 -->
+        <div class="panel concern-panel">
+            <div class="panel-header">
+                <h3>고민</h3>
+                <span th:if="${concernDetailResponseDto.isLocked}" class="lock-badge">&#128274; 잠김</span>
+            </div>
+            <div class="panel-meta">
+                <span class="nickname" th:text="${concernDetailResponseDto.memberNickName}"></span>
+                <span class="date" th:text="${#temporals.format(concernDetailResponseDto.createdAt, 'yyyy.MM.dd HH:mm')}"></span>
+            </div>
+            <div class="concern-title" th:text="${concernDetailResponseDto.concernTitle}"></div>
+            <div class="concern-content" th:text="${concernDetailResponseDto.concernContent}"></div>
+        </div>
+
+        <!-- 좌측 하단: AI 답변 -->
+        <div class="panel ai-panel">
+            <div class="panel-header">
+                <h3>가방의 조언</h3>
+            </div>
+            <div class="ai-content" th:text="${concernDetailResponseDto.responseContent}"></div>
+        </div>
+
+        <!-- 우측 상단: 댓글 작성 + 댓글 목록 -->
+        <div class="panel comment-panel">
+            <div class="panel-header">
+                <h3>댓글 작성</h3>
+            </div>
+
+            <!-- 로그인한 경우: 댓글 작성 폼 -->
+            <div th:if="${loginMemberId != null}">
+                <form th:action="@{/comment/{id}(id=${concernId})}" method="post" class="comment-form">
+                    <textarea name="commentContent"
+                              placeholder="댓글을 입력하세요..."
+                              class="comment-textarea"
+                              required></textarea>
+                    <button type="submit" class="comment-submit-btn">등록</button>
+                </form>
+            </div>
+
+            <!-- 로그인하지 않은 경우 -->
+            <div th:if="${loginMemberId == null}" class="login-required">
+                <p>댓글을 작성하려면 로그인이 필요합니다.</p>
+                <button onclick="location.href='/'" class="login-btn">로그인하기</button>
+            </div>
+
+            <!-- 기존 댓글 목록 -->
+            <div th:if="${not #lists.isEmpty(concernDetailResponseDto.dtos)}" class="comments-list">
+                <div class="comments-divider">댓글 목록</div>
+                <div th:each="comment : ${concernDetailResponseDto.dtos}"
+                     class="comment-item"
+                     th:data-comment-id="${comment.commentId}">
+                    <div class="comment-meta">
+                        <strong th:text="${comment.commentMemberNickname}"></strong>
+                        <small th:text="${#temporals.format(comment.createdAt, 'yyyy.MM.dd HH:mm')}"></small>
+                        <button th:if="${loginMemberId != null and loginMemberId == comment.memberId}"
+                                class="edit-comment-btn"
+                                th:data-comment-id="${comment.commentId}">수정</button>
+                        <button th:if="${loginMemberId != null and loginMemberId == comment.memberId}"
+                                class="delete-comment-btn"
+                                th:data-comment-id="${comment.commentId}">삭제</button>
+                    </div>
+                    <p class="comment-text" th:text="${comment.commentContent}"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 뒤로가기 버튼 (하단 중앙) -->
+        <button onclick="history.back()" class="back-btn">&#8592; 목록으로</button>
+
+    </div>
+
     <script src="/js/shared.js"></script>
+    <script th:inline="javascript">
+        const concernId = [[${concernId}]];
+
+        // 댓글 작성
+        const commentForm = document.querySelector('.comment-form');
+        if (commentForm) {
+            commentForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const textarea = commentForm.querySelector('textarea[name="commentContent"]');
+
+                const res = await fetch(`/comment/${concernId}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: new URLSearchParams({commentContent: textarea.value})
+                });
+
+                if (res.ok) {
+                    location.reload();
+                } else {
+                    alert('댓글 작성에 실패했습니다.');
+                }
+            });
+        }
+
+        // 댓글 수정
+        // 댓글 삭제
+        document.querySelectorAll('.delete-comment-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                if (!confirm('댓글을 삭제하시겠습니까?')) return;
+
+                const commentId = btn.dataset.commentId;
+                const res = await fetch(`/comment/${commentId}`, {
+                    method: 'DELETE'
+                });
+
+                if (res.ok) {
+                    btn.closest('.comment-item').remove();
+                } else {
+                    alert('댓글 삭제에 실패했습니다.');
+                }
+            });
+        });
+
+        // 댓글 수정
+        document.querySelectorAll('.edit-comment-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const commentId = btn.dataset.commentId;
+                const commentItem = btn.closest('.comment-item');
+                const commentText = commentItem.querySelector('.comment-text');
+
+                if (commentItem.querySelector('.edit-textarea')) return;
+
+                const textarea = document.createElement('textarea');
+                textarea.className = 'edit-textarea comment-textarea';
+                textarea.value = commentText.textContent;
+
+                const confirmBtn = document.createElement('button');
+                confirmBtn.textContent = '확인';
+                confirmBtn.className = 'comment-submit-btn';
+
+                const cancelBtn = document.createElement('button');
+                cancelBtn.textContent = '취소';
+                cancelBtn.className = 'edit-cancel-btn';
+
+                commentText.style.display = 'none';
+                btn.style.display = 'none';
+                commentItem.append(textarea, confirmBtn, cancelBtn);
+
+                cancelBtn.addEventListener('click', () => {
+                    textarea.remove();
+                    confirmBtn.remove();
+                    cancelBtn.remove();
+                    commentText.style.display = '';
+                    btn.style.display = '';
+                });
+
+                confirmBtn.addEventListener('click', async () => {
+                    const res = await fetch(`/comment/${commentId}`, {
+                        method: 'PATCH',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: new URLSearchParams({commentContent: textarea.value})
+                    });
+
+                    if (res.ok) {
+                        commentText.textContent = textarea.value;
+                        textarea.remove();
+                        confirmBtn.remove();
+                        cancelBtn.remove();
+                        commentText.style.display = '';
+                        btn.style.display = '';
+                    } else {
+                        alert('댓글 수정에 실패했습니다.');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
