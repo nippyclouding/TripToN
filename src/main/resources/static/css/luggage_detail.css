@@ -234,7 +234,10 @@ body, html {
     background: rgba(255, 255, 255, 0.14);
 }
 
-.comment-submit-btn {
+.comment-submit-btn,
+.edit-comment-btn,
+.delete-comment-btn,
+.edit-cancel-btn {
     align-self: flex-end;
     padding: 8px 22px;
     background: rgba(255, 255, 255, 0.18);
@@ -247,7 +250,10 @@ body, html {
     transition: background 0.2s;
 }
 
-.comment-submit-btn:hover {
+.comment-submit-btn:hover,
+.edit-comment-btn:hover,
+.delete-comment-btn:hover,
+.edit-cancel-btn:hover {
     background: rgba(255, 255, 255, 0.32);
 }
 

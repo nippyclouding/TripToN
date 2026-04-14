@@ -2,7 +2,10 @@ package server.TripToN.concern.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.TripToN.comment.dto.CommentResponseDto;
+import server.TripToN.comment.service.CommentService;
 import server.TripToN.concern.dto.ConcernDetailResponseDto;
 import server.TripToN.concern.dto.ConcernRequestDto;
 import server.TripToN.concern.dto.ConcernResponseDto;
@@ -53,7 +56,7 @@ public class ConcernController {
         Long loginMemberId = (Long) session.getAttribute(Const.MEMBER_SESSION_KEY);
         ConcernDetailResponseDto dto = concernService.getConcernDetail(concernId); // 고민, 응답, 댓글, 회원 정보
 
-        Boolean isAccessAllowed = !dto.isLocked() || (loginMemberId != null && loginMemberId.equals(dto.getMemberId()));
+        Boolean isAccessAllowed = !dto.getIsLocked() || (loginMemberId != null && loginMemberId.equals(dto.getMemberId()));
 
         model.addAttribute(dto);
         model.addAttribute("loginMemberId", loginMemberId);
@@ -61,5 +64,10 @@ public class ConcernController {
         model.addAttribute("isAccessAllowed", isAccessAllowed);
         return "detail";
     }
+
+    // 고민 상세 페이지 - 수정
+
+    // 고민 상세 페이지 - 삭제
+
 
 }

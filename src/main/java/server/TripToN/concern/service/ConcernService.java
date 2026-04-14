@@ -85,6 +85,7 @@ public class ConcernService {
                 .luggageType(concern.getLuggageType())
                 .createdAt(concern.getCreatedAt())
                 .updatedAt(concern.getUpdatedAt())
+                .luggageTypeImageIndex(concern.getLuggageType().ordinal() + 1)
                 .responseContent(concern.getAiResponse() != null
                         ? concern.getAiResponse().getResponseContent()
                         : "AI 응답 없음")

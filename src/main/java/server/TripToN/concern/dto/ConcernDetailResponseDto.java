@@ -23,11 +23,14 @@ public class ConcernDetailResponseDto {
     // 고민 정보
     private String concernTitle;
     private String concernContent;
-    private boolean isLocked;
+    private Boolean isLocked;
     private LuggageType luggageType;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    // 가방 이미지 인덱스 (luggageType.ordinal() + 1)
+    private int luggageTypeImageIndex;
 
     // ai 응답 정보
     private String responseContent;

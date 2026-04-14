@@ -31,7 +31,7 @@
 
         <!-- 중앙: 가방 이미지 -->
         <div class="luggage-center">
-            <img th:src="|/image/sharedImage/item${concernDetailResponseDto.luggageType.ordinal() + 1}.png|"
+            <img th:src="|/image/sharedImage/item${concernDetailResponseDto.luggageTypeImageIndex}.png|"
                  th:alt="${concernDetailResponseDto.luggageType}"
                  class="luggage-image"/>
         </div>
@@ -40,7 +40,7 @@
         <div class="panel concern-panel">
             <div class="panel-header">
                 <h3>고민</h3>
-                <span th:if="${concernDetailResponseDto.locked}" class="lock-badge">&#128274; 잠김</span>
+                <span th:if="${concernDetailResponseDto.isLocked}" class="lock-badge">&#128274; 잠김</span>
             </div>
             <div class="panel-meta">
                 <span class="nickname" th:text="${concernDetailResponseDto.memberNickName}"></span>
@@ -66,7 +66,7 @@
 
             <!-- 로그인한 경우: 댓글 작성 폼 -->
             <div th:if="${loginMemberId != null}">
-                <form th:action="@{/concern/{id}/comments(id=${concernId})}" method="post" class="comment-form">
+                <form th:action="@{/comment/{id}(id=${concernId})}" method="post" class="comment-form">
                     <textarea name="commentContent"
                               placeholder="댓글을 입력하세요..."
                               class="comment-textarea"
@@ -84,12 +84,20 @@
             <!-- 기존 댓글 목록 -->
             <div th:if="${not #lists.isEmpty(concernDetailResponseDto.dtos)}" class="comments-list">
                 <div class="comments-divider">댓글 목록</div>
-                <div th:each="comment : ${concernDetailResponseDto.dtos}" class="comment-item">
+                <div th:each="comment : ${concernDetailResponseDto.dtos}"
+                     class="comment-item"
+                     th:data-comment-id="${comment.commentId}">
                     <div class="comment-meta">
                         <strong th:text="${comment.commentMemberNickname}"></strong>
                         <small th:text="${#temporals.format(comment.createdAt, 'yyyy.MM.dd HH:mm')}"></small>
+                        <button th:if="${loginMemberId != null and loginMemberId == comment.memberId}"
+                                class="edit-comment-btn"
+                                th:data-comment-id="${comment.commentId}">수정</button>
+                        <button th:if="${loginMemberId != null and loginMemberId == comment.memberId}"
+                                class="delete-comment-btn"
+                                th:data-comment-id="${comment.commentId}">삭제</button>
                     </div>
-                    <p th:text="${comment.commentContent}"></p>
+                    <p class="comment-text" th:text="${comment.commentContent}"></p>
                 </div>
             </div>
         </div>
@@ -100,5 +108,102 @@
     </div>
 
     <script src="/js/shared.js"></script>
+    <script th:inline="javascript">
+        const concernId = [[${concernId}]];
+
+        // 댓글 작성
+        const commentForm = document.querySelector('.comment-form');
+        if (commentForm) {
+            commentForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const textarea = commentForm.querySelector('textarea[name="commentContent"]');
+
+                const res = await fetch(`/comment/${concernId}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: new URLSearchParams({commentContent: textarea.value})
+                });
+
+                if (res.ok) {
+                    location.reload();
+                } else {
+                    alert('댓글 작성에 실패했습니다.');
+                }
+            });
+        }
+
+        // 댓글 수정
+        // 댓글 삭제
+        document.querySelectorAll('.delete-comment-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                if (!confirm('댓글을 삭제하시겠습니까?')) return;
+
+                const commentId = btn.dataset.commentId;
+                const res = await fetch(`/comment/${commentId}`, {
+                    method: 'DELETE'
+                });
+
+                if (res.ok) {
+                    btn.closest('.comment-item').remove();
+                } else {
+                    alert('댓글 삭제에 실패했습니다.');
+                }
+            });
+        });
+
+        // 댓글 수정
+        document.querySelectorAll('.edit-comment-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const commentId = btn.dataset.commentId;
+                const commentItem = btn.closest('.comment-item');
+                const commentText = commentItem.querySelector('.comment-text');
+
+                if (commentItem.querySelector('.edit-textarea')) return;
+
+                const textarea = document.createElement('textarea');
+                textarea.className = 'edit-textarea comment-textarea';
+                textarea.value = commentText.textContent;
+
+                const confirmBtn = document.createElement('button');
+                confirmBtn.textContent = '확인';
+                confirmBtn.className = 'comment-submit-btn';
+
+                const cancelBtn = document.createElement('button');
+                cancelBtn.textContent = '취소';
+                cancelBtn.className = 'edit-cancel-btn';
+
+                commentText.style.display = 'none';
+                btn.style.display = 'none';
+                commentItem.append(textarea, confirmBtn, cancelBtn);
+
+                cancelBtn.addEventListener('click', () => {
+                    textarea.remove();
+                    confirmBtn.remove();
+                    cancelBtn.remove();
+                    commentText.style.display = '';
+                    btn.style.display = '';
+                });
+
+                confirmBtn.addEventListener('click', async () => {
+                    const res = await fetch(`/comment/${commentId}`, {
+                        method: 'PATCH',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: new URLSearchParams({commentContent: textarea.value})
+                    });
+
+                    if (res.ok) {
+                        commentText.textContent = textarea.value;
+                        textarea.remove();
+                        confirmBtn.remove();
+                        cancelBtn.remove();
+                        commentText.style.display = '';
+                        btn.style.display = '';
+                    } else {
+                        alert('댓글 수정에 실패했습니다.');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
