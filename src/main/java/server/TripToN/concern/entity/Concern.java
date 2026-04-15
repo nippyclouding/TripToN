@@ -1,8 +1,9 @@
 package server.TripToN.concern.entity;
 
-import org.apache.catalina.connector.Response;
+import org.hibernate.annotations.SQLRestriction;
 import server.TripToN.AiResponse.entity.AiResponse;
 import server.TripToN.comment.entity.Comment;
+import server.TripToN.concern.dto.ConcernUpdateRequestDto;
 import server.TripToN.global.util.BaseEntity;
 import server.TripToN.member.entity.Member;
 import jakarta.persistence.*;
@@ -18,6 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 @Table(name = "CONCERNS")
+@SQLRestriction("deleted_at IS NULL")
 public class Concern extends BaseEntity {
 
     @Id
@@ -44,4 +46,10 @@ public class Concern extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private LuggageType luggageType;
+
+    public void updateConcern(ConcernUpdateRequestDto dto) {
+        this.concernContent = dto.getConcernContent();
+        this.concernTitle = dto.getConcernTitle();
+        this.isLocked = dto.isLocked();
+    }
 }

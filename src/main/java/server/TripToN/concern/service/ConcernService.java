@@ -6,9 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import server.TripToN.AiResponse.service.AiResponseService;
 import server.TripToN.comment.entity.Comment;
-import server.TripToN.concern.dto.ConcernDetailResponseDto;
-import server.TripToN.concern.dto.ConcernRequestDto;
-import server.TripToN.concern.dto.ConcernResponseDto;
+import server.TripToN.concern.dto.*;
 import server.TripToN.concern.entity.Concern;
 import server.TripToN.concern.repository.ConcernRepository;
 import server.TripToN.global.error.BusinessException;
@@ -84,7 +82,6 @@ public class ConcernService {
                 .isLocked(concern.isLocked())
                 .luggageType(concern.getLuggageType())
                 .createdAt(concern.getCreatedAt())
-                .updatedAt(concern.getUpdatedAt())
                 .luggageTypeImageIndex(concern.getLuggageType().ordinal() + 1)
                 .responseContent(concern.getAiResponse() != null
                         ? concern.getAiResponse().getResponseContent()
@@ -94,5 +91,27 @@ public class ConcernService {
                         .toList())
                 .build();
 
+    }
+
+    @Transactional
+    public void updateConcern(Long concernId, Long memberId, ConcernUpdateRequestDto dto) {
+        Concern findConcern = concernRepository.findById(concernId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUNT_ERROR));
+
+        if (!memberId.equals(findConcern.getMember().getMemberId()))
+            throw new BusinessException(ErrorCode.WRONG_ACCESS_UPDATE);
+
+        findConcern.updateConcern(dto);
+    }
+
+    @Transactional
+    public void removeConcern(Long concernId, Long memberId) {
+        Concern findConcern = concernRepository.findById(concernId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUNT_ERROR));
+
+        if (!memberId.equals(findConcern.getMember().getMemberId()))
+            throw new BusinessException(ErrorCode.WRONG_ACCESS_DELETE);
+
+        concernRepository.softDeleteById(concernId);
     }
 }

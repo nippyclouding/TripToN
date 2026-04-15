@@ -74,8 +74,8 @@ public enum ErrorCode {
     ONCHAIN_TRANSACTION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "ONCHAIN_TRANSACTION_FAILED", "온체인 거래 기록에 실패했습니다."),
 
     SESSION_NOT_FOUND(HttpStatus.BAD_REQUEST, "NO_SESSION ERROR", "현재 세션이 존재하지 않습니다."),
-    WRONG_ACCESS_COMMENT_UPDATE(HttpStatus.BAD_REQUEST, "WRONG_COMMENT_UPDATE_ACCESS_BY_OTHER_USER", "다른 회원이 댓글 수정을 시도합니다."),
-    WRONG_ACCESS_COMMENT_DELETE(HttpStatus.BAD_REQUEST, "WRONG_COMMENT_DELETE_ACCESS_BY_OTHER_USER", "다른 회원이 댓글 삭제를 시도합니다.");
+    WRONG_ACCESS_UPDATE(HttpStatus.BAD_REQUEST, "WRONG_UPDATE_ACCESS_BY_OTHER_USER", "다른 회원이 수정을 시도합니다."), // 댓글, 고민 수정 오류
+    WRONG_ACCESS_DELETE(HttpStatus.BAD_REQUEST, "WRONG_DELETE_ACCESS_BY_OTHER_USER", "다른 회원이 삭제를 시도합니다."); // 댓글, 고민 삭제 오류
 
     // ── 파일 ──────────────────────────────────────────────────
     private final HttpStatus httpStatus;

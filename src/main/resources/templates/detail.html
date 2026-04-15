@@ -7,6 +7,54 @@
     <title>고민 상세 정보</title>
     <link rel="stylesheet" href="/css/luggage_detail.css">
     <link rel="stylesheet" href="/css/shared.css">
+    <style>
+        .concern-actions { display: flex; gap: 8px; margin-top: 8px; }
+        .concern-actions button { padding: 4px 12px; cursor: pointer; }
+
+        /* 수정 모달 */
+        .modal-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: rgba(10, 10, 20, 0.95);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            backdrop-filter: blur(12px);
+            padding: 28px 24px;
+            width: 480px;
+            max-width: 90vw;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            color: white;
+        }
+        .modal-box h3 { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: 0.5px; }
+        .modal-box input[type="text"],
+        .modal-box textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .modal-box input[type="text"]:focus,
+        .modal-box textarea:focus { border-color: rgba(255, 255, 255, 0.6); }
+        .modal-box input::placeholder,
+        .modal-box textarea::placeholder { color: rgba(255,255,255,0.4); }
+        .modal-box textarea { min-height: 120px; resize: vertical; }
+        .modal-box label { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.8); cursor: pointer; }
+        .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px; }
+    </style>
 </head>
 <body>
 
@@ -48,6 +96,13 @@
             </div>
             <div class="concern-title" th:text="${concernDetailResponseDto.concernTitle}"></div>
             <div class="concern-content" th:text="${concernDetailResponseDto.concernContent}"></div>
+
+            <!-- 작성자만 수정/삭제 버튼 노출 -->
+            <div th:if="${loginMemberId != null and loginMemberId == concernDetailResponseDto.memberId}"
+                 class="concern-actions">
+                <button id="concern-edit-btn">수정</button>
+                <button id="concern-delete-btn">삭제</button>
+            </div>
         </div>
 
         <!-- 좌측 하단: AI 답변 -->
@@ -107,21 +162,165 @@
 
     </div>
 
+    <!-- ===== 고민 수정 모달 ===== -->
+    <div id="concern-edit-modal" class="modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <h3>고민 수정</h3>
+            <input type="text" id="modal-title" placeholder="제목" maxlength="200"/>
+            <textarea id="modal-content" placeholder="내용"></textarea>
+            <label>
+                <input type="checkbox" id="modal-locked"/> 잠금 설정
+            </label>
+            <div class="modal-footer">
+                <button id="modal-cancel-btn" class="edit-cancel-btn">취소</button>
+                <button id="modal-confirm-btn" class="comment-submit-btn">수정 완료</button>
+            </div>
+        </div>
+    </div>
+
     <script src="/js/shared.js"></script>
     <script th:inline="javascript">
         const concernId = [[${concernId}]];
+        const currentTitle   = [[${concernDetailResponseDto.concernTitle}]];
+        const currentContent = [[${concernDetailResponseDto.concernContent}]];
+        const currentLocked  = [[${concernDetailResponseDto.isLocked}]];
 
-        // 댓글 작성
+        /* ============================
+         * 공통 유틸
+         * ============================ */
+
+        /**
+         * application/x-www-form-urlencoded POST 요청
+         * @param {string} url
+         * @param {Object} data  - 폼 필드 키·값 객체 (선택)
+         * @returns {Promise<Response>}
+         */
+        async function postForm(url, data = {}) {
+            return fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(data)
+            });
+        }
+
+        /**
+         * fetch DELETE 요청
+         * @param {string} url
+         * @returns {Promise<Response>}
+         */
+        async function deleteRequest(url) {
+            return fetch(url, { method: 'DELETE' });
+        }
+
+        /**
+         * PATCH 요청 (application/x-www-form-urlencoded)
+         * @param {string} url
+         * @param {Object} data
+         * @returns {Promise<Response>}
+         */
+        async function patchForm(url, data = {}) {
+            return fetch(url, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(data)
+            });
+        }
+
+        /* ============================
+         * 고민 수정
+         * ============================ */
+
+        const editModal    = document.getElementById('concern-edit-modal');
+        const modalTitle   = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+        const modalLocked  = document.getElementById('modal-locked');
+
+        const concernEditBtn   = document.getElementById('concern-edit-btn');
+        const modalCancelBtn   = document.getElementById('modal-cancel-btn');
+        const modalConfirmBtn  = document.getElementById('modal-confirm-btn');
+
+        function openConcernEditModal() {
+            modalTitle.value      = currentTitle;
+            modalContent.value    = currentContent;
+            modalLocked.checked   = currentLocked;
+            editModal.classList.add('active');
+            modalTitle.focus();
+        }
+
+        function closeConcernEditModal() {
+            editModal.classList.remove('active');
+        }
+
+        if (concernEditBtn) {
+            concernEditBtn.addEventListener('click', openConcernEditModal);
+        }
+
+        if (modalCancelBtn) {
+            modalCancelBtn.addEventListener('click', closeConcernEditModal);
+        }
+
+        // 모달 바깥 클릭 시 닫기
+        editModal.addEventListener('click', (e) => {
+            if (e.target === editModal) closeConcernEditModal();
+        });
+
+        if (modalConfirmBtn) {
+            modalConfirmBtn.addEventListener('click', async () => {
+                const title   = modalTitle.value.trim();
+                const content = modalContent.value.trim();
+                const locked  = modalLocked.checked;
+
+                if (!title || !content) {
+                    alert('제목과 내용을 모두 입력해주세요.');
+                    return;
+                }
+
+                const res = await postForm(`/concern/${concernId}/update`, {
+                    concernTitle:   title,
+                    concernContent: content,
+                    isLocked:       locked
+                });
+
+                if (res.ok) {
+                    location.href = `/concern/${concernId}`;
+                } else {
+                    alert('고민 수정에 실패했습니다.');
+                }
+            });
+        }
+
+        /* ============================
+         * 고민 삭제
+         * ============================ */
+
+        const concernDeleteBtn = document.getElementById('concern-delete-btn');
+
+        if (concernDeleteBtn) {
+            concernDeleteBtn.addEventListener('click', async () => {
+                if (!confirm('고민을 삭제하시겠습니까? 복구할 수 없습니다.')) return;
+
+                const res = await postForm(`/concern/${concernId}/remove`);
+
+                if (res.ok) {
+                    location.href = '/concern';
+                } else {
+                    alert('고민 삭제에 실패했습니다.');
+                }
+            });
+        }
+
+        /* ============================
+         * 댓글 작성
+         * ============================ */
+
         const commentForm = document.querySelector('.comment-form');
         if (commentForm) {
             commentForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const textarea = commentForm.querySelector('textarea[name="commentContent"]');
 
-                const res = await fetch(`/comment/${concernId}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    body: new URLSearchParams({commentContent: textarea.value})
+                const res = await postForm(`/comment/${concernId}`, {
+                    commentContent: textarea.value
                 });
 
                 if (res.ok) {
@@ -132,16 +331,16 @@
             });
         }
 
-        // 댓글 수정
-        // 댓글 삭제
+        /* ============================
+         * 댓글 삭제
+         * ============================ */
+
         document.querySelectorAll('.delete-comment-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
                 if (!confirm('댓글을 삭제하시겠습니까?')) return;
 
                 const commentId = btn.dataset.commentId;
-                const res = await fetch(`/comment/${commentId}`, {
-                    method: 'DELETE'
-                });
+                const res = await deleteRequest(`/comment/${commentId}`);
 
                 if (res.ok) {
                     btn.closest('.comment-item').remove();
@@ -151,10 +350,13 @@
             });
         });
 
-        // 댓글 수정
+        /* ============================
+         * 댓글 수정
+         * ============================ */
+
         document.querySelectorAll('.edit-comment-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const commentId = btn.dataset.commentId;
+                const commentId  = btn.dataset.commentId;
                 const commentItem = btn.closest('.comment-item');
                 const commentText = commentItem.querySelector('.comment-text');
 
@@ -166,11 +368,11 @@
 
                 const confirmBtn = document.createElement('button');
                 confirmBtn.textContent = '확인';
-                confirmBtn.className = 'comment-submit-btn';
+                confirmBtn.className   = 'comment-submit-btn';
 
                 const cancelBtn = document.createElement('button');
                 cancelBtn.textContent = '취소';
-                cancelBtn.className = 'edit-cancel-btn';
+                cancelBtn.className   = 'edit-cancel-btn';
 
                 commentText.style.display = 'none';
                 btn.style.display = 'none';
@@ -185,10 +387,8 @@
                 });
 
                 confirmBtn.addEventListener('click', async () => {
-                    const res = await fetch(`/comment/${commentId}`, {
-                        method: 'PATCH',
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                        body: new URLSearchParams({commentContent: textarea.value})
+                    const res = await patchForm(`/comment/${commentId}`, {
+                        commentContent: textarea.value
                     });
 
                     if (res.ok) {

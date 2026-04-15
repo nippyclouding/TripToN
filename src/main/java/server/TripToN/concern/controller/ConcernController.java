@@ -2,13 +2,9 @@ package server.TripToN.concern.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
-import server.TripToN.comment.dto.CommentResponseDto;
-import server.TripToN.comment.service.CommentService;
-import server.TripToN.concern.dto.ConcernDetailResponseDto;
-import server.TripToN.concern.dto.ConcernRequestDto;
-import server.TripToN.concern.dto.ConcernResponseDto;
+import server.TripToN.concern.dto.*;
 import server.TripToN.concern.service.ConcernService;
 import server.TripToN.AiResponse.dto.AiResponseDto;
 import jakarta.validation.Valid;
@@ -17,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import server.TripToN.global.util.Const;
 
-import java.util.List;
 
 
 @Controller
@@ -66,8 +61,22 @@ public class ConcernController {
     }
 
     // 고민 상세 페이지 - 수정
+    @PostMapping("/{concernId}/update")
+    public String updateConcern(@PathVariable Long concernId, @Valid @ModelAttribute ConcernUpdateRequestDto reqDto,
+                                HttpSession session) {
+        Long memberId = (Long) session.getAttribute(Const.MEMBER_SESSION_KEY);
+        if (memberId == null) return "redirect:/";
+        concernService.updateConcern(concernId, memberId, reqDto);
+        return "redirect:/concern/" + concernId;
+    }
 
     // 고민 상세 페이지 - 삭제
-
+    @PostMapping("/{concernId}/remove")
+    public String removeConcern(@PathVariable Long concernId, HttpSession session) {
+        Long memberId = (Long) session.getAttribute(Const.MEMBER_SESSION_KEY);
+        if (memberId == null) return "redirect:/";
+        concernService.removeConcern(concernId, memberId);
+        return "redirect:/concern";
+    }
 
 }
