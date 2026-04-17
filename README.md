@@ -7,6 +7,10 @@
 
 ---
 
+<img width="693" height="605" alt="github1" src="https://github.com/user-attachments/assets/7082a6ce-83e2-4a00-8a9f-0441bdb78f28" />
+
+---
+
 ### 개발 과정 & 사용 기술
 
 **개발 기간**
@@ -28,13 +32,16 @@
 
 ### 1. ERD
 
-*(내용 없음)*
+<img width="715" height="593" alt="github3" src="https://github.com/user-attachments/assets/153a9796-0d0f-4376-947d-35d304ff755d" />
+
+
 
 ---
 
 ### 2. SYSTEM ARCHITECTURE
 
-*(내용 없음)*
+<img width="518" height="463" alt="github2" src="https://github.com/user-attachments/assets/8b352a95-0548-465f-94c7-07b58ed490e6" />
+
 
 ---
 
