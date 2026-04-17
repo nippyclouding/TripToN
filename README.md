@@ -28,6 +28,7 @@
 - **Infrastructure**: AWS EC2 & Docker Container
   - Spring Boot Container
   - MariaDB Container
+  - NginX Container
 
 ---
 
