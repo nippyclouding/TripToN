@@ -5,7 +5,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import server.TripToN.AiResponse.service.AiResponseService;
+import server.TripToN.comment.dto.CommentResponseDto;
 import server.TripToN.comment.entity.Comment;
+import server.TripToN.commentLike.repository.CommentLikeRepository;
 import server.TripToN.concern.dto.*;
 import server.TripToN.concern.entity.Concern;
 import server.TripToN.concern.repository.ConcernRepository;
@@ -29,6 +31,7 @@ public class ConcernService {
     private final ConcernRepository concernRepository;
     private final MemberRepository memberRepository;
     private final AiResponseService aiResponseService;
+    private final CommentLikeRepository commentLikeRepository;
 
     @Transactional
     public AiResponseDto saveConcernAndGetAiResponse(ConcernRequestDto dto, Long memberId) {
@@ -71,7 +74,7 @@ public class ConcernService {
         return concernPage.map(c -> ConcernResponseDto.from(c, c.getMember()));
     }
 
-    public ConcernDetailResponseDto getConcernDetail(Long concernId) {
+    public ConcernDetailResponseDto getConcernDetail(Long concernId, Long loginMemberId) {
         Concern concern = concernRepository.findConcernAndMemberAndCommentAndResponseByConcernId(concernId);
 
         return ConcernDetailResponseDto.builder()
@@ -87,7 +90,13 @@ public class ConcernService {
                         ? concern.getAiResponse().getResponseContent()
                         : "AI 응답 없음")
                 .dtos(concern.getComments().stream()
-                        .map(Comment::toDto)
+                        .map(c -> {
+                            CommentResponseDto dto = c.toDto();
+                            dto.setLikeCount(commentLikeRepository.countByCommentCommentId(c.getCommentId()));
+                            dto.setIsLiked(loginMemberId != null &&
+                                    commentLikeRepository.existsByMemberMemberIdAndCommentCommentId(loginMemberId, c.getCommentId()));
+                            return dto;
+                        })
                         .toList())
                 .build();
 

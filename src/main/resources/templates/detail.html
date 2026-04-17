@@ -8,8 +8,66 @@
     <link rel="stylesheet" href="/css/luggage_detail.css">
     <link rel="stylesheet" href="/css/shared.css">
     <style>
-        .concern-actions { display: flex; gap: 8px; margin-top: 8px; }
-        .concern-actions button { padding: 4px 12px; cursor: pointer; }
+        .concern-actions { display: flex; gap: 8px; margin-top: 12px; }
+
+        /* 좋아요 버튼 */
+        .like-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .like-btn {
+            background: none;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            padding: 4px 14px;
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .like-btn:hover {
+            border-color: rgba(255,255,255,0.6);
+            color: white;
+        }
+        .like-btn.liked {
+            background: rgba(255,100,100,0.2);
+            border-color: rgba(255,100,100,0.6);
+            color: #ff6464;
+        }
+        .like-count {
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* 댓글 좋아요 버튼 */
+        .comment-like-btn {
+            background: none;
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 12px;
+            padding: 2px 8px;
+            color: rgba(255,255,255,0.55);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            line-height: 1.4;
+        }
+        .comment-like-btn:hover {
+            border-color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.85);
+        }
+        .comment-like-btn.liked {
+            background: rgba(255,100,100,0.15);
+            border-color: rgba(255,100,100,0.5);
+            color: #ff8080;
+        }
 
         /* 수정 모달 */
         .modal-overlay {
@@ -97,6 +155,17 @@
             <div class="concern-title" th:text="${concernDetailResponseDto.concernTitle}"></div>
             <div class="concern-content" th:text="${concernDetailResponseDto.concernContent}"></div>
 
+            <!-- 좋아요 -->
+            <div class="like-section">
+                <button id="like-btn"
+                        th:class="${isLiked} ? 'like-btn liked' : 'like-btn'"
+                        th:disabled="${loginMemberId == null}"
+                        th:title="${loginMemberId == null} ? '로그인이 필요합니다' : ''">
+                    <span id="like-icon" th:text="${isLiked} ? '♥' : '♡'">♡</span>
+                    <span id="like-count" th:text="${likeCount}">0</span>
+                </button>
+            </div>
+
             <!-- 작성자만 수정/삭제 버튼 노출 -->
             <div th:if="${loginMemberId != null and loginMemberId == concernDetailResponseDto.memberId}"
                  class="concern-actions">
@@ -145,6 +214,14 @@
                     <div class="comment-meta">
                         <strong th:text="${comment.commentMemberNickname}"></strong>
                         <small th:text="${#temporals.format(comment.createdAt, 'yyyy.MM.dd HH:mm')}"></small>
+                        <button class="comment-like-btn"
+                                th:classappend="${comment.isLiked} ? ' liked' : ''"
+                                th:disabled="${loginMemberId == null}"
+                                th:title="${loginMemberId == null} ? '로그인이 필요합니다' : ''"
+                                th:data-comment-id="${comment.commentId}">
+                            <span class="comment-like-icon" th:text="${comment.isLiked} ? '♥' : '♡'">♡</span>
+                            <span class="comment-like-count" th:text="${comment.likeCount}">0</span>
+                        </button>
                         <button th:if="${loginMemberId != null and loginMemberId == comment.memberId}"
                                 class="edit-comment-btn"
                                 th:data-comment-id="${comment.commentId}">수정</button>
@@ -223,6 +300,27 @@
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams(data)
+            });
+        }
+
+        /* ============================
+         * 좋아요 토글
+         * ============================ */
+
+        const likeBtn   = document.getElementById('like-btn');
+        const likeIcon  = document.getElementById('like-icon');
+        const likeCount = document.getElementById('like-count');
+
+        if (likeBtn && !likeBtn.disabled) {
+            likeBtn.addEventListener('click', async () => {
+                const res = await fetch(`/concern/api/${concernId}/like`, { method: 'POST' });
+                if (!res.ok) { alert('좋아요 처리에 실패했습니다.'); return; }
+
+                const liked = likeBtn.classList.toggle('liked');
+                likeIcon.textContent = liked ? '♥' : '♡';
+                likeCount.textContent = liked
+                    ? Number(likeCount.textContent) + 1
+                    : Number(likeCount.textContent) - 1;
             });
         }
 
@@ -308,6 +406,26 @@
                 }
             });
         }
+
+        /* ============================
+         * 댓글 좋아요
+         * ============================ */
+
+        document.querySelectorAll('.comment-like-btn').forEach(btn => {
+            if (btn.disabled) return;
+            btn.addEventListener('click', async () => {
+                const commentId = btn.dataset.commentId;
+                const res = await fetch(`/comment/${commentId}/like`, { method: 'POST' });
+                if (!res.ok) { alert('좋아요 처리에 실패했습니다.'); return; }
+
+                const liked = btn.classList.toggle('liked');
+                btn.querySelector('.comment-like-icon').textContent = liked ? '♥' : '♡';
+                const countEl = btn.querySelector('.comment-like-count');
+                countEl.textContent = liked
+                    ? Number(countEl.textContent) + 1
+                    : Number(countEl.textContent) - 1;
+            });
+        });
 
         /* ============================
          * 댓글 작성

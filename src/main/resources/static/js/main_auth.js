@@ -1,8 +1,43 @@
+/* ============================
+ * Sign Modal
+ * ============================ */
+
+function openSignModal() {
+    closeSidebar();
+    document.getElementById('sign-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSignModal() {
+    document.getElementById('sign-modal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeSignModal();
+});
+
+/* ============================
+ * Auth Handlers
+ * ============================ */
+
+function handleSignOut() {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/auth/signOut';
+    document.body.appendChild(form);
+    form.submit();
+}
+
+function handleMyPage() {
+    window.location.href = '/auth/myPage';
+}
+
 function switchAuthTab(tab) {
-    const signinForm  = document.getElementById('form-signin');
-    const signupForm  = document.getElementById('form-signup');
-    const signinTab   = document.getElementById('tab-signin');
-    const signupTab   = document.getElementById('tab-signup');
+    const signinForm = document.getElementById('form-signin');
+    const signupForm = document.getElementById('form-signup');
+    const signinTab  = document.getElementById('tab-signin');
+    const signupTab  = document.getElementById('tab-signup');
 
     if (tab === 'signin') {
         signinForm.classList.remove('hidden');
