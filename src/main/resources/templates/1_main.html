@@ -18,34 +18,10 @@
     <div th:replace="~{fragments/sidebar :: sidebar}"></div>
     <div th:replace="~{fragments/sound-toggle :: sound-toggle}"></div>
 
-    <!-- 좌측 - 로그인/회원가입 폼 -->
-    <div class="auth-panel">
-        <!-- 성공/실패 메시지 -->
-        <div th:if="${success}" class="auth-message auth-message--success" th:text="${success}"></div>
-        <div th:if="${fail}" class="auth-message auth-message--fail" th:text="${fail}"></div>
-
-        <div class="auth-tabs">
-            <button class="auth-tab active" id="tab-signin" onclick="switchAuthTab('signin')">SIGN IN</button>
-            <span class="auth-tab-divider">/</span>
-            <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">SIGN UP</button>
-        </div>
-
-        <!-- 로그인 폼 -->
-        <form class="auth-form" id="form-signin" action="/auth/signIn" method="post">
-            <input type="email" name="memberEmail" class="auth-input" placeholder="EMAIL" autocomplete="off">
-            <input type="password" name="memberLoginPassword" class="auth-input" placeholder="PASSWORD">
-            <button type="button" class="auth-submit" onclick="handleSignIn()">SIGN IN</button>
-        </form>
-
-        <!-- 회원가입 폼 -->
-        <form class="auth-form hidden" id="form-signup" action="/auth/signUp" method="post">
-            <input type="email" name="memberEmail" class="auth-input" placeholder="EMAIL" autocomplete="off">
-            <input type="text" name="memberNickName" class="auth-input" placeholder="NICKNAME" autocomplete="off">
-            <input type="password" name="memberLoginPassword" id="signup-pw" class="auth-input" placeholder="PASSWORD">
-            <input type="password" id="signup-pw-confirm" class="auth-input" placeholder="PASSWORD CONFIRM">
-            <button type="button" class="auth-submit" onclick="handleSignUp()">SIGN UP</button>
-        </form>
-    </div>
+    <!-- flash 메시지가 있으면 sign 모달 자동 오픈 -->
+    <th:block th:if="${success != null or fail != null}">
+        <script>document.addEventListener('DOMContentLoaded', () => openSignModal());</script>
+    </th:block>
 
     <!-- 하단 중앙 화살표 버튼 -->
     <div class="arrow-button-container">
@@ -55,7 +31,6 @@
     </div>
 
     <th:block th:replace="~{fragments/common-scripts :: music-scripts}"></th:block>
-    <script src="/js/main_auth.js"></script>
 
 </body>
 </html>

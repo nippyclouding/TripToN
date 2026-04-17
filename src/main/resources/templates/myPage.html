@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MY PAGE</title>
+    <link rel="stylesheet" href="/css/shared.css">
+    <link rel="stylesheet" href="/css/mypage.css">
+</head>
+<body class="mypage-background">
+
+    <div th:replace="~{fragments/sidebar :: symbol-logo}"></div>
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div class="mypage-wrap">
+
+        <!-- 유저 정보 -->
+        <div class="mypage-header">
+            <h1 class="mypage-nickname" th:text="${myPage.memberNickName}"></h1>
+            <span class="mypage-email" th:text="${myPage.memberEmail}"></span>
+        </div>
+
+        <!-- 2x2 그리드 -->
+        <div class="mypage-grid">
+
+            <!-- 내 고민 -->
+            <div class="mypage-panel">
+                <div class="mypage-panel-title">MY CONCERNS</div>
+                <div class="mypage-list" th:if="${not #lists.isEmpty(myPage.concernDtos)}">
+                    <a th:each="item : ${myPage.concernDtos}"
+                       th:href="@{/concern/{id}(id=${item.concernId})}"
+                       class="mypage-item">
+                        <span class="item-title" th:text="${item.concernTitle}"></span>
+                        <span class="item-meta" th:text="${#temporals.format(item.createdAt, 'yy.MM.dd')}"></span>
+                    </a>
+                </div>
+                <div th:if="${#lists.isEmpty(myPage.concernDtos)}" class="mypage-empty">작성한 고민이 없습니다</div>
+                <div class="mypage-pagination" th:if="${myPage.concernTotalPages > 0}">
+                    <a th:if="${concernPage > 0}"
+                       th:href="@{/auth/myPage(concernPage=${concernPage - 1},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})}"
+                       class="page-btn">&#8592;</a>
+                    <span th:if="${concernPage == 0}" class="page-btn" style="opacity:0;pointer-events:none;">&#8592;</span>
+                    <span class="page-info" th:text="${concernPage + 1} + ' / ' + ${myPage.concernTotalPages}"></span>
+                    <a th:if="${concernPage + 1 < myPage.concernTotalPages}"
+                       th:href="@{/auth/myPage(concernPage=${concernPage + 1},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})}"
+                       class="page-btn">&#8594;</a>
+                    <span th:if="${concernPage + 1 >= myPage.concernTotalPages}" class="page-btn" style="opacity:0;pointer-events:none;">&#8594;</span>
+                </div>
+            </div>
+
+            <!-- 내 댓글 -->
+            <div class="mypage-panel">
+                <div class="mypage-panel-title">MY COMMENTS</div>
+                <div class="mypage-list" th:if="${not #lists.isEmpty(myPage.commentDtos)}">
+                    <div th:each="item : ${myPage.commentDtos}" class="mypage-item">
+                        <span class="item-title" th:text="${item.commentContent}"></span>
+                        <span class="item-meta" th:text="${#temporals.format(item.createdAt, 'yy.MM.dd')}"></span>
+                    </div>
+                </div>
+                <div th:if="${#lists.isEmpty(myPage.commentDtos)}" class="mypage-empty">작성한 댓글이 없습니다</div>
+                <div class="mypage-pagination" th:if="${myPage.commentTotalPages > 0}">
+                    <a th:if="${commentPage > 0}"
+                       th:href="@{/auth/myPage(concernPage=${concernPage},commentPage=${commentPage - 1},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})}"
+                       class="page-btn">&#8592;</a>
+                    <span th:if="${commentPage == 0}" class="page-btn" style="opacity:0;pointer-events:none;">&#8592;</span>
+                    <span class="page-info" th:text="${commentPage + 1} + ' / ' + ${myPage.commentTotalPages}"></span>
+                    <a th:if="${commentPage + 1 < myPage.commentTotalPages}"
+                       th:href="@{/auth/myPage(concernPage=${concernPage},commentPage=${commentPage + 1},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})}"
+                       class="page-btn">&#8594;</a>
+                    <span th:if="${commentPage + 1 >= myPage.commentTotalPages}" class="page-btn" style="opacity:0;pointer-events:none;">&#8594;</span>
+                </div>
+            </div>
+
+            <!-- 좋아요한 고민 -->
+            <div class="mypage-panel">
+                <div class="mypage-panel-title">LIKED CONCERNS</div>
+                <div class="mypage-list" th:if="${not #lists.isEmpty(myPage.concernLikeDtos)}">
+                    <a th:each="item : ${myPage.concernLikeDtos}"
+                       th:href="@{/concern/{id}(id=${item.concernId})}"
+                       class="mypage-item">
+                        <span class="item-title" th:text="${item.concernTitle}"></span>
+                    </a>
+                </div>
+                <div th:if="${#lists.isEmpty(myPage.concernLikeDtos)}" class="mypage-empty">좋아요한 고민이 없습니다</div>
+                <div class="mypage-pagination" th:if="${myPage.concernLikeTotalPages > 0}">
+                    <a th:if="${concernLikePage > 0}"
+                       th:href="@{/auth/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage - 1},commentLikePage=${commentLikePage})}"
+                       class="page-btn">&#8592;</a>
+                    <span th:if="${concernLikePage == 0}" class="page-btn" style="opacity:0;pointer-events:none;">&#8592;</span>
+                    <span class="page-info" th:text="${concernLikePage + 1} + ' / ' + ${myPage.concernLikeTotalPages}"></span>
+                    <a th:if="${concernLikePage + 1 < myPage.concernLikeTotalPages}"
+                       th:href="@{/auth/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage + 1},commentLikePage=${commentLikePage})}"
+                       class="page-btn">&#8594;</a>
+                    <span th:if="${concernLikePage + 1 >= myPage.concernLikeTotalPages}" class="page-btn" style="opacity:0;pointer-events:none;">&#8594;</span>
+                </div>
+            </div>
+
+            <!-- 좋아요한 댓글 -->
+            <div class="mypage-panel">
+                <div class="mypage-panel-title">LIKED COMMENTS</div>
+                <div class="mypage-list" th:if="${not #lists.isEmpty(myPage.commentLikeDtos)}">
+                    <div th:each="item : ${myPage.commentLikeDtos}" class="mypage-item">
+                        <span class="item-title" th:text="${item.commentContent}"></span>
+                    </div>
+                </div>
+                <div th:if="${#lists.isEmpty(myPage.commentLikeDtos)}" class="mypage-empty">좋아요한 댓글이 없습니다</div>
+                <div class="mypage-pagination" th:if="${myPage.commentLikeTotalPages > 0}">
+                    <a th:if="${commentLikePage > 0}"
+                       th:href="@{/auth/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage - 1})}"
+                       class="page-btn">&#8592;</a>
+                    <span th:if="${commentLikePage == 0}" class="page-btn" style="opacity:0;pointer-events:none;">&#8592;</span>
+                    <span class="page-info" th:text="${commentLikePage + 1} + ' / ' + ${myPage.commentLikeTotalPages}"></span>
+                    <a th:if="${commentLikePage + 1 < myPage.commentLikeTotalPages}"
+                       th:href="@{/auth/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage + 1})}"
+                       class="page-btn">&#8594;</a>
+                    <span th:if="${commentLikePage + 1 >= myPage.commentLikeTotalPages}" class="page-btn" style="opacity:0;pointer-events:none;">&#8594;</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="/js/shared.js"></script>
+
+</body>
+</html>

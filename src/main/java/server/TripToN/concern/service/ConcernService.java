@@ -5,10 +5,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import server.TripToN.AiResponse.service.AiResponseService;
+import server.TripToN.comment.dto.CommentResponseDto;
 import server.TripToN.comment.entity.Comment;
-import server.TripToN.concern.dto.ConcernDetailResponseDto;
-import server.TripToN.concern.dto.ConcernRequestDto;
-import server.TripToN.concern.dto.ConcernResponseDto;
+import server.TripToN.commentLike.repository.CommentLikeRepository;
+import server.TripToN.concern.dto.*;
 import server.TripToN.concern.entity.Concern;
 import server.TripToN.concern.repository.ConcernRepository;
 import server.TripToN.global.error.BusinessException;
@@ -31,6 +31,7 @@ public class ConcernService {
     private final ConcernRepository concernRepository;
     private final MemberRepository memberRepository;
     private final AiResponseService aiResponseService;
+    private final CommentLikeRepository commentLikeRepository;
 
     @Transactional
     public AiResponseDto saveConcernAndGetAiResponse(ConcernRequestDto dto, Long memberId) {
@@ -73,7 +74,7 @@ public class ConcernService {
         return concernPage.map(c -> ConcernResponseDto.from(c, c.getMember()));
     }
 
-    public ConcernDetailResponseDto getConcernDetail(Long concernId) {
+    public ConcernDetailResponseDto getConcernDetail(Long concernId, Long loginMemberId) {
         Concern concern = concernRepository.findConcernAndMemberAndCommentAndResponseByConcernId(concernId);
 
         return ConcernDetailResponseDto.builder()
@@ -84,15 +85,42 @@ public class ConcernService {
                 .isLocked(concern.isLocked())
                 .luggageType(concern.getLuggageType())
                 .createdAt(concern.getCreatedAt())
-                .updatedAt(concern.getUpdatedAt())
                 .luggageTypeImageIndex(concern.getLuggageType().ordinal() + 1)
                 .responseContent(concern.getAiResponse() != null
                         ? concern.getAiResponse().getResponseContent()
                         : "AI 응답 없음")
                 .dtos(concern.getComments().stream()
-                        .map(Comment::toDto)
+                        .map(c -> {
+                            CommentResponseDto dto = c.toDto();
+                            dto.setLikeCount(commentLikeRepository.countByCommentCommentId(c.getCommentId()));
+                            dto.setIsLiked(loginMemberId != null &&
+                                    commentLikeRepository.existsByMemberMemberIdAndCommentCommentId(loginMemberId, c.getCommentId()));
+                            return dto;
+                        })
                         .toList())
                 .build();
 
+    }
+
+    @Transactional
+    public void updateConcern(Long concernId, Long memberId, ConcernUpdateRequestDto dto) {
+        Concern findConcern = concernRepository.findById(concernId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUNT_ERROR));
+
+        if (!memberId.equals(findConcern.getMember().getMemberId()))
+            throw new BusinessException(ErrorCode.WRONG_ACCESS_UPDATE);
+
+        findConcern.updateConcern(dto);
+    }
+
+    @Transactional
+    public void removeConcern(Long concernId, Long memberId) {
+        Concern findConcern = concernRepository.findById(concernId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUNT_ERROR));
+
+        if (!memberId.equals(findConcern.getMember().getMemberId()))
+            throw new BusinessException(ErrorCode.WRONG_ACCESS_DELETE);
+
+        concernRepository.softDeleteById(concernId);
     }
 }

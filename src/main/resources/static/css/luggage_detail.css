@@ -237,7 +237,9 @@ body, html {
 .comment-submit-btn,
 .edit-comment-btn,
 .delete-comment-btn,
-.edit-cancel-btn {
+.edit-cancel-btn,
+#concern-edit-btn,
+#concern-delete-btn {
     align-self: flex-end;
     padding: 8px 22px;
     background: rgba(255, 255, 255, 0.18);
@@ -253,7 +255,9 @@ body, html {
 .comment-submit-btn:hover,
 .edit-comment-btn:hover,
 .delete-comment-btn:hover,
-.edit-cancel-btn:hover {
+.edit-cancel-btn:hover,
+#concern-edit-btn:hover,
+#concern-delete-btn:hover {
     background: rgba(255, 255, 255, 0.32);
 }
 

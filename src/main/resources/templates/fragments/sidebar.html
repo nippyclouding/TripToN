@@ -6,24 +6,76 @@
     <img src="/image/sharedImage/symbolN.png" alt="심볼N">
 </div>
 
-<div th:fragment="sidebar" class="sidebar" id="sidebar" onclick="event.target === this && closeSidebar()">
+<th:block th:fragment="sidebar">
+
+<div class="sidebar" id="sidebar" onclick="event.target === this && closeSidebar()">
     <div class="sidebar-content">
         <div class="sidebar-menu">
             <div class="menu-item" data-delay="0" data-link="/">
                 <img src="/image/sharedImage/button_home.png" alt="HOME">
             </div>
-            <div class="menu-item" data-delay="100" data-link="/story">
+            <div class="menu-item" data-delay="100" onclick="openSignModal()">
+                <img src="/image/sharedImage/button_enter.png" alt="ENTER">
+            </div>
+            <div class="menu-item" data-delay="200" data-link="/story">
                 <img src="/image/sharedImage/button_story.png" alt="STORY">
             </div>
-            <div class="menu-item" data-delay="200" data-link="/choose">
+            <div class="menu-item" data-delay="300" data-link="/choose">
                 <img src="/image/sharedImage/button_choose.png" alt="CHOOSE">
             </div>
-            <div class="menu-item" data-delay="300" data-link="/result">
+            <div class="menu-item" data-delay="400" data-link="/result">
                 <img src="/image/sharedImage/button_n.png" alt="N'">
             </div>
         </div>
     </div>
 </div>
+
+<!-- Sign Modal -->
+<div id="sign-modal" class="sign-modal-overlay" onclick="if(event.target===this)closeSignModal()">
+    <div class="sign-modal-box">
+        <button class="sign-modal-close" onclick="closeSignModal()">&#215;</button>
+
+        <!-- 비로그인 상태: SIGN IN / SIGN UP -->
+        <div th:if="${session['loginMember'] == null}">
+            <div th:if="${success != null}" class="sign-message sign-message--success" th:text="${success}"></div>
+            <div th:if="${fail != null}" class="sign-message sign-message--fail" th:text="${fail}"></div>
+
+            <div class="sign-tabs">
+                <button class="sign-tab active" id="tab-signin" onclick="switchAuthTab('signin')">SIGN IN</button>
+                <span class="sign-tab-divider">/</span>
+                <button class="sign-tab" id="tab-signup" onclick="switchAuthTab('signup')">SIGN UP</button>
+            </div>
+
+            <form class="sign-form" id="form-signin" action="/auth/signIn" method="post">
+                <input type="email" name="memberEmail" class="sign-input" placeholder="EMAIL" autocomplete="off">
+                <input type="password" name="memberLoginPassword" class="sign-input" placeholder="PASSWORD">
+                <button type="button" class="sign-submit" onclick="handleSignIn()">SIGN IN</button>
+            </form>
+
+            <form class="sign-form hidden" id="form-signup" action="/auth/signUp" method="post">
+                <input type="email" name="memberEmail" class="sign-input" placeholder="EMAIL" autocomplete="off">
+                <input type="text" name="memberNickName" class="sign-input" placeholder="NICKNAME" autocomplete="off">
+                <input type="password" name="memberLoginPassword" id="signup-pw" class="sign-input" placeholder="PASSWORD">
+                <input type="password" id="signup-pw-confirm" class="sign-input" placeholder="PASSWORD CONFIRM">
+                <button type="button" class="sign-submit" onclick="handleSignUp()">SIGN UP</button>
+            </form>
+        </div>
+
+        <!-- 로그인 상태: SIGN OUT / MY PAGE -->
+        <div th:if="${session['loginMember'] != null}">
+            <div th:if="${success != null}" class="sign-message sign-message--success" th:text="${success}"></div>
+            <div class="sign-tabs">
+                <button class="sign-tab active" onclick="handleSignOut()">SIGN OUT</button>
+                <span class="sign-tab-divider">/</span>
+                <button class="sign-tab" onclick="handleMyPage()">MY PAGE</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/main_auth.js"></script>
+
+</th:block>
 
 </body>
 </html>

@@ -1,7 +1,5 @@
 package server.TripToN.concern.dto;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+
 import lombok.*;
 import server.TripToN.comment.dto.CommentResponseDto;
 import server.TripToN.concern.entity.LuggageType;
@@ -13,7 +11,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConcernDetailResponseDto {
+public class ConcernUpdateResponseDto {
     // 고민 상세페이지에서 보여줄 내용
 
     // 고민 작성 회원 정보
@@ -26,7 +24,7 @@ public class ConcernDetailResponseDto {
     private Boolean isLocked;
     private LuggageType luggageType;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     // 가방 이미지 인덱스 (luggageType.ordinal() + 1)
     private int luggageTypeImageIndex;

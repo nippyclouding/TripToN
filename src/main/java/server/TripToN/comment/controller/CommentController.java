@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import server.TripToN.comment.dto.CommentCreateRequestDto;
 import server.TripToN.comment.dto.CommentUpdateRequestDto;
 import server.TripToN.comment.service.CommentService;
+import server.TripToN.commentLike.service.CommentLikeService;
 import server.TripToN.global.error.BusinessException;
 import server.TripToN.global.util.Const;
 
@@ -21,6 +22,7 @@ import static server.TripToN.global.error.ErrorCode.SESSION_NOT_FOUND;
 @Slf4j
 public class CommentController {
     private final CommentService commentService;
+    private final CommentLikeService commentLikeService;
 
     // 댓글 작성
     @PostMapping("/{concernId}")
@@ -52,5 +54,15 @@ public class CommentController {
         commentService.deleteComment(currentMemberId, commentId);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    // 댓글 좋아요, 취소
+    @PostMapping("/{commentId}/like")
+    public ResponseEntity<Void> commentLike(HttpSession session, @PathVariable Long commentId) {
+        Long memberId = (Long) session.getAttribute(Const.MEMBER_SESSION_KEY);
+        if (memberId == null) throw new BusinessException(SESSION_NOT_FOUND);
+        commentLikeService.toggleLike(commentId, memberId);
+
+        return ResponseEntity.ok().build();
     }
 }

@@ -39,7 +39,7 @@ public class CommentService {
     public void updateComment(CommentUpdateRequestDto dto, Long currentMemberId, Long commentId) {
         // 1. 작성자 일치 여부 조회
         Comment findComment = commentRepository.findCommentAndMemberById(commentId).orElseThrow();
-        if (!findComment.getMember().getMemberId().equals(currentMemberId)) throw new BusinessException(ErrorCode.WRONG_ACCESS_COMMENT_UPDATE);
+        if (!findComment.getMember().getMemberId().equals(currentMemberId)) throw new BusinessException(ErrorCode.WRONG_ACCESS_UPDATE);
 
         // 2. update
         findComment.updateContent(dto.getCommentContent());
@@ -48,9 +48,10 @@ public class CommentService {
     public void deleteComment(Long currentMemberId, Long commentId) {
         // 1. 작성자 일치 여부 조회
         Comment findComment = commentRepository.findCommentAndMemberById(commentId).orElseThrow();
-        if (!findComment.getMember().getMemberId().equals(currentMemberId)) throw new BusinessException(ErrorCode.WRONG_ACCESS_COMMENT_DELETE);
+        if (!findComment.getMember().getMemberId().equals(currentMemberId)) throw new BusinessException(ErrorCode.WRONG_ACCESS_DELETE);
 
         // 2. delete
         commentRepository.softDeleteById(commentId);
     }
+
 }
