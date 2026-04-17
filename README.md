@@ -20,7 +20,7 @@
 - 2명 (디자이너 1명, 개발자 1명)
 
 **개발 환경**
-- **Language & DB**: Java 21, MySQL 9.0
+- **Language & DB**: Java 21, MariaDB
 - **Framework**: Spring Boot 3 with JPA (Spring Data JPA)
 - **Auth**: Session & Cookie
 - **Frontend**: Javascript, Thymeleaf (Server Side Rendering)
