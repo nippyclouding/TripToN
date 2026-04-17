@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Roboto+Condensed:wght@100..900&display=swap');
+
 /* ============================
    공통 초기화
    ============================ */
@@ -184,6 +186,33 @@
     transform: scale(0.95);
 }
 
+/* SIGN 텍스트 메뉴 아이템 - 이미지 버튼과 동일한 outline 스타일 */
+.sidebar-text-item {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: clamp(50px, 6.3vw, 84px);
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+    display: inline-block;
+    width: clamp(194px, 24vw, 324px);
+    text-align: center;
+    line-height: 1;
+}
+
+.menu-item-text:hover .sidebar-text-item {
+    transform: scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+    -webkit-text-stroke-color: white;
+}
+
+.menu-item-text:active .sidebar-text-item {
+    transform: scale(0.95);
+}
+
 /* 사이드바 오버레이 (블러 배경) */
 .sidebar-overlay {
     position: fixed;
@@ -250,3 +279,153 @@
     left: min(30px, 3vw);
     cursor: pointer;
 }
+
+/* ============================
+   공통 유틸
+   ============================ */
+.hidden { display: none !important; }
+
+/* ============================
+   Sign Modal
+   ============================ */
+.sign-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 2100;
+    align-items: center;
+    justify-content: center;
+}
+
+.sign-modal-overlay.active {
+    display: flex;
+}
+
+.sign-modal-box {
+    background: rgba(10, 10, 20, 0.92);
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
+    border-radius: 14px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 36px 32px 32px;
+    width: min(380px, 90vw);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: white;
+}
+
+.sign-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+    padding: 0;
+}
+
+.sign-modal-close:hover {
+    color: white;
+}
+
+.sign-tabs {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sign-tab {
+    background: none;
+    border: none;
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(18px, 2.2vw, 24px);
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.32);
+    cursor: pointer;
+    padding: 0;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+}
+
+.sign-tab.active {
+    color: white;
+}
+
+.sign-tab:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.sign-tab-divider {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(18px, 2.2vw, 24px);
+    color: rgba(255, 255, 255, 0.18);
+}
+
+.sign-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sign-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    padding: 8px 0;
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.08em;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.sign-input::placeholder {
+    color: rgba(255, 255, 255, 0.38);
+}
+
+.sign-input:focus {
+    border-bottom-color: rgba(255, 255, 255, 0.65);
+}
+
+.sign-submit {
+    margin-top: 4px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    padding: 9px 0;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.sign-submit:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.65);
+    color: white;
+}
+
+.sign-message {
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+}
+
+.sign-message--success { color: rgba(100, 220, 140, 0.9); }
+.sign-message--fail    { color: rgba(255, 100, 100, 0.9); }

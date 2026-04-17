@@ -1,26 +1,29 @@
 package server.TripToN.AiResponse.client;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
+@Slf4j
 @Component
+@RequiredArgsConstructor
+@ConditionalOnProperty(name = "gemini.enabled", havingValue = "true", matchIfMissing = false)
 public class GeminiClient {
 
-    private final WebClient webClient;
-    private final String apiKey;
+    private final RestClient geminiRestClient;
 
-    private static final String BASE_URL =
-            "https://generativelanguage.googleapis.com";
-    private static final String MODEL    = "gemini-1.5-flash";
+    @Value("${gemini.api.key}")
+    private String apiKey;
 
-    public GeminiClient(WebClient.Builder builder,
-                        @Value("${gemini.api.key}") String apiKey) {
-        this.webClient = builder.baseUrl(BASE_URL).build();
-        this.apiKey    = apiKey;
-    }
+    private static final String MODEL = "gemini-2.5-flash-lite";
 
     public String generate(String prompt) {
         GeminiRequest request = new GeminiRequest(
@@ -29,14 +32,35 @@ public class GeminiClient {
                 ))
         );
 
-        GeminiResponse response = webClient.post()
-                .uri("/v1beta/models/" + MODEL + ":generateContent?key=" +
-                        apiKey)
-                .bodyValue(request)
-                .retrieve()
-                .bodyToMono(GeminiResponse.class)
-                .block(); // 동기 처리
+        try {
+            GeminiResponse response = geminiRestClient.post()
+                    .uri("/models/{model}:generateContent?key={key}", MODEL, apiKey)
+                    .body(request)
+                    .retrieve()
+                    .body(GeminiResponse.class);
 
-        return response != null ? response.extractText() : null;
+            if (response != null && response.extractText() != null) {
+                return response.extractText();
+            }
+
+            log.warn("Gemini API 응답이 비어있습니다.");
+            return null;
+
+        } catch (HttpClientErrorException.TooManyRequests e) {
+            log.warn("Gemini API 요청 한도 초과 (429): {}", e.getMessage());
+            return null;
+        } catch (HttpClientErrorException e) {
+            log.error("Gemini API 클라이언트 오류 ({}): {}", e.getStatusCode(), e.getMessage());
+            return null;
+        } catch (HttpServerErrorException e) {
+            log.error("Gemini API 서버 오류 ({}): {}", e.getStatusCode(), e.getMessage());
+            return null;
+        } catch (ResourceAccessException e) {
+            log.error("Gemini API 네트워크 오류: {}", e.getMessage());
+            return null;
+        } catch (Exception e) {
+            log.error("Gemini API 호출 중 예외: {}", e.getMessage(), e);
+            return null;
+        }
     }
 }

@@ -1,5 +1,7 @@
 package server.TripToN.comment.entity;
 
+import org.hibernate.annotations.SQLRestriction;
+import server.TripToN.comment.dto.CommentResponseDto;
 import server.TripToN.concern.entity.Concern;
 import server.TripToN.global.util.BaseEntity;
 import server.TripToN.member.entity.Member;
@@ -13,6 +15,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 @Table(name = "COMMENTS")
+@SQLRestriction("deleted_at IS NULL")
 public class Comment extends BaseEntity {
 
     @Id
@@ -30,4 +33,19 @@ public class Comment extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String commentContent;
+
+    public CommentResponseDto toDto() {
+        return CommentResponseDto.builder()
+                .commentId(this.commentId)
+                .memberId(this.member.getMemberId())
+                .commentContent(this.commentContent)
+                .createdAt(this.getCreatedAt())
+                .updatedAt(this.getUpdatedAt())
+                .commentMemberNickname(this.member.getMemberNickName())
+                .build();
+    }
+
+    public void updateContent(String updateContext) {
+        this.commentContent = updateContext;
+    }
 }

@@ -24,14 +24,14 @@
 
         <!-- 가방 이미지들 (숨겨진 상태로 시작) -->
         <div class="luggage-circle" id="luggageCircle">
-            <div th:each="luggage, iterStat : ${luggageList}"
+            <div th:each="concern : ${concernResponseDto}"
                  class="luggage-item"
-                 th:data-lid="${luggage.LID}"
-                 th:data-username="${luggage.concern.userName}">
-                <img th:src="@{'/image/sharedImage/item' + ${luggage.luggageType.ordinal() + 1} + '.png'}"
-                     th:alt="${luggage.luggageType}"
+                 th:data-lid="${concern.concernId}"
+                 th:data-username="${concern.memberNickName}">
+                <img th:src="|/image/sharedImage/item${concern.luggageType.ordinal() + 1}.png|"
+                     th:alt="${concern.luggageType}"
                      class="luggage-img"/>
-                <div class="username-label" th:text="${luggage.concern.userName}"></div>
+                <div class="username-label" th:text="${concern.memberNickName}"></div>
             </div>
         </div>
 
@@ -41,26 +41,13 @@
                 <span>&lt;</span>
             </button>
             <div class="page-info" id="pageInfo">
-                <span id="currentPage">1</span> / <span id="totalPages" th:text="${totalPages}">1</span>
+                <span id="currentPage" th:text="${currentPage + 1}">1</span> / <span id="totalPages" th:text="${totalPages}">1</span>
             </div>
             <button class="page-arrow next-arrow" id="nextPage">
                 <span>&gt;</span>
             </button>
         </div>
 
-        <!-- 비밀번호 입력 박스 -->
-        <div class="password-box" id="passwordBox">
-            <h3 id="passwordTitle"></h3>
-            <input type="password" id="passwordInput" placeholder="비밀번호를 입력하세요">
-            <button id="passwordSubmit">확인</button>
-            <div class="error-msg" id="errorMsg">잘못된 비밀번호입니다.</div>
-        </div>
-
-        <!-- 응답 표시 박스 -->
-        <div class="aiResponse-box" id="responseBox">
-            <h3 id="responseTitle"></h3>
-            <div id="responseContent"></div>
-        </div>
     </div>
 
     <script src="/js/6_result.js"></script>

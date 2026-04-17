@@ -24,7 +24,7 @@ public class AiResponse {
     @Column(name = "response_id")
     private Long responseId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "concern_id", nullable = false)
     private Concern concern;
 

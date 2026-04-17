@@ -18,7 +18,12 @@
     <div th:replace="~{fragments/sidebar :: sidebar}"></div>
     <div th:replace="~{fragments/sound-toggle :: sound-toggle}"></div>
 
-    <!-- 우측 중간 화살표 버튼 -->
+    <!-- flash 메시지가 있으면 sign 모달 자동 오픈 -->
+    <th:block th:if="${success != null or fail != null}">
+        <script>document.addEventListener('DOMContentLoaded', () => openSignModal());</script>
+    </th:block>
+
+    <!-- 하단 중앙 화살표 버튼 -->
     <div class="arrow-button-container">
         <a href="/introduce" class="arrow-btn">
             <img src="/image/1_mainPage/arrow.png" alt="소개 페이지로 이동">

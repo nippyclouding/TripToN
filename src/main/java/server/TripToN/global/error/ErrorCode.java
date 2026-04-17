@@ -31,48 +31,12 @@ public enum ErrorCode {
     INSUFFICIENT_TOKEN_BALANCE(HttpStatus.BAD_REQUEST, "INSUFFICIENT_TOKEN_BALANCE", "보유 토큰이 부족합니다."),
     INVALID_AMOUNT(HttpStatus.BAD_REQUEST, "INVALID_AMOUNT", "금액은 0보다 커야 합니다."),
 
-    // ── 토큰(부동산) ─────────────────────────────────────────
-    TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "TOKEN_NOT_FOUND", "토큰을 찾을 수 없습니다."),
-    TOKEN_NOT_TRADABLE(HttpStatus.BAD_REQUEST, "TOKEN_NOT_TRADABLE", "거래 가능한 상태가 아닙니다."),
-    TOKEN_ALREADY_LISTED(HttpStatus.CONFLICT, "TOKEN_ALREADY_LISTED", "이미 거래 개시된 토큰입니다."),
 
-    // ── 주문 ──────────────────────────────────────────────
-    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "ORDER_NOT_FOUND", "주문을 찾을 수 없습니다."),
-    ORDER_CANNOT_CANCEL(HttpStatus.BAD_REQUEST, "ORDER_CANNOT_CANCEL", "취소할 수 없는 주문 상태입니다."),
-    ORDER_NOT_OWNED(HttpStatus.FORBIDDEN, "ORDER_NOT_OWNED", "본인의 주문이 아닙니다."),
-    ORDER_NOT_MODIFIABLE(HttpStatus.BAD_REQUEST, "ORDER_NOT_MODIFIABLE", "수정할 수 없는 주문 상태입니다."),
-    INVALID_UPDATE_QUANTITY(HttpStatus.BAD_REQUEST, "INVALID_UPDATE_QUANTITY", "이미 체결된 수량보다 적은 수량으로 수정할 수 없습니다."),
 
-    // ── 거래 시간 ────────────────────────────────────────────
-    OUTSIDE_TRADING_HOURS(HttpStatus.BAD_REQUEST, "OUTSIDE_TRADING_HOURS", "거래 시간이 아닙니다. (09:00 ~ 15:30)"),
-
-    // ── Match 서비스 ──────────────────────────────────────────
-    MATCH_SERVICE_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "MATCH_SERVICE_UNAVAILABLE",
-            "체결 서비스 연결 실패로 주문이 처리되지 않았습니다."),
-
-    // ── 관심 종목 ─────────────────────────────────────────────
-    WATCHLIST_ALREADY_EXISTS(HttpStatus.CONFLICT, "WATCHLIST_ALREADY_EXISTS", "이미 관심 종목에 추가된 토큰입니다."),
-    WATCHLIST_NOT_FOUND(HttpStatus.NOT_FOUND, "WATCHLIST_NOT_FOUND", "관심 종목에 없는 토큰입니다."),
-
-    // ── 배당 ──────────────────────────────────────────────────
-    DIVIDEND_NO_HOLDERS(HttpStatus.BAD_REQUEST, "DIVIDEND_NO_HOLDERS", "해당 토큰의 보유자가 없습니다."),
-    TOKEN_NOT_TRADING(HttpStatus.BAD_REQUEST, "TOKEN_NOT_TRADING", "거래 중인 토큰에만 배당을 지급할 수 있습니다."),
-    ALLOCATION_ALREADY_EXISTS(HttpStatus.CONFLICT, "ALLOCATION_ALREADY_EXISTS", "이미 해당월에 배당이 등록되어 있습니다."),
-    ALLOCATION_UPDATE_NOT_ALLOWED(HttpStatus.CONFLICT, "ALLOCATION_UPDATE_NOT_ALLOWED", "이미 지급된 배당은 수정이 불가합니다."),
-
-    // ── 지갑 ──────────────────────────────────────────────────
-    ISSUER_WALLET_NOT_FOUND(HttpStatus.NOT_FOUND, "ISSUER_WALLET_NOT_FOUND", "ISSUER 지갑을 찾을 수 없습니다."),
-    TREASURY_WALLET_NOT_FOUND(HttpStatus.NOT_FOUND, "TREASURY_WALLET_NOT_FOUND", "TREASURY 지갑을 찾을 수 없습니다."),
-    SELLER_WALLET_NOT_FOUND(HttpStatus.NOT_FOUND, "SELLER_WALLET_NOT_FOUND", "SELLER 지갑을 찾을 수 없습니다."),
-    BUYER_WALLET_NOT_FOUND(HttpStatus.NOT_FOUND, "BUYER_WALLET_NOT_FOUND", "BUYER 지갑을 찾을 수 없습니다."),
-    WALLET_CREATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "WALLET_CREATION_FAILED", "지갑 생성에 실패했습니다."),
-    WALLET_ALREADY_EXISTS(HttpStatus.CONFLICT, "WALLET_ALREADY_EXISTS", "이미 지갑이 존재합니다."),
-    WALLET_ENCRYPTION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "WALLET_ENCRYPTION_FAILED", "지갑 키 암호화에 실패했습니다."),
-
-    // ── 블록체인 ──────────────────────────────────────────────────
-    CONTRACT_DEPLOY_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "CONTRACT_DEPLOY_FAILED", "컨트랙트 배포에 실패했습니다."),
-    ONCHAIN_TRANSACTION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "ONCHAIN_TRANSACTION_FAILED", "온체인 거래 기록에 실패했습니다.");
-
+    SESSION_NOT_FOUND(HttpStatus.BAD_REQUEST, "NO_SESSION ERROR", "현재 세션이 존재하지 않습니다."),
+    WRONG_ACCESS_UPDATE(HttpStatus.BAD_REQUEST, "WRONG_UPDATE_ACCESS_BY_OTHER_USER", "다른 회원이 수정을 시도합니다."), // 댓글, 고민 수정 오류
+    WRONG_ACCESS_DELETE(HttpStatus.BAD_REQUEST, "WRONG_DELETE_ACCESS_BY_OTHER_USER", "다른 회원이 삭제를 시도합니다."), // 댓글, 고민 삭제 오류
+    CONCERN_NOT_FOUND(HttpStatus.BAD_REQUEST, "CONCERN_NOT_FOUND", "해당 고민이 존재하지 않습니다.");
 
     // ── 파일 ──────────────────────────────────────────────────
     private final HttpStatus httpStatus;
