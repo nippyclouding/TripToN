@@ -77,3 +77,10 @@ CREATE TABLE `COMMENT_LIKES` (
                                  CONSTRAINT `FK_COMMENTS_TO_CML` FOREIGN KEY (`comment_id`) REFERENCES `COMMENTS` (`comment_id`),
                                  CONSTRAINT `UQ_COMMENT_LIKE` UNIQUE (`member_id`, `comment_id`) -- 한 사람이 한 댓글에 한 번만!
 );
+
+-- IDX : 마이페이지 조회 시 4번의 쿼리 전달 -> 성능 고려
+CREATE INDEX idx_concerns_member_paging
+    ON CONCERNS (member_id, deleted_at, created_at);
+
+CREATE INDEX idx_comments_member_paging
+    ON COMMENTS (member_id, deleted_at, created_at);

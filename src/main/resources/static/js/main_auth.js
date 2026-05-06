@@ -30,7 +30,7 @@ function handleSignOut() {
 }
 
 function handleMyPage() {
-    window.location.href = '/auth/myPage';
+    window.location.href = '/myPage';
 }
 
 function switchAuthTab(tab) {

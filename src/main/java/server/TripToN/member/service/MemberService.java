@@ -30,25 +30,6 @@ public class MemberService {
     private final ConcernLikeRepository concernLikeRepository;
     private final CommentLikeRepository commentLikeRepository;
 
-    public void signUp(SignUpRequestDto dto) {
-        Member member = Member.builder()
-                .memberEmail(dto.getMemberEmail())
-                .memberLoginPassword(dto.getMemberLoginPassword())
-                .memberNickName(dto.getMemberNickName())
-                .build();
-        memberRepository.save(member);
-    }
-
-    @Transactional(readOnly = true)
-    public Member signIn(SignInRequestDto dto) {
-        Optional<Member> memberOpt = memberRepository.findByMemberEmail(dto.getMemberEmail());
-
-        if (memberOpt.isEmpty()) return null;
-
-        Member member = memberOpt.get();
-        if (member.getMemberLoginPassword().equals(dto.getMemberLoginPassword())) return member;
-        return null;
-    }
 
     @Transactional(readOnly = true)
     public MyPageResponseDto getMyPage(Long memberId,
@@ -56,23 +37,23 @@ public class MemberService {
                                        int commentPage,
                                        int concernLikePage,
                                        int commentLikePage) {
-        // 회원 정보
-        // 회원이 작성한 고민 리스트
-        // 회원이 작성한 댓글 리스트
-        // 회원이 좋아요한 고민
-        // 회원이 좋아요한 댓글
 
+        // 회원 정보 조회
         Member member = memberRepository.findById(memberId).orElseThrow();
 
+        // 회원이 작성한 고민 리스트 조회, idx_concerns_member_paging 인덱스
         Page<Concern> concerns = concernRepository.findByMemberMemberId(
                 memberId, PageRequest.of(concernPage, 5, Sort.by("createdAt").descending()));
 
+        // 회원이 작성한 댓글 리스트 조회, idx_comments_member_paging 인덱스
         Page<Comment> comments = commentRepository.findByMemberMemberId(
                 memberId, PageRequest.of(commentPage, 5, Sort.by("createdAt").descending()));
 
+        // 회원이 좋아요한 고민 조회, unique 인덱스 (member_id, concern_id)
         Page<ConcernLike> concernLikes = concernLikeRepository.findByMemberMemberIdWithConcern(
                 memberId, PageRequest.of(concernLikePage, 5));
 
+        // 회원이 좋아요한 댓글 조회, unique 인덱스 (member_id, comment_id)
         Page<CommentLike> commentLikes = commentLikeRepository.findByMemberMemberIdWithComment(
                 memberId, PageRequest.of(commentLikePage, 5));
 
