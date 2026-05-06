@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import server.TripToN.commentLike.entity.CommentLike;
-import server.TripToN.concernLike.entity.ConcernLike;
 
 public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> {
     boolean existsByMemberMemberIdAndCommentCommentId(Long memberId, Long commentId);

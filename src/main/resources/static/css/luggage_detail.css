@@ -11,14 +11,14 @@ body, html {
     font-family: 'Arial', sans-serif;
 }
 
-/* ===== 배경 (6_result 와 동일) ===== */
+/* ===== 배경 (result 와 동일) ===== */
 .background {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/image/6_resultPage/deepDark.jpg');
+    background-image: url('/image/sharedImage/deepDark.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

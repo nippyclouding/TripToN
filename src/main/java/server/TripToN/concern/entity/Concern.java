@@ -37,14 +37,17 @@ public class Concern extends BaseEntity {
     @OneToOne(mappedBy = "concern", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private AiResponse aiResponse;
 
+    @Column(nullable = false, length = 255)
     private String concernTitle;
 
     @Column(columnDefinition = "TEXT")
     private String concernContent;
 
+    @Column(nullable = false)
     private boolean isLocked;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private LuggageType luggageType;
 
     public void updateConcern(ConcernUpdateRequestDto dto) {

@@ -31,7 +31,7 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "concern_id", nullable = false)
     private Concern concern;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String commentContent;
 
     public CommentResponseDto toDto() {

@@ -22,18 +22,6 @@
     cursor: pointer;
 }
 
-.symbol-logo img {
-    width: clamp(40px, 8vw, 60px);
-    height: auto;
-    opacity: 0.8;
-    transition: all 0.3s ease;
-}
-
-.symbol-logo:hover img {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
 /* 우측 하단에 배치 (기존 위치 유지) */
 .sound-toggle-container {
     position: fixed;

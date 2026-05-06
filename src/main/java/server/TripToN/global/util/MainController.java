@@ -17,12 +17,12 @@ public class MainController {
     @GetMapping
     public String main(HttpSession session, Model model) {
         model.addAttribute("isLoggedIn", session.getAttribute(Const.MEMBER_SESSION_KEY) != null);
-        return "1_main";
+        return "main";
     }
     @GetMapping("/introduce")
-    public String story() { return "2_introduce"; }
+    public String story() { return "introduce"; }
     @GetMapping("/choose")
-    public String choose() { return "3_select"; }
+    public String choose() { return "select"; }
 
     @GetMapping("/signup")
     public String signup() { return "signup"; }

@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <link rel="stylesheet" href="/css/3_select.css">
+    <title>TripToN - 가방 선택</title>
+    <link rel="stylesheet" href="/css/select.css">
     <link rel="stylesheet" href="/css/shared.css">
-    <script src="/js/3_select.js"></script>
+    <script src="/js/select.js" defer></script>
 </head>
 <body>
 
@@ -18,7 +18,7 @@
 
     <!-- 중앙에 보여질 가방 이미지 -->
     <div class="bag-container">
-        <img id="bag-image" src="/image/3_selectPage/item1.png" alt="Bag">
+        <img id="bag-image" src="/image/select/item1.png" alt="Bag">
     </div>
 
     <!-- 아이템 소개 모달 -->
@@ -31,12 +31,12 @@
             <div class="modal-buttons">
                 <!-- 화살표 버튼 (입력창 열기용) -->
                 <div class="modal-arrow-btn" onclick="showInputModal()">
-                    <img src="/image/3_selectPage/arrow22.png" alt="선택하기">
+                    <img src="/image/select/arrow22.png" alt="선택하기">
                 </div>
 
                 <!-- 닫기 버튼 -->
                 <div class="modal-close-btn" onclick="closeItemModal()">
-                    <img src="/image/3_selectPage/CLOSE.png" alt="닫기">
+                    <img src="/image/select/CLOSE.png" alt="닫기">
                 </div>
             </div>
         </div>
@@ -58,7 +58,7 @@
         <div class="input-modal-content">
             <!-- 모달 컨테이너 상단 이미지 -->
             <div class="input-modal-inner-image">
-                <img src="/image/3_selectPage/enterYourThoughts.png" alt="당신의 생각을 입력해보세요">
+                <img src="/image/select/enterYourThoughts.png" alt="당신의 생각을 입력해보세요">
             </div>
             <div class="input-modal-body">
                 <form id="concern-form" method="post" action="/concern">
@@ -74,12 +74,12 @@
                     <div class="input-modal-buttons">
                         <!-- 제출 화살표 버튼 -->
                         <div class="input-modal-arrow-btn" onclick="submitConcern()">
-                            <img src="/image/3_selectPage/arrow22.png" alt="제출하기">
+                            <img src="/image/select/arrow22.png" alt="제출하기">
                         </div>
 
                         <!-- 닫기 버튼 -->
                         <div class="input-modal-close-btn" onclick="closeInputModal()">
-                            <img src="/image/3_selectPage/CLOSE.png" alt="닫기">
+                            <img src="/image/select/CLOSE.png" alt="닫기">
                         </div>
                     </div>
                 </form>
@@ -90,20 +90,20 @@
     <!-- 하단 컨트롤 영역 -->
     <div class="bottom-controls">
         <div class="arrow-btn" id="prev-btn">
-            <img src="/image/3_selectPage/arrow11.png" alt="Previous">
+            <img src="/image/select/arrow11.png" alt="Previous">
         </div>
 
         <div class="about-btn" id="about-btn" onclick="openItemModal()">
-            <img src="/image/3_selectPage/ABOUT.png" alt="About">
+            <img src="/image/select/ABOUT.png" alt="About">
         </div>
 
         <div class="arrow-btn" id="next-btn">
-            <img src="/image/3_selectPage/arrow22.png" alt="Next">
+            <img src="/image/select/arrow22.png" alt="Next">
         </div>
     </div>
 
     <div class="moving-text">
-        <img src="/image/3_selectPage/BackgroundText.png" alt="Moving Text">
+        <img src="/image/select/BackgroundText.png" alt="Moving Text">
     </div>
 
     <th:block th:replace="~{fragments/common-scripts :: music-scripts}"></th:block>

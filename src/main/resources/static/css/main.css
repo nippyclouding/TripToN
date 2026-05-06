@@ -1,5 +1,5 @@
 /* ============================
-   1_main.css - 최종 버전
+   main.css
    ============================ */
 
 /* 전체 페이지 초기화 */
@@ -16,7 +16,7 @@ html, body {
 
 /* 메인 배경 이미지 */
 body.main-background {
-    background-image: url('/image/1_mainPage/mainPage1.png');
+    background-image: url('/image/sharedImage/mainPage1.png');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;

@@ -1,24 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const ANIM_IMAGE_SWAP_MS = 250;
+    const ANIM_SLIDE_DURATION_MS = 500;
+    const MODAL_CLOSE_DURATION_MS = 300;
+    const FOCUS_DELAY_MS = 100;
+    const MOVING_TEXT_HEIGHT_PX = 800;
+    const MOVING_TEXT_SPEED = 1.5;
+
     const movingText = document.querySelector('.moving-text');
     const img = document.querySelector('.moving-text img');
 
-    // 가방 이미지 관련 요소들
     const bagImage = document.getElementById('bag-image');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
 
-    // 가방 이미지 배열
     const bagImages = [
-        '/image/3_selectPage/item1.png',  // 베개가방
-        '/image/3_selectPage/item2.png',  // 서류가방
-        '/image/3_selectPage/item3.png'   // 세탁바구니가방
+        '/image/select/item1.png',  // 베개가방
+        '/image/select/item2.png',  // 서류가방
+        '/image/select/item3.png'   // 세탁바구니가방
     ];
 
-    // 아이템 소개 이미지 배열
     const introduceImages = [
-        '/image/3_selectPage/itemIntroduce1.png', // 베개가방 -> item1
-        '/image/3_selectPage/itemIntroduce2.png', // 서류가방 -> item2  
-        '/image/3_selectPage/itemIntroduce3.png'  // 세탁바구니가방 -> item3
+        '/image/select/itemIntroduce1.png', // 베개가방 -> item1
+        '/image/select/itemIntroduce2.png', // 서류가방 -> item2
+        '/image/select/itemIntroduce3.png'  // 세탁바구니가방 -> item3
     ];
 
     let currentIndex = 0;
@@ -27,26 +31,23 @@ document.addEventListener('DOMContentLoaded', function() {
     function setPosition() {
         const windowHeight = window.innerHeight;
         const centerY = windowHeight / 2;
-        const imageHeight = 800; // 현재 설정된 이미지 높이
 
         movingText.style.position = 'fixed';
         movingText.style.left = '0px';
         movingText.style.width = '100%';
         movingText.style.zIndex = '-1';
         movingText.style.pointerEvents = 'none';
-        movingText.style.top = (centerY - imageHeight/2) + 'px';
+        movingText.style.top = (centerY - MOVING_TEXT_HEIGHT_PX / 2) + 'px';
 
-        // 이미지에도 직접 적용
-        img.style.top = '0px';  // 컨테이너 기준으로 0
+        img.style.top = '0px';
     }
 
-    // 애니메이션 시작 (기존 moving text용)
     function startAnimation() {
         const windowWidth = window.innerWidth;
         let currentPosition = windowWidth;
 
         function moveText() {
-            currentPosition -= 1.5;
+            currentPosition -= MOVING_TEXT_SPEED;
 
             if (currentPosition < -img.offsetWidth) {
                 currentPosition = windowWidth;
@@ -54,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             img.style.left = currentPosition + 'px';
             img.style.position = 'absolute';
-            img.style.maxHeight = '800px';
+            img.style.maxHeight = MOVING_TEXT_HEIGHT_PX + 'px';
 
             requestAnimationFrame(moveText);
         }
@@ -62,86 +63,67 @@ document.addEventListener('DOMContentLoaded', function() {
         moveText();
     }
 
-    // 가방 이미지 변경 함수
     function changeBagImage(direction) {
         if (isAnimating) return;
 
         isAnimating = true;
 
-        // 애니메이션 클래스 추가
         if (direction === 'next') {
             bagImage.classList.add('bag-slide-left');
         } else {
             bagImage.classList.add('bag-slide-right');
         }
 
-        // 애니메이션 중간에 이미지 변경
         setTimeout(() => {
             bagImage.src = bagImages[currentIndex];
-        }, 250);
+        }, ANIM_IMAGE_SWAP_MS);
 
-        // 애니메이션 완료 후 클래스 제거
         setTimeout(() => {
             bagImage.classList.remove('bag-slide-left', 'bag-slide-right');
             isAnimating = false;
-        }, 500);
+        }, ANIM_SLIDE_DURATION_MS);
     }
 
-    // 아이템 모달 열기 함수를 전역으로 등록
     window.openItemModal = function() {
         const modal = document.getElementById('itemModal');
         const introduceImg = document.getElementById('item-introduce-image');
         const luggageInput = document.getElementById('luggage-input');
 
-        // 현재 인덱스에 맞는 소개 이미지 설정
         introduceImg.src = introduceImages[currentIndex];
 
-        // 현재 인덱스에 맞는 가방 값 설정 (enum: a, b, c)
         const luggageValues = ['a', 'b', 'c'];
         luggageInput.value = luggageValues[currentIndex];
 
-        // 모달 표시
         modal.classList.add('show');
-
-        // 바디 스크롤 방지
         document.body.style.overflow = 'hidden';
     }
 
-    // 아이템 모달 닫기 함수 (전역 함수로 등록)
     window.closeItemModal = function() {
         const modal = document.getElementById('itemModal');
 
-        // 닫기 애니메이션
         modal.classList.add('closing');
 
         setTimeout(() => {
             modal.classList.remove('show', 'closing');
-            document.body.style.overflow = 'auto'; // 스크롤 복원
-        }, 300);
+            document.body.style.overflow = 'auto';
+        }, MODAL_CLOSE_DURATION_MS);
     }
 
-    // 입력 모달 열기 함수
     window.showInputModal = function() {
         const inputModal = document.getElementById('inputModal');
         const luggageInput = document.getElementById('luggage-input');
         const currentLuggage = document.getElementById('luggage-input').value;
-        
-        // 현재 선택된 가방 정보를 입력 모달로 전달
+
         luggageInput.value = currentLuggage;
-        
-        // 입력 모달 표시
+
         inputModal.classList.add('show');
-        
-        // body 스크롤 허용
         document.body.style.overflow = 'auto';
-        
-        // 텍스트 영역에 포커스
+
         setTimeout(() => {
             document.getElementById('concern-input').focus();
-        }, 100);
+        }, FOCUS_DELAY_MS);
     }
 
-    // 입력 모달 닫기 함수
     window.closeInputModal = function() {
         const inputModal = document.getElementById('inputModal');
 
@@ -151,13 +133,11 @@ document.addEventListener('DOMContentLoaded', function() {
             inputModal.classList.remove('show', 'closing');
             document.getElementById('title-input').value = '';
             document.getElementById('concern-input').value = '';
-            // 자물쇠 초기화
             document.getElementById('locked-input').value = 'false';
             document.getElementById('lock-btn').textContent = '🔓';
-        }, 300);
+        }, MODAL_CLOSE_DURATION_MS);
     }
 
-    // 자물쇠 토글
     window.toggleLock = function() {
         const lockedInput = document.getElementById('locked-input');
         const lockBtn     = document.getElementById('lock-btn');
@@ -167,7 +147,6 @@ document.addEventListener('DOMContentLoaded', function() {
         lockBtn.textContent  = isLocked ? '🔓' : '🔒';
     }
 
-    // 고민 제출 함수
     let isSubmitting = false;
 
     window.submitConcern = function() {
@@ -198,53 +177,39 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('concern-form').submit();
     }
 
-    // 다음 버튼 클릭
     nextBtn.addEventListener('click', function() {
         currentIndex = (currentIndex + 1) % bagImages.length;
         changeBagImage('next');
     });
 
-    // 이전 버튼 클릭
     prevBtn.addEventListener('click', function() {
         currentIndex = (currentIndex - 1 + bagImages.length) % bagImages.length;
         changeBagImage('prev');
     });
 
-    // 가방 이미지 클릭 시 모달 열기 (기존 코드 수정)
     bagImage.addEventListener('click', function() {
         openItemModal();
     });
 
-    // ESC 키로 모달 닫기 (사이드바는 shared.js에서 처리)
+    // ESC / Enter 키 처리 (사이드바 ESC는 shared.js에서 별도 처리)
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            const itemModal = document.getElementById('itemModal');
-            const inputModal = document.getElementById('inputModal');
+        const itemModal = document.getElementById('itemModal');
+        const inputModal = document.getElementById('inputModal');
 
+        if (e.key === 'Escape') {
             if (inputModal.classList.contains('show')) {
                 closeInputModal();
             } else if (itemModal.classList.contains('show')) {
                 closeItemModal();
             }
+        } else if (e.key === 'Enter' && inputModal.classList.contains('show')) {
+            e.preventDefault();
+            submitConcern();
         }
     });
 
-    // Enter 키로 폼 제출 (검증 포함)
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            const inputModal = document.getElementById('inputModal');
-            if (inputModal.classList.contains('show')) {
-                e.preventDefault(); // 기본 Enter 동작 방지
-                submitConcern(); // 검증과 함께 제출
-            }
-        }
-    });
-
-    // 초기 설정
     setPosition();
     startAnimation();
 
-    // 브라우저 크기 변경 시 위치 재조정
     window.addEventListener('resize', setPosition);
 });
-
