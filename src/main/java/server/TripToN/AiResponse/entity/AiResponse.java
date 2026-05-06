@@ -25,10 +25,10 @@ public class AiResponse {
     private Long responseId;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "concern_id", nullable = false)
+    @JoinColumn(name = "concern_id", nullable = false, unique = true)
     private Concern concern;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String responseContent;
 
     @CreatedDate

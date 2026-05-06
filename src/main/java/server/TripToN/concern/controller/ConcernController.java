@@ -35,7 +35,7 @@ public class ConcernController {
         Long memberId = (Long) session.getAttribute(Const.MEMBER_SESSION_KEY);
         AiResponseDto aiResponseDto = concernService.saveConcernAndGetAiResponse(dto, memberId);
         model.addAttribute("aiResponseDto", aiResponseDto);
-        return "5_info";
+        return "info";
     }
 
 
@@ -47,7 +47,7 @@ public class ConcernController {
         model.addAttribute("concernResponseDto", concernPage.getContent());
         model.addAttribute("totalPages", concernPage.getTotalPages());
         model.addAttribute("currentPage", page);
-        return "6_result";
+        return "result";
     }
 
     // 고민 상세 조회

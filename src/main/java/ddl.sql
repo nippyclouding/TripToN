@@ -5,20 +5,15 @@ show tables;
 -- 부모 테이블 먼저 생성 (의존성이 없는 테이블들)
 CREATE TABLE `MEMBERS` (
                            `member_id`	            BIGINT	       NOT NULL AUTO_INCREMENT,
-                           `member_login_id`	    VARCHAR(50)	   NOT NULL,
                            `member_login_password`	VARCHAR(255)   NOT NULL,
                            `member_email`	        VARCHAR(100)   NOT NULL,
                            `created_at`	        DATETIME	   NOT NULL DEFAULT NOW(),
                            `updated_at`	        DATETIME	   NULL,
+                           `deleted_at`         DATETIME       NULL,
                            CONSTRAINT `PK_MEMBERS` PRIMARY KEY (`member_id`)
 );
 
-CREATE TABLE `CATEGORIES` (
-                              `category_id`	  BIGINT	    NOT NULL AUTO_INCREMENT,
-                              `category_name`	  VARCHAR(50)	NOT NULL DEFAULT 'BASIC',
-                              `created_at`	  DATETIME	    NOT NULL DEFAULT NOW(),
-                              CONSTRAINT `PK_CATEGORIES` PRIMARY KEY (`category_id`)
-);
+
 
 -- 자식 테이블 생성 (MEMBERS 등을 참조하는 테이블)
 CREATE TABLE `CONCERNS` (
@@ -28,6 +23,7 @@ CREATE TABLE `CONCERNS` (
                             `concern_content` TEXT	                NOT NULL,
                             `created_at`	  DATETIME	            NOT NULL DEFAULT NOW(),
                             `updated_at`	  DATETIME	            NULL,
+                            `deleted_at`      DATETIME              NULL,
                             `is_locked`	      BOOLEAN	            NOT NULL DEFAULT FALSE,
                             `luggage_type`	  ENUM('a', 'b', 'c')	NOT NULL DEFAULT 'a',
                             CONSTRAINT `PK_CONCERNS` PRIMARY KEY (`concern_id`),
@@ -40,7 +36,8 @@ CREATE TABLE `RESPONSES` (
                              `response_content`	  TEXT	    NOT NULL,
                              `created_at`	      DATETIME	NOT NULL DEFAULT NOW(),
                              CONSTRAINT `PK_RESPONSES` PRIMARY KEY (`response_id`),
-                             CONSTRAINT `FK_CONCERNS_TO_RESPONSES` FOREIGN KEY (`concern_id`) REFERENCES `CONCERNS` (`concern_id`)
+                             CONSTRAINT `FK_CONCERNS_TO_RESPONSES` FOREIGN KEY (`concern_id`) REFERENCES `CONCERNS` (`concern_id`),
+                             CONSTRAINT `UQ_RESPONSE_CONCERN` UNIQUE (`concern_id`)
 );
 
 CREATE TABLE `COMMENTS` (
@@ -50,30 +47,13 @@ CREATE TABLE `COMMENTS` (
                             `comment_content` TEXT	    NOT NULL,
                             `created_at`	  DATETIME	NOT NULL DEFAULT NOW(),
                             `updated_at`	  DATETIME	NULL,
+                            `deleted_at`      DATETIME  NULL,
                             CONSTRAINT `PK_COMMENTS` PRIMARY KEY (`comment_id`),
                             CONSTRAINT `FK_MEMBERS_TO_COMMENTS` FOREIGN KEY (`member_id`) REFERENCES `MEMBERS` (`member_id`),
                             CONSTRAINT `FK_CONCERNS_TO_COMMENTS` FOREIGN KEY (`concern_id`) REFERENCES `CONCERNS` (`concern_id`)
 );
 
-CREATE TABLE `CONCERN_CATEGORIES` (
-                                      `concern_category_id` BIGINT	NOT NULL AUTO_INCREMENT,
-                                      `concern_id`	      BIGINT	NOT NULL,
-                                      `category_id`	      BIGINT	NOT NULL,
-                                      CONSTRAINT `PK_CONCERN_CATEGORIES` PRIMARY KEY (`concern_category_id`),
-                                      CONSTRAINT `FK_CONCERN_TO_CC` FOREIGN KEY (`concern_id`) REFERENCES `CONCERNS` (`concern_id`),
-                                      CONSTRAINT `FK_CATEGORY_TO_CC` FOREIGN KEY (`category_id`) REFERENCES `CATEGORIES` (`category_id`)
-);
 
-CREATE TABLE `ALARMS` (
-                          `alarm_id`	      BIGINT	     NOT NULL AUTO_INCREMENT,
-                          `member_id`	      BIGINT	     NOT NULL,
-                          `comment_id`	  BIGINT	     NOT NULL,
-                          `alarm_content`	  VARCHAR(255)	 NOT NULL,
-                          `created_at`	  DATETIME	     NOT NULL DEFAULT NOW(),
-                          CONSTRAINT `PK_ALARMS` PRIMARY KEY (`alarm_id`),
-                          CONSTRAINT `FK_MEMBERS_TO_ALARMS` FOREIGN KEY (`member_id`) REFERENCES `MEMBERS` (`member_id`),
-                          CONSTRAINT `FK_COMMENTS_TO_ALARMS` FOREIGN KEY (`comment_id`) REFERENCES `COMMENTS` (`comment_id`)
-);
 
 -- 좋아요 테이블 (중복 클릭 방지 UNIQUE KEY 추가)
 CREATE TABLE `CONCERN_LIKES` (

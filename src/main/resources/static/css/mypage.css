@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Roboto+Condensed:wght@100..900&display=swap');
 
 body.mypage-background {
-    background-image: url('/image/1_mainPage/mainPage1.png');
+    background-image: url('/image/sharedImage/mainPage1.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
