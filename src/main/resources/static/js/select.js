@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         '/image/select/item3.png'   // 세탁바구니가방
     ];
 
-    const introduceImages = [
+    const storyImages = [
         '/image/select/itemIntroduce1.png', // 베개가방 -> item1
         '/image/select/itemIntroduce2.png', // 서류가방 -> item2
         '/image/select/itemIntroduce3.png'  // 세탁바구니가방 -> item3
@@ -86,10 +86,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.openItemModal = function() {
         const modal = document.getElementById('itemModal');
-        const introduceImg = document.getElementById('item-introduce-image');
+        const storyImg = document.getElementById('item-story-image');
         const luggageInput = document.getElementById('luggage-input');
 
-        introduceImg.src = introduceImages[currentIndex];
+        storyImg.src = storyImages[currentIndex];
 
         const luggageValues = ['a', 'b', 'c'];
         luggageInput.value = luggageValues[currentIndex];
@@ -133,18 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
             inputModal.classList.remove('show', 'closing');
             document.getElementById('title-input').value = '';
             document.getElementById('concern-input').value = '';
-            document.getElementById('locked-input').value = 'false';
-            document.getElementById('lock-btn').textContent = '🔓';
         }, MODAL_CLOSE_DURATION_MS);
-    }
-
-    window.toggleLock = function() {
-        const lockedInput = document.getElementById('locked-input');
-        const lockBtn     = document.getElementById('lock-btn');
-        const isLocked    = lockedInput.value === 'true';
-
-        lockedInput.value    = isLocked ? 'false' : 'true';
-        lockBtn.textContent  = isLocked ? '🔓' : '🔒';
     }
 
     let isSubmitting = false;

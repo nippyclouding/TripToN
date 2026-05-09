@@ -1,18 +1,11 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>SIGNUP / IN</title>
-    <link rel="stylesheet" href="/css/shared.css">
-    <link rel="stylesheet" href="/css/signup.css">
+    <th:block th:replace="~{fragments/layout :: head('SIGNUP / IN', '/css/signup.css')}"></th:block>
 </head>
 <body class="signup-background">
 
-    <div th:replace="~{fragments/sidebar :: symbol-logo}"></div>
-    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
-    <div th:replace="~{fragments/sound-toggle :: sound-toggle}"></div>
+    <th:block th:replace="~{fragments/layout :: app-chrome}"></th:block>
 
     <div class="signup-container">
 

@@ -42,7 +42,6 @@ public class ConcernService {
         Concern concern = Concern.builder()
                 .concernTitle(dto.getConcernTitle())
                 .concernContent(dto.getConcernContent())
-                .isLocked(dto.isLocked())
                 .luggageType(dto.getLuggageType())
                 .member(member)
                 .build();
@@ -79,10 +78,9 @@ public class ConcernService {
 
         return ConcernDetailResponseDto.builder()
                 .memberId(concern.getMember().getMemberId())
-                .memberNickName(concern.getMember().getMemberNickName())
+                .memberNickName(concern.getMember().getMemberNickname())
                 .concernTitle(concern.getConcernTitle())
                 .concernContent(concern.getConcernContent())
-                .isLocked(concern.isLocked())
                 .luggageType(concern.getLuggageType())
                 .createdAt(concern.getCreatedAt())
                 .luggageTypeImageIndex(concern.getLuggageType().ordinal() + 1)

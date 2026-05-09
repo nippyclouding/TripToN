@@ -19,8 +19,8 @@ public class MainController {
         model.addAttribute("isLoggedIn", session.getAttribute(Const.MEMBER_SESSION_KEY) != null);
         return "main";
     }
-    @GetMapping("/introduce")
-    public String story() { return "introduce"; }
+    @GetMapping("/story")
+    public String story() { return "story"; }
     @GetMapping("/choose")
     public String choose() { return "select"; }
 
@@ -29,4 +29,6 @@ public class MainController {
 
     @GetMapping("/result")
     public String result() { return "redirect:/concern"; }
+
+
 }

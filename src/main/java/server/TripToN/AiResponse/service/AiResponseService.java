@@ -1,7 +1,10 @@
 package server.TripToN.AiResponse.service;
 
+import server.TripToN.AiResponse.client.GeminiApiException;
 import server.TripToN.AiResponse.client.GeminiClient;
 import server.TripToN.AiResponse.entity.AiResponse;
+import server.TripToN.AiResponse.entity.AiRequestLog;
+import server.TripToN.AiResponse.repository.AiRequestLogRepository;
 import server.TripToN.AiResponse.repository.AiResponseRepository;
 import server.TripToN.concern.entity.Concern;
 import lombok.RequiredArgsConstructor;
@@ -13,23 +16,44 @@ import org.springframework.transaction.annotation.Transactional;
 public class AiResponseService {
 
     private final AiResponseRepository aiResponseRepository;
+    private final AiRequestLogRepository aiRequestLogRepository;
     private final GeminiClient geminiClient;
 
     @Transactional
     public AiResponse getResponse(Concern concern) {
-        // 1. 대답 얻기
-        String prompt = buildPrompt(concern);           // 프롬프트 생성
-        String aiText = geminiClient.generate(prompt);  // 프롬프트 전달
-        if (aiText == null) return null;
+        String prompt = buildPrompt(concern);
 
-        // 2. 대답 저장
-        AiResponse aiResponse = AiResponse.builder()
-                .concern(concern)
-                .responseContent(aiText)
-                .build();
+        try {
+            String aiText = geminiClient.generate(prompt);
+            if (aiText == null) {
+                saveLog(concern, false, "GEMINI_RESPONSE_EMPTY");
+                return null;
+            }
 
-        // 3. 대답 리턴
-        return aiResponseRepository.save(aiResponse);
+            // null이 아닌 정상 응답이라면
+            AiResponse aiResponse = AiResponse.builder()
+                    .concern(concern)
+                    .responseContent(aiText)
+                    .build();
+
+            AiResponse saved = aiResponseRepository.save(aiResponse);
+            saveLog(concern, true, null);
+            return saved;
+        } catch (GeminiApiException e) {
+            saveLog(concern, false, e.getCode());
+            return null;
+        }
+    }
+
+    private void saveLog(Concern concern, boolean requestStatus, String failureReason) {
+        aiRequestLogRepository.save(
+                AiRequestLog.builder()
+                        .requestStatus(requestStatus)
+                        .requestFailureReason(failureReason)
+                        .requestMemberId(concern.getMember().getMemberId())
+                        .requestMemberNickname(concern.getMember().getMemberNickname())
+                        .build()
+        );
     }
 
     private String buildPrompt(Concern concern) {

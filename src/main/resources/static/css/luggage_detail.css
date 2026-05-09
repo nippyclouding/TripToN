@@ -25,63 +25,6 @@ body, html {
     z-index: -1;
 }
 
-/* ===== 잠긴 글 오버레이 ===== */
-.locked-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    background: rgba(0, 0, 0, 0.4);
-}
-
-.locked-box {
-    background: rgba(0, 0, 0, 0.88);
-    border: 2px solid rgba(255, 255, 255, 0.35);
-    border-radius: 16px;
-    padding: 50px 60px;
-    text-align: center;
-    color: white;
-    backdrop-filter: blur(12px);
-}
-
-.lock-icon {
-    font-size: 52px;
-    margin-bottom: 18px;
-}
-
-.locked-box h2 {
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    letter-spacing: 1px;
-}
-
-.locked-box p {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.65);
-    margin-bottom: 28px;
-}
-
-.locked-back-btn {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1.5px solid rgba(255, 255, 255, 0.5);
-    border-radius: 8px;
-    color: white;
-    font-size: 15px;
-    padding: 10px 28px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.locked-back-btn:hover {
-    background: rgba(255, 255, 255, 0.28);
-}
-
 /* ===== 중앙 가방 이미지 ===== */
 .luggage-center {
     position: fixed;
@@ -130,15 +73,6 @@ body, html {
     color: #ffffff;
 }
 
-.lock-badge {
-    font-size: 12px;
-    background: rgba(255, 200, 0, 0.2);
-    border: 1px solid rgba(255, 200, 0, 0.5);
-    border-radius: 20px;
-    padding: 2px 8px;
-    color: #ffd700;
-}
-
 /* ===== 좌측 상단: 고민 패널 ===== */
 .concern-panel {
     top: 60px;
@@ -178,6 +112,50 @@ body, html {
     line-height: 1.7;
     color: rgba(255, 255, 255, 0.8);
     word-break: break-word;
+}
+
+.concern-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+/* 좋아요 버튼 */
+.like-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.like-btn {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.like-btn:hover {
+    border-color: rgba(255, 255, 255, 0.6);
+    color: white;
+}
+
+.like-btn.liked {
+    background: rgba(255, 100, 100, 0.2);
+    border-color: rgba(255, 100, 100, 0.6);
+    color: #ff6464;
+}
+
+.like-count {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 /* ===== 좌측 하단: AI 답변 패널 ===== */
@@ -330,11 +308,117 @@ body, html {
     color: rgba(255, 255, 255, 0.45);
 }
 
+.comment-like-btn {
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    padding: 2px 8px;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    line-height: 1.4;
+}
+
+.comment-like-btn:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.comment-like-btn.liked {
+    background: rgba(255, 100, 100, 0.15);
+    border-color: rgba(255, 100, 100, 0.5);
+    color: #ff8080;
+}
+
 .comment-item p {
     font-size: 13px;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.8);
     word-break: break-word;
+}
+
+/* 수정 모달 */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1100;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-box {
+    background: rgba(10, 10, 20, 0.95);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+    padding: 28px 24px;
+    width: 480px;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    color: white;
+}
+
+.modal-box h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.modal-box input[type="text"],
+.modal-box textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: white;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.modal-box input[type="text"]:focus,
+.modal-box textarea:focus {
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.modal-box input::placeholder,
+.modal-box textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.modal-box textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.modal-box label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 4px;
 }
 
 /* ===== 뒤로가기 버튼 (하단 중앙) ===== */

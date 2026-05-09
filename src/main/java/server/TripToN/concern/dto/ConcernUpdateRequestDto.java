@@ -18,6 +18,5 @@ public class ConcernUpdateRequestDto {
     private String concernTitle;
     @NotNull
     private String concernContent;
-    private boolean isLocked;
 
 }

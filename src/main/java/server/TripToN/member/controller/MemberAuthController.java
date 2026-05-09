@@ -3,20 +3,18 @@ package server.TripToN.member.controller;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import server.TripToN.global.util.Const;
-import server.TripToN.member.dto.MyPageResponseDto;
-import server.TripToN.member.dto.SignInRequestDto;
-import server.TripToN.member.dto.SignUpRequestDto;
+import server.TripToN.member.dto.sign.SignInRequestDto;
+import server.TripToN.member.dto.sign.SignUpEmailCheckRequestDto;
+import server.TripToN.member.dto.sign.SignUpNicknameCheckRequestDto;
+import server.TripToN.member.dto.sign.SignUpRequestDto;
 import server.TripToN.member.entity.Member;
+import server.TripToN.member.repository.MemberRepository;
 import server.TripToN.member.service.MemberAuthService;
-import server.TripToN.member.service.MemberService;
 
 @Slf4j
 @Controller
@@ -25,24 +23,32 @@ import server.TripToN.member.service.MemberService;
 public class MemberAuthController {
 
     private final MemberAuthService memberAuthService;
+    private final MemberRepository memberRepository;
 
 
     // 회원가입
     @PostMapping("/signUp")
-    public String signUp(SignUpRequestDto dto, RedirectAttributes attributes) {
-        try {
-            memberAuthService.signUp(dto);
-            attributes.addFlashAttribute("success", "회원가입이 완료됐습니다. 로그인해주세요.");
-        } catch (Exception e) {
-            log.error("회원가입 실패: {}", e.getMessage(), e);
-            attributes.addFlashAttribute("fail", "회원가입에 실패했습니다: " + e.getMessage());
-        }
+    public String signUp(@ModelAttribute SignUpRequestDto dto, RedirectAttributes attributes) {
+        memberAuthService.signUp(dto);
+        attributes.addFlashAttribute("success", "회원가입이 완료됐습니다. 로그인해주세요.");
         return "redirect:/";
+    }
+
+    // 회원 가입 시 이메일 검증
+    @PostMapping("/check-email-unique")
+    public ResponseEntity<Boolean> checkUnique(@RequestBody SignUpEmailCheckRequestDto dto) {
+        return ResponseEntity.ok(memberRepository.findByMemberEmail(dto.email()).isEmpty());
+    }
+
+    // 회원 가입 시 닉네임 검증
+    @PostMapping("/check-nickname-unique")
+    public ResponseEntity<Boolean> checkNickname(@RequestBody SignUpNicknameCheckRequestDto dto) {
+        return ResponseEntity.ok(memberRepository.findByMemberNickname(dto.nickname()).isEmpty());
     }
 
     // 로그인
     @PostMapping("/signIn")
-    public String signIn(SignInRequestDto dto, HttpSession session, RedirectAttributes attributes) {
+    public String signIn(@ModelAttribute SignInRequestDto dto, HttpSession session, RedirectAttributes attributes) {
         Member member = memberAuthService.signIn(dto);
         if (member != null) {
             session.setAttribute(Const.MEMBER_SESSION_KEY, member.getMemberId());

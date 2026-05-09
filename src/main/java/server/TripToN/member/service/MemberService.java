@@ -14,11 +14,9 @@ import server.TripToN.concern.entity.Concern;
 import server.TripToN.concern.repository.ConcernRepository;
 import server.TripToN.concernLike.entity.ConcernLike;
 import server.TripToN.concernLike.repository.ConcernLikeRepository;
-import server.TripToN.member.dto.*;
+import server.TripToN.member.dto.mypage.*;
 import server.TripToN.member.entity.Member;
 import server.TripToN.member.repository.MemberRepository;
-
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -59,13 +57,12 @@ public class MemberService {
 
         return MyPageResponseDto.builder()
                 .memberEmail(member.getMemberEmail())
-                .memberNickName(member.getMemberNickName())
+                .memberNickName(member.getMemberNickname())
 
                 .concernDtos(concerns.getContent().stream()
                         .map(c -> MyPageConcernResponseDto.builder()
                                 .concernId(c.getConcernId())
                                 .concernTitle(c.getConcernTitle())
-                                .isLocked(c.isLocked())
                                 .luggageType(c.getLuggageType())
                                 .createdAt(c.getCreatedAt())
                                 .build())

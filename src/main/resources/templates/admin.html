@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('ADMIN', '/css/admin.css')}"></th:block>
+</head>
+<body class="admin-background">
+
+<th:block th:replace="~{fragments/layout :: app-chrome}"></th:block>
+
+<main class="admin-wrap">
+    <section class="admin-summary" aria-label="관리자 요약 정보">
+        <div class="summary-block summary-block--left">
+            <span class="summary-label">총 회원 수 :</span>
+            <span class="summary-value" id="total-member-count">0</span>
+        </div>
+        <div class="summary-block summary-block--center">
+            <span class="summary-label">총 고민 수 :</span>
+            <span class="summary-value" id="total-concern-count">0</span>
+        </div>
+        <div class="summary-block summary-block--right">
+            <span class="summary-label">금일 AI 고민 요청 수 :</span>
+            <span class="summary-value" id="total-ai-request-count">0</span>
+        </div>
+    </section>
+
+    <section class="admin-grid" aria-label="관리자 데이터 목록">
+        <article class="admin-panel" data-panel="members">
+            <header class="admin-panel-header">
+                <h2>MEMBERS</h2>
+                <span class="panel-meta" id="members-page-meta">0 / 0</span>
+            </header>
+            <div class="admin-list" id="members-list"></div>
+            <footer class="admin-pagination">
+                <button type="button" class="page-btn" data-panel="members" data-direction="prev">&#8592;</button>
+                <button type="button" class="page-btn" data-panel="members" data-direction="next">&#8594;</button>
+            </footer>
+        </article>
+
+        <article class="admin-panel" data-panel="concerns">
+            <header class="admin-panel-header">
+                <h2>CONCERNS</h2>
+                <span class="panel-meta" id="concerns-page-meta">0 / 0</span>
+            </header>
+            <div class="admin-list" id="concerns-list"></div>
+            <footer class="admin-pagination">
+                <button type="button" class="page-btn" data-panel="concerns" data-direction="prev">&#8592;</button>
+                <button type="button" class="page-btn" data-panel="concerns" data-direction="next">&#8594;</button>
+            </footer>
+        </article>
+
+        <article class="admin-panel" data-panel="member-login-logs">
+            <header class="admin-panel-header">
+                <h2>LOGIN LOGS</h2>
+                <span class="panel-meta" id="member-login-logs-page-meta">0 / 0</span>
+            </header>
+            <div class="admin-list" id="member-login-logs-list"></div>
+            <footer class="admin-pagination">
+                <button type="button" class="page-btn" data-panel="member-login-logs" data-direction="prev">&#8592;</button>
+                <button type="button" class="page-btn" data-panel="member-login-logs" data-direction="next">&#8594;</button>
+            </footer>
+        </article>
+
+        <article class="admin-panel" data-panel="gemini-request-logs">
+            <header class="admin-panel-header">
+                <h2>GEMINI LOGS</h2>
+                <span class="panel-meta" id="gemini-request-logs-page-meta">0 / 0</span>
+            </header>
+            <div class="admin-list" id="gemini-request-logs-list"></div>
+            <footer class="admin-pagination">
+                <button type="button" class="page-btn" data-panel="gemini-request-logs" data-direction="prev">&#8592;</button>
+                <button type="button" class="page-btn" data-panel="gemini-request-logs" data-direction="next">&#8594;</button>
+            </footer>
+        </article>
+    </section>
+</main>
+
+<th:block th:replace="~{fragments/common-scripts :: music-scripts}"></th:block>
+<script src="/js/admin.js" defer></script>
+
+</body>
+</html>

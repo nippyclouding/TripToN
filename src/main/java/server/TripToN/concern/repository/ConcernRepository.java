@@ -26,5 +26,27 @@ public interface ConcernRepository extends JpaRepository<Concern, Long> {
     @Query("SELECT c FROM Concern c WHERE c.member.memberId = :memberId")
     Page<Concern> findByMemberMemberId(@Param("memberId") Long memberId, Pageable pageable);
 
+    // 어드민 페이지 전용 쿼리, 네이티브 쿼리 - 테이블명 소문자
+    @Query(
+            value = """
+                    SELECT
+                        c.concern_id AS concernId,
+                        c.concern_title AS concernTitle,
+                        c.concern_content AS concernContent,
+                        c.luggage_type AS luggageType,
+                        c.created_at AS createdAt,
+                        c.updated_at AS updatedAt,
+                        c.deleted_at AS deletedAt,
+                        m.member_id AS memberId,
+                        m.member_email AS memberEmail,
+                        m.member_nickname AS memberNickname
+                    FROM concerns c
+                    JOIN members m ON c.member_id = m.member_id
+                    ORDER BY c.created_at DESC
+                    """,
+            countQuery = "SELECT COUNT(*) FROM concerns",
+            nativeQuery = true
+    )
+    Page<ConcernAdminProjection> findAllForAdmin(Pageable pageable);
 
 }

@@ -3,9 +3,11 @@ package server.TripToN.member.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import server.TripToN.member.dto.SignInRequestDto;
-import server.TripToN.member.dto.SignUpRequestDto;
+import server.TripToN.member.dto.sign.SignInRequestDto;
+import server.TripToN.member.dto.sign.SignUpRequestDto;
 import server.TripToN.member.entity.Member;
+import server.TripToN.member.entity.MemberLoginLog;
+import server.TripToN.member.repository.MemberLoginLogRepository;
 import server.TripToN.member.repository.MemberRepository;
 
 import java.util.Optional;
@@ -16,24 +18,48 @@ import java.util.Optional;
 public class MemberAuthService {
 
     private final MemberRepository memberRepository;
+    private final MemberLoginLogRepository memberLoginLogRepository;
 
     public void signUp(SignUpRequestDto dto) {
+        if (!dto.getMemberLoginPassword().equals(dto.getMemberLoginPasswordConfirm())) throw new IllegalArgumentException("패스워드 입력이 잘못되었습니다.");
+        if (memberRepository.findByMemberEmail(dto.getMemberEmail()).isPresent()) throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+        if (memberRepository.findByMemberNickname(dto.getMemberNickName()).isPresent()) throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
+
         Member member = Member.builder()
                 .memberEmail(dto.getMemberEmail())
                 .memberLoginPassword(dto.getMemberLoginPassword())
-                .memberNickName(dto.getMemberNickName())
+                .memberNickname(dto.getMemberNickName())
                 .build();
         memberRepository.save(member);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Member signIn(SignInRequestDto dto) {
         Optional<Member> memberOpt = memberRepository.findByMemberEmail(dto.getMemberEmail());
 
-        if (memberOpt.isEmpty()) return null;
+        if (memberOpt.isEmpty()) {
+            saveLoginLog(dto.getMemberEmail(), null, false, "존재하지 않는 이메일로 로그인 시도");
+            return null;
+        }
 
         Member member = memberOpt.get();
-        if (member.getMemberLoginPassword().equals(dto.getMemberLoginPassword())) return member;
+        if (member.getMemberLoginPassword().equals(dto.getMemberLoginPassword())) {
+            saveLoginLog(member.getMemberEmail(), member.getMemberNickname(), true, null);
+            return member;
+        }
+
+        saveLoginLog(member.getMemberEmail(), member.getMemberNickname(), false, "패스워드 오류");
         return null;
+    }
+
+    private void saveLoginLog(String tryId, String nickname, boolean status, String reason) {
+        memberLoginLogRepository.save(
+                MemberLoginLog.builder()
+                        .loginTryId(tryId)
+                        .loginMemberNickname(nickname)
+                        .loginStatus(status)
+                        .loginFailureReason(reason)
+                        .build()
+        );
     }
 }

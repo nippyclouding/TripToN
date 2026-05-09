@@ -41,7 +41,7 @@ public class Comment extends BaseEntity {
                 .commentContent(this.commentContent)
                 .createdAt(this.getCreatedAt())
                 .updatedAt(this.getUpdatedAt())
-                .commentMemberNickname(this.member.getMemberNickName())
+                .commentMemberNickname(this.member.getMemberNickname())
                 .build();
     }
 

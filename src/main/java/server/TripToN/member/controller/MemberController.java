@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import server.TripToN.global.util.Const;
-import server.TripToN.member.dto.MyPageResponseDto;
+import server.TripToN.member.dto.mypage.MyPageResponseDto;
 import server.TripToN.member.service.MemberService;
 
 @Slf4j

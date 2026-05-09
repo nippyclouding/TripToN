@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('TripToN - Request Error', '/css/error.css')}"></th:block>
+</head>
+<body class="error-page error-page--client">
+    <th:block th:replace="~{fragments/layout :: app-chrome}"></th:block>
+
+    <main class="error-shell">
+        <section class="error-panel">
+            <p class="error-kicker">REQUEST ERROR</p>
+            <h1 th:text="${statusCode} ?: '40x'">40x</h1>
+            <p class="error-reason" th:text="${statusReason} ?: 'Client Error'">Client Error</p>
+            <p class="error-message" th:text="${errorMessage} ?: '요청을 처리할 수 없습니다.'">요청을 처리할 수 없습니다.</p>
+            <dl class="error-meta">
+                <div>
+                    <dt>CODE</dt>
+                    <dd th:text="${errorCode} ?: 'CLIENT_ERROR'">CLIENT_ERROR</dd>
+                </div>
+                <div>
+                    <dt>PATH</dt>
+                    <dd th:text="${requestPath} ?: '-'">-</dd>
+                </div>
+            </dl>
+            <div class="error-actions">
+                <a href="/" class="error-link">HOME</a>
+                <button type="button" class="error-link" onclick="history.back()">BACK</button>
+            </div>
+        </section>
+    </main>
+
+    <th:block th:replace="~{fragments/common-scripts :: music-scripts}"></th:block>
+</body>
+</html>

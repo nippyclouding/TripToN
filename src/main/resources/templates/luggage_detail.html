@@ -1,13 +1,11 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>고민 상세 정보</title>
-    <link rel="stylesheet" href="/css/luggage_detail.css">
+    <th:block th:replace="~{fragments/layout :: head('고민 상세 정보', '/css/luggage_detail.css')}"></th:block>
 </head>
 <body>
+<th:block th:replace="~{fragments/layout :: sound-only}"></th:block>
+
 <div class="container">
     <!-- 헤더 -->
     <div class="header">
@@ -72,5 +70,6 @@
         <button onclick="location.href='/'" class="action-btn secondary">새 고민 등록하기</button>
     </div>
 </div>
+<th:block th:replace="~{fragments/common-scripts :: music-scripts}"></th:block>
 </body>
 </html>

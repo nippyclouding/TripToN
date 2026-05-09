@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>고민 정보 확인</title>
-    <link rel="stylesheet" href="/css/info.css">
+    <th:block th:replace="~{fragments/layout :: head('고민 정보 확인', '/css/info.css')}"></th:block>
 </head>
 <body>
+<th:block th:replace="~{fragments/layout :: sound-only}"></th:block>
+
 <div class="container">
     <h1>당신의 고민 정보</h1>
     
@@ -25,5 +24,6 @@
         <button type="button" onclick="location.href='/result'" class="next-btn">다음 단계로</button>
     </div>
 </div>
+<th:block th:replace="~{fragments/common-scripts :: music-scripts}"></th:block>
 </body>
 </html>

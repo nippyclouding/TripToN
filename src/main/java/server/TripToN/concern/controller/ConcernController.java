@@ -56,8 +56,6 @@ public class ConcernController {
         Long loginMemberId = (Long) session.getAttribute(Const.MEMBER_SESSION_KEY);
         ConcernDetailResponseDto dto = concernService.getConcernDetail(concernId, loginMemberId); // 고민, 응답, 댓글, 회원 정보
 
-        Boolean isAccessAllowed = !dto.getIsLocked() || (loginMemberId != null && loginMemberId.equals(dto.getMemberId()));
-
         boolean isLiked = loginMemberId != null && concernLikeService.isLiked(loginMemberId, concernId);
         long likeCount = concernLikeService.getLikeCount(concernId);
 
@@ -66,7 +64,6 @@ public class ConcernController {
         // 요청자 세션 기준 뷰 렌더링 : 필드로 전송
         model.addAttribute("loginMemberId", loginMemberId);
         model.addAttribute("concernId", concernId);
-        model.addAttribute("isAccessAllowed", isAccessAllowed);
         model.addAttribute("isLiked", isLiked);
         model.addAttribute("likeCount", likeCount);
         return "detail";
