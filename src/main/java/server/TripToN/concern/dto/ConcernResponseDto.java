@@ -18,8 +18,6 @@ public class ConcernResponseDto {
 
     private String concernTitle;
 
-    private boolean isLocked;
-
     private LuggageType luggageType;
 
     // member 테이블 -> fetch join
@@ -29,9 +27,8 @@ public class ConcernResponseDto {
         return ConcernResponseDto.builder()
                 .concernId(entity.getConcernId())
                 .concernTitle(entity.getConcernTitle())
-                .isLocked(entity.isLocked())
                 .luggageType(entity.getLuggageType())
-                .memberNickName(member.getMemberNickName())
+                .memberNickName(member.getMemberNickname())
                 .build();
     }
 

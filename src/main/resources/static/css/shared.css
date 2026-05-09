@@ -179,8 +179,8 @@
     font-family: 'Oswald', sans-serif;
     font-weight: 700;
     font-size: clamp(50px, 6.3vw, 84px);
-    color: transparent;
-    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.92);
+    -webkit-text-stroke: 0;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
@@ -194,7 +194,7 @@
 .menu-item-text:hover .sidebar-text-item {
     transform: scale(1.1);
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
-    -webkit-text-stroke-color: white;
+    color: white;
 }
 
 .menu-item-text:active .sidebar-text-item {
@@ -387,6 +387,32 @@
     border-bottom-color: rgba(255, 255, 255, 0.65);
 }
 
+.sign-email-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: end;
+}
+
+.sign-check-btn {
+    min-width: 78px;
+    padding: 7px 10px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: rgba(255, 255, 255, 0.72);
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sign-check-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.65);
+    color: white;
+}
+
 .sign-submit {
     margin-top: 4px;
     background: transparent;
@@ -413,6 +439,11 @@
     font-size: 12px;
     font-weight: 300;
     letter-spacing: 0.05em;
+}
+
+.sign-message--check {
+    min-height: 14px;
+    margin-top: -8px;
 }
 
 .sign-message--success { color: rgba(100, 220, 140, 0.9); }

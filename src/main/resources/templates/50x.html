@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('TripToN - Server Error', '/css/error.css')}"></th:block>
+</head>
+<body class="error-page error-page--server">
+    <th:block th:replace="~{fragments/layout :: app-chrome}"></th:block>
+
+    <main class="error-shell">
+        <section class="error-panel">
+            <p class="error-kicker">SERVER ERROR</p>
+            <h1 th:text="${statusCode} ?: '50x'">50x</h1>
+            <p class="error-reason" th:text="${statusReason} ?: 'Server Error'">Server Error</p>
+            <p class="error-message" th:text="${errorMessage} ?: '서버 오류가 발생했습니다.'">서버 오류가 발생했습니다.</p>
+            <dl class="error-meta">
+                <div>
+                    <dt>CODE</dt>
+                    <dd th:text="${errorCode} ?: 'SERVER_ERROR'">SERVER_ERROR</dd>
+                </div>
+                <div>
+                    <dt>PATH</dt>
+                    <dd th:text="${requestPath} ?: '-'">-</dd>
+                </div>
+            </dl>
+            <div class="error-actions">
+                <a href="/" class="error-link">HOME</a>
+                <button type="button" class="error-link" onclick="location.reload()">RETRY</button>
+            </div>
+        </section>
+    </main>
+
+    <th:block th:replace="~{fragments/common-scripts :: music-scripts}"></th:block>
+</body>
+</html>

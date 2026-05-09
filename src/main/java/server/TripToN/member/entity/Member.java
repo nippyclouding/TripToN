@@ -10,7 +10,14 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "MEMBERS")
+@Table(
+        name = "MEMBERS",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "UK_MEMBER_EMAIL", columnNames = "member_email"),
+                @UniqueConstraint(name = "UK_MEMBER_NICKNAME", columnNames = "member_nickname")
+        }
+)
+
 public class Member extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -22,6 +29,7 @@ public class Member extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String memberEmail;
 
-    private String memberNickName;
+    @Column(nullable = false)
+    private String memberNickname;
 
 }

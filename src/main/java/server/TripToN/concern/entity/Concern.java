@@ -43,8 +43,6 @@ public class Concern extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String concernContent;
 
-    @Column(nullable = false)
-    private boolean isLocked;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -53,6 +51,5 @@ public class Concern extends BaseEntity {
     public void updateConcern(ConcernUpdateRequestDto dto) {
         this.concernContent = dto.getConcernContent();
         this.concernTitle = dto.getConcernTitle();
-        this.isLocked = dto.isLocked();
     }
 }

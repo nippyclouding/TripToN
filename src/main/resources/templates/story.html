@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('TripToN - Story', '/css/story.css')}"></th:block>
+</head>
+<body>
+    <th:block th:replace="~{fragments/layout :: sound-only}"></th:block>
+
+    <!-- 동영상 섹션 -->
+    <section class="video-section">
+        <video id="background-video" autoplay muted loop>
+            <source src="/image/story/dream6.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="gradient-overlay"></div>
+    </section>
+
+    <!-- 첫 번째 텍스트 이미지 섹션 -->
+    <section class="text-section">
+        <img src="/image/story/text.png" alt="Story Text" class="text-image">
+    </section>
+
+    <!-- text1.png 섹션 -->
+    <section class="text1-section">
+        <img src="/image/story/text1.png" alt="First Text" class="text1-image">
+    </section>
+
+    <!-- 스크롤 연장 구간 1 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- 두 번째 텍스트 이미지 섹션 -->
+    <section class="text2-section">
+        <img src="/image/story/text2.png" alt="Second Text" class="text2-image">
+    </section>
+
+    <!-- 스크롤 연장 구간 2 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- 1.webm 섹션 -->
+    <section class="webm1-section">
+        <div class="webm-item" data-item="1">
+            <video class="webm-video">
+                <source src="/image/story/1.webm" type="video/webm">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <!-- item1.png 팝업 -->
+        <div class="item-popup" id="item1-popup">
+            <img src="/image/story/item1.png" alt="Item 1" class="item-image">
+        </div>
+    </section>
+
+    <!-- 스크롤 연장 구간 3 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- 2.webm 섹션 -->
+    <section class="webm2-section">
+        <div class="webm-item" data-item="2">
+            <video class="webm-video">
+                <source src="/image/story/2.webm" type="video/webm">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <!-- item2.png 팝업 -->
+        <div class="item-popup" id="item2-popup">
+            <img src="/image/story/item2.png" alt="Item 2" class="item-image">
+        </div>
+    </section>
+
+    <!-- 스크롤 연장 구간 4 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- 3.webm 섹션 -->
+    <section class="webm3-section">
+        <div class="webm-item" data-item="3">
+            <video class="webm-video">
+                <source src="/image/story/3.webm" type="video/webm">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <!-- item3.png 팝업 -->
+        <div class="item-popup" id="item3-popup">
+            <img src="/image/story/item3.png" alt="Item 3" class="item-image">
+        </div>
+    </section>
+
+    <!-- 스크롤 연장 구간 5 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- text3.png 섹션 -->
+    <section class="text3-section">
+        <img src="/image/story/text3.png" alt="Third Text" class="text3-image">
+    </section>
+
+    <!-- 스크롤 연장 구간 6 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- dream1.mp4와 text4.png 섹션 -->
+    <section class="dream1-section">
+        <video id="dream1-video" autoplay muted loop>
+            <source src="/image/story/Dream1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <img src="/image/story/text4.png" alt="Fourth Text" class="text4-image">
+    </section>
+
+    <!-- 스크롤 연장 구간 7 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- logo.png 섹션 -->
+    <section class="logo-section">
+        <img src="/image/story/logo.png" alt="Logo" class="logo-image">
+    </section>
+
+    <!-- 스크롤 연장 구간 8 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- item.gif 섹션 -->
+    <section class="item-gif-section">
+        <img src="/image/story/item.gif" alt="Item GIF" class="item-gif" id="item-gif">
+    </section>
+
+    <!-- 스크롤 연장 구간 9 -->
+    <section class="scroll-extend-section"></section>
+
+    <!-- text5.png와 화살표 섹션 -->
+    <section class="final-text-section">
+        <img src="/image/story/text5.png" alt="Final Text" class="text5-image">
+        <button class="arrow-button" onclick="location.href='/choose'">
+            <img src="/image/story/arrow.png" alt="Arrow" class="arrow-image">
+        </button>
+    </section>
+
+    <!-- 마지막 검정 배경 섹션 -->
+    <section class="final-section">
+    </section>
+
+    <script src="/js/story.js"></script>
+    <th:block th:replace="~{fragments/common-scripts :: music-scripts}"></th:block>
+</body>
+</html>

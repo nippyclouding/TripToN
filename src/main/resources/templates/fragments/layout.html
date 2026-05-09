@@ -1,0 +1,35 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<th:block th:fragment="head(title, pageCss)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title th:text="${title}">TripToN</title>
+    <link rel="stylesheet" href="/css/shared.css">
+    <link rel="stylesheet" th:href="${pageCss}">
+</th:block>
+
+<th:block th:fragment="app-chrome">
+    <div th:replace="~{fragments/sidebar :: symbol-logo}"></div>
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div th:replace="~{fragments/sound-toggle :: sound-toggle}"></div>
+</th:block>
+
+<th:block th:fragment="sound-only">
+    <div th:replace="~{fragments/sound-toggle :: sound-toggle}"></div>
+</th:block>
+
+<div th:fragment="mypage-pager(currentPage, totalPages, prevHref, nextHref)"
+     class="mypage-pagination"
+     th:if="${totalPages > 0}">
+    <a th:if="${currentPage > 0}" th:href="${prevHref}" class="page-btn">&#8592;</a>
+    <span th:if="${currentPage == 0}" class="page-btn page-btn--disabled">&#8592;</span>
+    <span class="page-info" th:text="${currentPage + 1} + ' / ' + ${totalPages}"></span>
+    <a th:if="${currentPage + 1 < totalPages}" th:href="${nextHref}" class="page-btn">&#8594;</a>
+    <span th:if="${currentPage + 1 >= totalPages}" class="page-btn page-btn--disabled">&#8594;</span>
+</div>
+
+</body>
+</html>

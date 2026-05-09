@@ -28,8 +28,13 @@ public class GeminiResponse {
 
     public String extractText() {
         if (candidates == null || candidates.isEmpty()) return null;
-        List<Part> parts = candidates.get(0).getContent().getParts();
-        if (parts == null || parts.isEmpty()) return null;
+
+        Candidate candidate = candidates.get(0);
+        if (candidate == null || candidate.getContent() == null) return null;
+
+        List<Part> parts = candidate.getContent().getParts();
+        if (parts == null || parts.isEmpty() || parts.get(0) == null) return null;
+
         return parts.get(0).getText();
     }
 }

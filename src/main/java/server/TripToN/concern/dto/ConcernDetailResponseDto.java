@@ -23,7 +23,6 @@ public class ConcernDetailResponseDto {
     // 고민 정보
     private String concernTitle;
     private String concernContent;
-    private Boolean isLocked;
     private LuggageType luggageType;
 
     private LocalDateTime createdAt;

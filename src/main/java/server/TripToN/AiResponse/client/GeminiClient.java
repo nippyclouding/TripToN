@@ -39,28 +39,34 @@ public class GeminiClient {
                     .retrieve()
                     .body(GeminiResponse.class);
 
-            if (response != null && response.extractText() != null) {
-                return response.extractText();
+            if (response == null) {
+                log.warn("Gemini API 응답 바디가 비어있습니다.");
+                return null;
             }
 
-            log.warn("Gemini API 응답이 비어있습니다.");
-            return null;
+            String text = response.extractText();
+            if (text == null || text.isBlank()) {
+                log.warn("Gemini API 응답 본문이 비어있습니다.");
+                return null;
+            }
+
+            return text;
 
         } catch (HttpClientErrorException.TooManyRequests e) {
             log.warn("Gemini API 요청 한도 초과 (429): {}", e.getMessage());
-            return null;
+            throw new GeminiApiException("GEMINI_RATE_LIMIT", "Gemini API 요청 한도 초과", e);
         } catch (HttpClientErrorException e) {
             log.error("Gemini API 클라이언트 오류 ({}): {}", e.getStatusCode(), e.getMessage());
-            return null;
+            throw new GeminiApiException("GEMINI_CLIENT_ERROR", "Gemini API 클라이언트 오류", e);
         } catch (HttpServerErrorException e) {
             log.error("Gemini API 서버 오류 ({}): {}", e.getStatusCode(), e.getMessage());
-            return null;
+            throw new GeminiApiException("GEMINI_SERVER_ERROR", "Gemini API 서버 오류", e);
         } catch (ResourceAccessException e) {
             log.error("Gemini API 네트워크 오류: {}", e.getMessage());
-            return null;
+            throw new GeminiApiException("GEMINI_NETWORK_ERROR", "Gemini API 네트워크 오류", e);
         } catch (Exception e) {
             log.error("Gemini API 호출 중 예외: {}", e.getMessage(), e);
-            return null;
+            throw new GeminiApiException("GEMINI_UNKNOWN_ERROR", "Gemini API 호출 중 예외", e);
         }
     }
 }

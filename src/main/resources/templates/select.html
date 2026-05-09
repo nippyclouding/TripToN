@@ -1,20 +1,12 @@
 <!doctype html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>TripToN - 가방 선택</title>
-    <link rel="stylesheet" href="/css/select.css">
-    <link rel="stylesheet" href="/css/shared.css">
+    <th:block th:replace="~{fragments/layout :: head('TripToN - 가방 선택', '/css/select.css')}"></th:block>
     <script src="/js/select.js" defer></script>
 </head>
 <body>
 
-    <div th:replace="~{fragments/sidebar :: symbol-logo}"></div>
-    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
-    <div th:replace="~{fragments/sound-toggle :: sound-toggle}"></div>
+    <th:block th:replace="~{fragments/layout :: app-chrome}"></th:block>
 
     <!-- 중앙에 보여질 가방 이미지 -->
     <div class="bag-container">
@@ -25,7 +17,7 @@
     <div class="item-modal" id="itemModal">
         <div class="modal-background" onclick="closeItemModal()"></div>
         <div class="modal-content">
-            <img id="item-introduce-image" src="" alt="Item Introduction">
+            <img id="item-story-image" src="" alt="Item Story">
 
             <!-- 버튼 컨테이너 -->
             <div class="modal-buttons">
@@ -46,9 +38,6 @@
     <div class="input-modal" id="inputModal">
         <div class="input-modal-background"></div>
 
-        <!-- 좌측 자물쇠 버튼 -->
-        <div class="lock-btn" id="lock-btn" onclick="toggleLock()">🔓</div>
-
         <!-- 모달 외부 상단 헤더 텍스트 -->
         <div class="input-modal-title">
             <h2>당신의 배게는</h2>
@@ -63,7 +52,6 @@
             <div class="input-modal-body">
                 <form id="concern-form" method="post" action="/concern">
                     <input type="hidden" id="luggage-input" name="luggageType" value="">
-                    <input type="hidden" id="locked-input" name="isLocked" value="false">
                     <div class="input-container">
                         <input type="text" id="title-input" name="concernTitle" placeholder="고민 제목을 입력해주세요" maxlength="50">
                     </div>
