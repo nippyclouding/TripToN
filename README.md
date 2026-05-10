@@ -92,3 +92,13 @@ Gemini AI에게 고민을 전송하여 응답을 사용자에게 전달합니다
 총 회원 수, 총 고민 수, 금일 AI 고민 요청 수를 조회할 수 있으며, 회원 로그인 로그와 Gemini 요청 로그 데이터를 관리자 화면에서 확인할 수 있습니다.
 
 <img width="1895" height="985" alt="관리자" src="https://github.com/user-attachments/assets/34fc5568-d5fa-465b-9fd8-9c46d27a4736" />
+
+---
+
+### 4. 시연
+
+TripToN의 주요 화면 흐름과 기능 동작을 영상으로 확인할 수 있습니다.
+
+<a href="https://youtu.be/wkFMnX2pCsY">
+  <img src="https://img.shields.io/badge/YouTube-시연%20영상%20보러가기-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="시연 영상 보러가기" />
+</a>
