@@ -34,9 +34,9 @@
 
 ### 1. ERD
 
-<img width="2270" height="1442" alt="ERD" src="https://github.com/user-attachments/assets/3758fcdd-104e-4976-896a-45eb048a0ebe" />
+<img width="1027" height="918" alt="SystemArchitecture" src="https://github.com/user-attachments/assets/07bdcdf4-ccc3-4d07-879f-55ff203d7717" />
 
-
+https://www.erdcloud.com/d/n5g78GXYfmokFXqiN
 
 ---
 
