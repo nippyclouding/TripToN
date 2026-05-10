@@ -84,7 +84,7 @@ Gemini AI에게 고민을 전송하여 응답을 사용자에게 전달합니다
 #### **마이페이지**
 사용자는 마이페이지에서 자신이 작성한 고민, 댓글, 좋아요한 고민, 좋아요한 댓글을 조회할 수 있습니다.
 
-![마이페이지](README_IMG_SOURCE/flow_IMG/마이페이지.png)
+<img width="1889" height="944" alt="마이페이지" src="https://github.com/user-attachments/assets/42a7c383-7269-47bd-af0d-339d63938bb2" />
 
 
 #### **관리자 페이지**
