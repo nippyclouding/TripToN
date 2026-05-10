@@ -19,6 +19,7 @@ public class AdminMemberLoginLogResponseDto {
     private String loginFailureReason;
     private String loginTryId;
     private String loginMemberNickname;
+    private String loginTryIp;
 
     public static AdminMemberLoginLogResponseDto from(MemberLoginLog log) {
         return AdminMemberLoginLogResponseDto.builder()
@@ -28,6 +29,7 @@ public class AdminMemberLoginLogResponseDto {
                 .loginFailureReason(log.getLoginFailureReason())
                 .loginTryId(log.getLoginTryId())
                 .loginMemberNickname(log.getLoginMemberNickname())
+                .loginTryIp(log.getLoginTryIp())
                 .build();
     }
 }

@@ -133,6 +133,7 @@
                     <div class="admin-item-subtitle">
                         <span>${escapeHtml(item.loginMemberNickname ?? '-') }</span>
                         <span>${escapeHtml(item.loginFailureReason ?? '-')}</span>
+                        <span>${escapeHtml(item.loginTryIp ?? '-')}</span>
                     </div>
                     <div class="admin-item-meta">
                         <span>${formatDateTime(item.createdAt)}</span>

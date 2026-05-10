@@ -1,11 +1,12 @@
 package server.TripToN.admin;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import server.TripToN.admin.dto.AdminLoginRequestDto;
 import server.TripToN.admin.dto.TotalCountResponseDto;
 
 @RequiredArgsConstructor
@@ -25,9 +26,30 @@ public class AdminController {
 
 
     private final AdminService adminService;
+    private final AdminProperties adminProperties;
 
     @GetMapping
-    public String admin() { return "admin"; }
+    public String admin(Model model) {
+        model.addAttribute("adminLoginRequestDto", new AdminLoginRequestDto());
+        return "admin_login";
+    }
+
+
+    @PostMapping
+    public String admin(@Valid @ModelAttribute AdminLoginRequestDto dto,
+                        Model model) {
+        boolean authenticated =
+                        adminProperties.getAdminLoginId().equals(dto.getAdminLoginId())
+                        && adminProperties.getAdminPassword().equals(dto.getAdminLoginPassword());
+
+        if (!authenticated) {
+            model.addAttribute("loginError", "관리자 ID 또는 비밀번호가 올바르지 않습니다.");
+            return "admin_login";
+        }
+
+        return "admin";
+    }
+
 
     // 총 회원 수, 총 고민 수 (삭제된 데이터는 배제), 일별 Gemini api 요청 횟수 조회 api
     @GetMapping("/totalMember-totalConcern-Count")

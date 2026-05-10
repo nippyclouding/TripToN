@@ -32,4 +32,7 @@ public class MemberLoginLog {
         private String loginTryId;
 
         private String loginMemberNickname;
+
+        @Column(length = 45)
+        private String loginTryIp;
 }

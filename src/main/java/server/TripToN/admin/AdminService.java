@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import server.TripToN.AiResponse.repository.AiRequestLogRepository;
 import server.TripToN.admin.dto.*;
+import server.TripToN.concern.entity.Concern;
 import server.TripToN.concern.repository.ConcernRepository;
-import server.TripToN.concern.repository.ConcernAdminProjection;
 import server.TripToN.member.repository.MemberLoginLogRepository;
 import server.TripToN.member.repository.MemberRepository;
 
@@ -26,8 +26,7 @@ public class AdminService {
     public TotalCountResponseDto getTotalCount() {
         long totalAiRequestCountTodayCount = aiRequestLogRepository.countToday();
         long totalMember = memberRepository.count();
-        long totalConcern = concernRepository.count();
-        // concern 엔티티의 @SQLRestriction("deleted_at IS NULL") 로 삭제된 것은 집계 x
+        long totalConcern = concernRepository.countByDeletedAtIsNull();
 
         return TotalCountResponseDto.builder()
                 .totalAiRequestCountTodayCount(totalAiRequestCountTodayCount)
@@ -42,7 +41,7 @@ public class AdminService {
     }
 
     public Page<AdminConcernResponseDto> getConcerns(int page) {
-        Page<ConcernAdminProjection> concernPage =
+        Page<Concern> concernPage =
                 concernRepository.findAllForAdmin(PageRequest.of(page, 10));
         return concernPage.map(AdminConcernResponseDto::from);
     }

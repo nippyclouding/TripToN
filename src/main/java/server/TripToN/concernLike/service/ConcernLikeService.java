@@ -23,7 +23,7 @@ public class ConcernLikeService {
 
     private void addLike(Long memberId, Long concernId) {
         ConcernLike concernLike = ConcernLike.builder()
-                .concern(concernRepository.findById(concernId).orElseThrow(() -> new BusinessException(CONCERN_NOT_FOUND)))
+                .concern(concernRepository.findByConcernIdAndDeletedAtIsNull(concernId).orElseThrow(() -> new BusinessException(CONCERN_NOT_FOUND)))
                 .member(memberRepository.findById(memberId).orElseThrow(() -> new BusinessException(MEMBER_NOT_FOUND)))
                 .build();
         concernLikeRepository.save(concernLike);
@@ -44,6 +44,6 @@ public class ConcernLikeService {
     }
 
     public long getLikeCount(Long concernId) {
-        return concernLikeRepository.countByConcernConcernId(concernId);
+        return concernLikeRepository.countByConcernConcernIdAndConcernDeletedAtIsNull(concernId);
     }
 }

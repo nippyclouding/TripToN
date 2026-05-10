@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import server.TripToN.concern.repository.ConcernAdminProjection;
+import server.TripToN.concern.entity.Concern;
 
 import java.time.LocalDateTime;
 
@@ -24,18 +24,18 @@ public class AdminConcernResponseDto {
     private String memberEmail;
     private String memberNickname;
 
-    public static AdminConcernResponseDto from(ConcernAdminProjection projection) {
+    public static AdminConcernResponseDto from(Concern concern) {
         return AdminConcernResponseDto.builder()
-                .concernId(projection.getConcernId())
-                .concernTitle(projection.getConcernTitle())
-                .concernContent(projection.getConcernContent())
-                .luggageType(projection.getLuggageType())
-                .createdAt(projection.getCreatedAt())
-                .updatedAt(projection.getUpdatedAt())
-                .deletedAt(projection.getDeletedAt())
-                .memberId(projection.getMemberId())
-                .memberEmail(projection.getMemberEmail())
-                .memberNickname(projection.getMemberNickname())
+                .concernId(concern.getConcernId())
+                .concernTitle(concern.getConcernTitle())
+                .concernContent(concern.getConcernContent())
+                .luggageType(concern.getLuggageType().name())
+                .createdAt(concern.getCreatedAt())
+                .updatedAt(concern.getUpdatedAt())
+                .deletedAt(concern.getDeletedAt())
+                .memberId(concern.getMember().getMemberId())
+                .memberEmail(concern.getMember().getMemberEmail())
+                .memberNickname(concern.getMember().getMemberNickname())
                 .build();
     }
 }

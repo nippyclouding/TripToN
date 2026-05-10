@@ -1,5 +1,5 @@
 package server.TripToN.concern.dto;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import server.TripToN.comment.dto.CommentResponseDto;
 import server.TripToN.concern.entity.LuggageType;
@@ -14,9 +14,10 @@ import java.util.List;
 public class ConcernUpdateRequestDto {
 
     // 고민 정보
-    @NotNull
+    @NotBlank(message = "고민 제목을 입력해주세요.")
     private String concernTitle;
-    @NotNull
+
+    @NotBlank(message = "고민 내용을 입력해주세요.")
     private String concernContent;
 
 }

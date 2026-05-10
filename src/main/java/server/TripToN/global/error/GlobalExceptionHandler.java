@@ -11,6 +11,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 
@@ -20,7 +21,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BindException.class)
     protected Object handleBindException(BindException e, HttpServletRequest request) {
-        log.error("handleBindException", e);
+        log.warn("handleBindException: {}", e.getBindingResult().getAllErrors());
+        ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.BAD_REQUEST.toString(),
+                e.getBindingResult());
+        return errorResponse(request, HttpStatus.BAD_REQUEST, errorResponse);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    protected Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
+                                                           HttpServletRequest request) {
+        log.warn("handleMethodArgumentNotValidException: {}", e.getBindingResult().getAllErrors());
         ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.BAD_REQUEST.toString(),
                 e.getBindingResult());
         return errorResponse(request, HttpStatus.BAD_REQUEST, errorResponse);

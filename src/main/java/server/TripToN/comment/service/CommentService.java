@@ -1,6 +1,5 @@
 package server.TripToN.comment.service;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +25,8 @@ public class CommentService {
     private final MemberRepository memberRepository;
 
     public void createComment(CommentCreateRequestDto dto, Long writerId, Long concernId) {
-        Concern concern = concernRepository.findById(concernId).orElseThrow();
+        Concern concern = concernRepository.findByConcernIdAndDeletedAtIsNull(concernId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.CONCERN_NOT_FOUND));
         Member writer = memberRepository.findById(writerId).orElseThrow();
         Comment comment = Comment.builder()
                 .commentContent(dto.getCommentContent())
