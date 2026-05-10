@@ -11,6 +11,7 @@ import server.TripToN.member.repository.MemberLoginLogRepository;
 import server.TripToN.member.repository.MemberRepository;
 import server.TripToN.global.error.BusinessException;
 import server.TripToN.global.error.ErrorCode;
+import server.TripToN.global.util.BcryptPasswordEncoder;
 
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ public class MemberAuthService {
 
         Member member = Member.builder()
                 .memberEmail(dto.getMemberEmail())
-                .memberLoginPassword(dto.getMemberLoginPassword())
+                .memberLoginPassword(BcryptPasswordEncoder.encode(dto.getMemberLoginPassword()))
                 .memberNickname(dto.getMemberNickName())
                 .build();
         memberRepository.save(member);
@@ -51,7 +52,7 @@ public class MemberAuthService {
         }
 
         Member member = memberOpt.get();
-        if (member.getMemberLoginPassword().equals(dto.getMemberLoginPassword())) {
+        if (BcryptPasswordEncoder.matches(dto.getMemberLoginPassword(), member.getMemberLoginPassword())) {
             saveLoginLog(member.getMemberEmail(), member.getMemberNickname(), true, null, loginTryIp);
             return member;
         }

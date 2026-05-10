@@ -9,7 +9,7 @@ WITH RECURSIVE cte (n) AS (
 )
 SELECT
     CONCAT('user', n, '@tripton.com'),
-    '$2a$10$dummyHashPassword1234567890', -- 더미 암호화 비밀번호
+    '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', -- password
     CONCAT('여행자_', n),
     NOW() - INTERVAL FLOOR(RAND() * 365) DAY, -- 최근 1년 사이 랜덤 가입일
     NOW()

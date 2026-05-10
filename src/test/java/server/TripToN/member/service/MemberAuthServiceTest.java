@@ -14,6 +14,7 @@ import server.TripToN.member.repository.MemberLoginLogRepository;
 import server.TripToN.member.repository.MemberRepository;
 import server.TripToN.global.error.BusinessException;
 import server.TripToN.global.error.ErrorCode;
+import server.TripToN.global.util.BcryptPasswordEncoder;
 
 import java.util.Optional;
 
@@ -57,6 +58,8 @@ class MemberAuthServiceTest {
         verify(memberRepository).save(captor.capture());
         assertThat(captor.getValue().getMemberEmail()).isEqualTo("user@tripton.com");
         assertThat(captor.getValue().getMemberNickname()).isEqualTo("traveler");
+        assertThat(captor.getValue().getMemberLoginPassword()).isNotEqualTo("password");
+        assertThat(BcryptPasswordEncoder.matches("password", captor.getValue().getMemberLoginPassword())).isTrue();
     }
 
     @Test
@@ -108,7 +111,7 @@ class MemberAuthServiceTest {
                 .memberId(1L)
                 .memberEmail("user@tripton.com")
                 .memberNickname("traveler")
-                .memberLoginPassword("password")
+                .memberLoginPassword(BcryptPasswordEncoder.encode("password"))
                 .build();
         when(memberRepository.findByMemberEmail(dto.getMemberEmail())).thenReturn(Optional.of(member));
 
@@ -143,5 +146,32 @@ class MemberAuthServiceTest {
         assertThat(captor.getValue().getLoginStatus()).isFalse();
         assertThat(captor.getValue().getLoginTryIp()).isEqualTo("192.168.0.10");
         assertThat(captor.getValue().getLoginFailureReason()).isEqualTo("존재하지 않는 이메일로 로그인 시도");
+    }
+
+    @Test
+    void signIn_wrongPassword_returnsNullAndSavesFailureLogWithIp() {
+        // given
+        SignInRequestDto dto = SignInRequestDto.builder()
+                .memberEmail("user@tripton.com")
+                .memberLoginPassword("wrong")
+                .build();
+        Member member = Member.builder()
+                .memberId(1L)
+                .memberEmail("user@tripton.com")
+                .memberNickname("traveler")
+                .memberLoginPassword(BcryptPasswordEncoder.encode("password"))
+                .build();
+        when(memberRepository.findByMemberEmail(dto.getMemberEmail())).thenReturn(Optional.of(member));
+
+        // when
+        Member result = memberAuthService.signIn(dto, "192.168.0.20");
+
+        // then
+        assertThat(result).isNull();
+        ArgumentCaptor<MemberLoginLog> captor = ArgumentCaptor.forClass(MemberLoginLog.class);
+        verify(memberLoginLogRepository).save(captor.capture());
+        assertThat(captor.getValue().getLoginStatus()).isFalse();
+        assertThat(captor.getValue().getLoginTryIp()).isEqualTo("192.168.0.20");
+        assertThat(captor.getValue().getLoginFailureReason()).isEqualTo("패스워드 오류");
     }
 }

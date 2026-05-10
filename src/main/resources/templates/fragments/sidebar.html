@@ -31,7 +31,11 @@
 </div>
 
 <!-- Sign Modal -->
-<div id="sign-modal" class="sign-modal-overlay" onclick="if(event.target===this)closeSignModal()">
+<div id="sign-modal"
+     class="sign-modal-overlay"
+     th:data-auth-open="${authModalOpen}"
+     th:data-auth-tab="${authTab}"
+     onclick="if(event.target===this)closeSignModal()">
     <div class="sign-modal-box">
         <button class="sign-modal-close" onclick="closeSignModal()">&#215;</button>
 
@@ -46,25 +50,39 @@
                 <button class="sign-tab" id="tab-signup" onclick="switchAuthTab('signup')">SIGN UP</button>
             </div>
 
-            <form class="sign-form" id="form-signin" action="/auth/signIn" method="post">
-                <input type="email" name="memberEmail" class="sign-input" placeholder="EMAIL" autocomplete="off">
+            <form class="sign-form"
+                  id="form-signin"
+                  th:action="@{/auth/signIn}"
+                  th:object="${signInRequestDto}"
+                  method="post">
+                <input type="email" th:field="*{memberEmail}" class="sign-input" placeholder="EMAIL" autocomplete="off">
+                <div th:if="${#fields.hasErrors('memberEmail')}" class="sign-message sign-message--fail" th:errors="*{memberEmail}"></div>
                 <input type="password" name="memberLoginPassword" class="sign-input" placeholder="PASSWORD">
+                <div th:if="${#fields.hasErrors('memberLoginPassword')}" class="sign-message sign-message--fail" th:errors="*{memberLoginPassword}"></div>
                 <button type="button" class="sign-submit" onclick="handleSignIn()">SIGN IN</button>
             </form>
 
-            <form class="sign-form hidden" id="form-signup" action="/auth/signUp" method="post">
+            <form class="sign-form hidden"
+                  id="form-signup"
+                  th:action="@{/auth/signUp}"
+                  th:object="${signUpRequestDto}"
+                  method="post">
                 <div class="sign-email-row">
-                    <input type="email" name="memberEmail" class="sign-input" placeholder="EMAIL" autocomplete="off">
+                    <input type="email" th:field="*{memberEmail}" class="sign-input" placeholder="EMAIL" autocomplete="off">
                     <button type="button" class="sign-check-btn" onclick="checkSignUpEmail()">중복 검증</button>
                 </div>
+                <div th:if="${#fields.hasErrors('memberEmail')}" class="sign-message sign-message--fail" th:errors="*{memberEmail}"></div>
                 <div id="signup-email-check-message" class="sign-message sign-message--check"></div>
                 <div class="sign-email-row">
-                    <input type="text" name="memberNickName" class="sign-input" placeholder="NICKNAME" autocomplete="off">
+                    <input type="text" th:field="*{memberNickName}" class="sign-input" placeholder="NICKNAME" autocomplete="off">
                     <button type="button" class="sign-check-btn" onclick="checkSignUpNickname()">중복 검증</button>
                 </div>
+                <div th:if="${#fields.hasErrors('memberNickName')}" class="sign-message sign-message--fail" th:errors="*{memberNickName}"></div>
                 <div id="signup-nickname-check-message" class="sign-message sign-message--check"></div>
                 <input type="password" name="memberLoginPassword" id="signup-pw" class="sign-input" placeholder="PASSWORD">
+                <div th:if="${#fields.hasErrors('memberLoginPassword')}" class="sign-message sign-message--fail" th:errors="*{memberLoginPassword}"></div>
                 <input type="password" name="memberLoginPasswordConfirm" id="signup-pw-confirm" class="sign-input" placeholder="PASSWORD CONFIRM">
+                <div th:if="${#fields.hasErrors('memberLoginPasswordConfirm')}" class="sign-message sign-message--fail" th:errors="*{memberLoginPasswordConfirm}"></div>
                 <button type="button" class="sign-submit" onclick="handleSignUp()">SIGN UP</button>
             </form>
         </div>

@@ -24,9 +24,6 @@ public class MainController {
     @GetMapping("/choose")
     public String choose() { return "select"; }
 
-    @GetMapping("/signup")
-    public String signup() { return "signup"; }
-
     @GetMapping("/result")
     public String result() { return "redirect:/concern"; }
 

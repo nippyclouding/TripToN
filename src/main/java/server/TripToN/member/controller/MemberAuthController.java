@@ -7,8 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import server.TripToN.global.error.BusinessException;
 import server.TripToN.global.util.Const;
 import server.TripToN.member.dto.sign.SignInRequestDto;
 import server.TripToN.member.dto.sign.SignUpEmailCheckRequestDto;
@@ -30,9 +32,28 @@ public class MemberAuthController {
 
     // 회원가입
     @PostMapping("/signUp")
-    public String signUp(@Valid @ModelAttribute SignUpRequestDto dto, RedirectAttributes attributes) {
-        memberAuthService.signUp(dto);
+    public String signUp(@Valid @ModelAttribute SignUpRequestDto dto,
+                         BindingResult bindingResult,
+                         RedirectAttributes attributes) {
+        if (bindingResult.hasErrors()) {
+            addAuthFormFlashAttributes(attributes, "signup", "signUpRequestDto", dto, bindingResult);
+            return "redirect:/";
+        }
+
+        try {
+            memberAuthService.signUp(dto);
+        } catch (BusinessException e) {
+            attributes.addFlashAttribute("fail", e.getMessage());
+            attributes.addFlashAttribute("authModalOpen", true);
+            attributes.addFlashAttribute("authTab", "signup");
+            clearSignUpPasswords(dto);
+            attributes.addFlashAttribute("signUpRequestDto", dto);
+            return "redirect:/";
+        }
+
         attributes.addFlashAttribute("success", "회원가입이 완료됐습니다. 로그인해주세요.");
+        attributes.addFlashAttribute("authModalOpen", true);
+        attributes.addFlashAttribute("authTab", "signin");
         return "redirect:/";
     }
 
@@ -50,8 +71,16 @@ public class MemberAuthController {
 
     // 로그인
     @PostMapping("/signIn")
-    public String signIn(@Valid @ModelAttribute SignInRequestDto dto, HttpServletRequest request
-                         , HttpSession session, RedirectAttributes attributes) {
+    public String signIn(@Valid @ModelAttribute SignInRequestDto dto,
+                         BindingResult bindingResult,
+                         HttpServletRequest request,
+                         HttpSession session,
+                         RedirectAttributes attributes) {
+        if (bindingResult.hasErrors()) {
+            addAuthFormFlashAttributes(attributes, "signin", "signInRequestDto", dto, bindingResult);
+            return "redirect:/";
+        }
+
         String loginTryIp = extractClientIp(request);
         Member member = memberAuthService.signIn(dto, loginTryIp);
         if (member != null) {
@@ -59,6 +88,8 @@ public class MemberAuthController {
             attributes.addFlashAttribute("success", "로그인 되었습니다.");
         } else {
             attributes.addFlashAttribute("fail", "이메일 또는 비밀번호가 일치하지 않습니다.");
+            attributes.addFlashAttribute("authModalOpen", true);
+            attributes.addFlashAttribute("authTab", "signin");
         }
         return "redirect:/";
     }
@@ -73,17 +104,34 @@ public class MemberAuthController {
     // 회원탈퇴
 
     private String extractClientIp(HttpServletRequest request) {
-        String forwardedFor = request.getHeader("X-Forwarded-For");
-        if (forwardedFor != null && !forwardedFor.isBlank()) {
-            return forwardedFor.split(",")[0].trim();
-        }
-
-        String realIp = request.getHeader("X-Real-IP");
-        if (realIp != null && !realIp.isBlank()) {
-            return realIp.trim();
-        }
-
         return request.getRemoteAddr();
+    }
+
+    private void addAuthFormFlashAttributes(RedirectAttributes attributes,
+                                            String authTab,
+                                            String attributeName,
+                                            Object dto,
+                                            BindingResult bindingResult) {
+        clearPasswordFields(dto);
+        attributes.addFlashAttribute("authModalOpen", true);
+        attributes.addFlashAttribute("authTab", authTab);
+        attributes.addFlashAttribute(attributeName, dto);
+        attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + attributeName, bindingResult);
+    }
+
+    private void clearPasswordFields(Object dto) {
+        if (dto instanceof SignInRequestDto signInRequestDto) {
+            signInRequestDto.setMemberLoginPassword(null);
+            return;
+        }
+        if (dto instanceof SignUpRequestDto signUpRequestDto) {
+            clearSignUpPasswords(signUpRequestDto);
+        }
+    }
+
+    private void clearSignUpPasswords(SignUpRequestDto dto) {
+        dto.setMemberLoginPassword(null);
+        dto.setMemberLoginPasswordConfirm(null);
     }
 
 }
