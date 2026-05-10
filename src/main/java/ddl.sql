@@ -74,10 +74,11 @@ CREATE TABLE member_login_logs (
                                    member_login_log_id BIGINT NOT NULL AUTO_INCREMENT,
                                    login_try_id VARCHAR(255),
                                    login_member_nickname VARCHAR(255),
-                                   login_status BIT,
-                                   login_failure_reason VARCHAR(255),
-                                   created_at DATETIME(6),
-                                   PRIMARY KEY (member_login_log_id)
+	                                   login_status BIT,
+	                                   login_failure_reason VARCHAR(255),
+	                                   login_try_ip VARCHAR(45),
+	                                   created_at DATETIME(6),
+	                                   PRIMARY KEY (member_login_log_id)
 );
 
 -- 8. 제미나이 API 요청 로그 테이블
@@ -127,8 +128,14 @@ ALTER TABLE comment_likes ADD CONSTRAINT fk_comment_likes_member_id FOREIGN KEY 
 
 -- 인덱스 설정
 -- 마이페이지 조회 시 4번의 쿼리 전달 -> 성능 고려
-CREATE INDEX idx_concerns_member_paging
-    ON CONCERNS (member_id, deleted_at, created_at);
+CREATE INDEX idx_concerns_member_deleted_created
+    ON CONCERNS (member_id, deleted_at, created_at DESC);
 
 CREATE INDEX idx_comments_member_paging
-    ON COMMENTS (member_id, deleted_at, created_at);
+    ON COMMENTS (member_id, deleted_at, created_at DESC);
+
+CREATE INDEX idx_concerns_deleted_created
+    ON CONCERNS (deleted_at, created_at DESC);
+
+CREATE INDEX idx_concerns_deleted_created
+    ON CONCERNS (deleted_at, created_at DESC);

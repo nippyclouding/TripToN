@@ -12,9 +12,9 @@ public interface ConcernLikeRepository extends JpaRepository<ConcernLike, Long> 
 
     boolean existsByMemberMemberIdAndConcernConcernId(Long memberId, Long concernId);
 
-    long countByConcernConcernId(Long concernId);
+    long countByConcernConcernIdAndConcernDeletedAtIsNull(Long concernId);
 
-    @Query(value = "SELECT cl FROM ConcernLike cl JOIN FETCH cl.concern WHERE cl.member.memberId = :memberId",
-            countQuery = "SELECT COUNT(cl) FROM ConcernLike cl WHERE cl.member.memberId = :memberId")
+    @Query(value = "SELECT cl FROM ConcernLike cl JOIN FETCH cl.concern WHERE cl.member.memberId = :memberId AND cl.concern.deletedAt IS NULL",
+            countQuery = "SELECT COUNT(cl) FROM ConcernLike cl WHERE cl.member.memberId = :memberId AND cl.concern.deletedAt IS NULL")
     Page<ConcernLike> findByMemberMemberIdWithConcern(@Param("memberId") Long memberId, Pageable pageable);
 }

@@ -1,6 +1,8 @@
 package server.TripToN.member.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +30,7 @@ public class MemberAuthController {
 
     // 회원가입
     @PostMapping("/signUp")
-    public String signUp(@ModelAttribute SignUpRequestDto dto, RedirectAttributes attributes) {
+    public String signUp(@Valid @ModelAttribute SignUpRequestDto dto, RedirectAttributes attributes) {
         memberAuthService.signUp(dto);
         attributes.addFlashAttribute("success", "회원가입이 완료됐습니다. 로그인해주세요.");
         return "redirect:/";
@@ -36,20 +38,22 @@ public class MemberAuthController {
 
     // 회원 가입 시 이메일 검증
     @PostMapping("/check-email-unique")
-    public ResponseEntity<Boolean> checkUnique(@RequestBody SignUpEmailCheckRequestDto dto) {
+    public ResponseEntity<Boolean> checkUnique(@Valid @RequestBody SignUpEmailCheckRequestDto dto) {
         return ResponseEntity.ok(memberRepository.findByMemberEmail(dto.email()).isEmpty());
     }
 
     // 회원 가입 시 닉네임 검증
     @PostMapping("/check-nickname-unique")
-    public ResponseEntity<Boolean> checkNickname(@RequestBody SignUpNicknameCheckRequestDto dto) {
+    public ResponseEntity<Boolean> checkNickname(@Valid @RequestBody SignUpNicknameCheckRequestDto dto) {
         return ResponseEntity.ok(memberRepository.findByMemberNickname(dto.nickname()).isEmpty());
     }
 
     // 로그인
     @PostMapping("/signIn")
-    public String signIn(@ModelAttribute SignInRequestDto dto, HttpSession session, RedirectAttributes attributes) {
-        Member member = memberAuthService.signIn(dto);
+    public String signIn(@Valid @ModelAttribute SignInRequestDto dto, HttpServletRequest request
+                         , HttpSession session, RedirectAttributes attributes) {
+        String loginTryIp = extractClientIp(request);
+        Member member = memberAuthService.signIn(dto, loginTryIp);
         if (member != null) {
             session.setAttribute(Const.MEMBER_SESSION_KEY, member.getMemberId());
             attributes.addFlashAttribute("success", "로그인 되었습니다.");
@@ -68,5 +72,18 @@ public class MemberAuthController {
 
     // 회원탈퇴
 
+    private String extractClientIp(HttpServletRequest request) {
+        String forwardedFor = request.getHeader("X-Forwarded-For");
+        if (forwardedFor != null && !forwardedFor.isBlank()) {
+            return forwardedFor.split(",")[0].trim();
+        }
+
+        String realIp = request.getHeader("X-Real-IP");
+        if (realIp != null && !realIp.isBlank()) {
+            return realIp.trim();
+        }
+
+        return request.getRemoteAddr();
+    }
 
 }

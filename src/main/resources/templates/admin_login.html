@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{fragments/layout :: head('ADMIN LOGIN', '/css/admin.css')}"></th:block>
+</head>
+<body class="admin-background">
+
+<th:block th:replace="~{fragments/layout :: app-chrome}"></th:block>
+
+<main class="admin-login-wrap">
+    <form class="admin-login-form"
+          th:action="@{/admin-console}"
+          th:object="${adminLoginRequestDto}"
+          method="post"
+          autocomplete="off">
+
+        <h1>ADMIN</h1>
+
+        <div class="admin-login-fields">
+            <input type="text"
+                   th:field="*{adminLoginId}"
+                   class="admin-login-input"
+                   placeholder="ADMIN ID">
+
+            <p class="admin-login-error"
+               th:if="${#fields.hasErrors('adminLoginId')}"
+               th:errors="*{adminLoginId}"></p>
+
+            <input type="password"
+                   th:field="*{adminLoginPassword}"
+                   class="admin-login-input"
+                   placeholder="PASSWORD">
+
+            <p class="admin-login-error"
+               th:if="${#fields.hasErrors('adminLoginPassword')}"
+               th:errors="*{adminLoginPassword}"></p>
+
+            <p class="admin-login-error admin-login-error--global"
+               th:if="${loginError != null}"
+               th:text="${loginError}"></p>
+        </div>
+
+        <button type="submit" class="admin-login-submit">ENTER</button>
+    </form>
+
+</main>
+
+<th:block th:replace="~{fragments/common-scripts :: music-scripts}"></th:block>
+
+</body>
+</html>

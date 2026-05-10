@@ -34,12 +34,9 @@ public class ErrorResponse {
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
         for(FieldError e : fieldErrors) {
-            if (!isFirst) sb.append(", ");
+            if (!isFirst) sb.append(" ");
             else isFirst = false;
 
-            sb.append("[");
-            sb.append(e.getField());
-            sb.append("]");
             sb.append(e.getDefaultMessage());
         }
 

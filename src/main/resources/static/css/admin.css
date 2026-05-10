@@ -18,6 +18,99 @@ body.admin-background {
     gap: 24px;
 }
 
+.admin-login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.admin-login-form {
+    width: min(100%, 360px);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 34px 30px 30px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.admin-login-form h1 {
+    margin: 0 0 4px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.12em;
+    text-align: center;
+}
+
+.admin-login-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.admin-login-input {
+    width: 100%;
+    min-height: 46px;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 0 14px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 15px;
+    color: #fff;
+    outline: none;
+}
+
+.admin-login-input::placeholder {
+    color: rgba(255, 255, 255, 0.42);
+}
+
+.admin-login-input:focus {
+    border-color: rgba(255, 255, 255, 0.34);
+    background: rgba(255, 255, 255, 0.09);
+}
+
+.admin-login-error {
+    margin: -4px 0 4px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #ffb5b5;
+}
+
+.admin-login-error--global {
+    margin: 0;
+    text-align: center;
+}
+
+.admin-login-submit {
+    min-height: 46px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.86);
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.admin-login-submit:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #fff;
+}
+
 .admin-summary {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

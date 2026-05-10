@@ -1,4 +1,9 @@
 package server.TripToN.member.dto.sign;
 
-public record SignUpNicknameCheckRequestDto(String nickname) {
+import jakarta.validation.constraints.NotBlank;
+
+public record SignUpNicknameCheckRequestDto(
+        @NotBlank(message = "닉네임을 입력해주세요.")
+        String nickname
+) {
 }

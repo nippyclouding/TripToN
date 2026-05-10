@@ -1,6 +1,6 @@
 package server.TripToN.concern.entity;
 
-import org.hibernate.annotations.SQLRestriction;
+import lombok.Builder;
 import server.TripToN.AiResponse.entity.AiResponse;
 import server.TripToN.comment.entity.Comment;
 import server.TripToN.concern.dto.ConcernUpdateRequestDto;
@@ -19,7 +19,6 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 @Table(name = "CONCERNS")
-@SQLRestriction("deleted_at IS NULL")
 public class Concern extends BaseEntity {
 
     @Id
@@ -31,6 +30,7 @@ public class Concern extends BaseEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @Builder.Default
     @OneToMany(mappedBy = "concern", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 

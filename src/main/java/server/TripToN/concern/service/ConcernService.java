@@ -74,7 +74,8 @@ public class ConcernService {
     }
 
     public ConcernDetailResponseDto getConcernDetail(Long concernId, Long loginMemberId) {
-        Concern concern = concernRepository.findConcernAndMemberAndCommentAndResponseByConcernId(concernId);
+        Concern concern = concernRepository.findConcernAndMemberAndCommentAndResponseByConcernId(concernId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.CONCERN_NOT_FOUND));
 
         return ConcernDetailResponseDto.builder()
                 .memberId(concern.getMember().getMemberId())
@@ -102,7 +103,7 @@ public class ConcernService {
 
     @Transactional
     public void updateConcern(Long concernId, Long memberId, ConcernUpdateRequestDto dto) {
-        Concern findConcern = concernRepository.findById(concernId)
+        Concern findConcern = concernRepository.findByConcernIdAndDeletedAtIsNull(concernId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUNT_ERROR));
 
         if (!memberId.equals(findConcern.getMember().getMemberId()))
@@ -113,7 +114,7 @@ public class ConcernService {
 
     @Transactional
     public void removeConcern(Long concernId, Long memberId) {
-        Concern findConcern = concernRepository.findById(concernId)
+        Concern findConcern = concernRepository.findByConcernIdAndDeletedAtIsNull(concernId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUNT_ERROR));
 
         if (!memberId.equals(findConcern.getMember().getMemberId()))

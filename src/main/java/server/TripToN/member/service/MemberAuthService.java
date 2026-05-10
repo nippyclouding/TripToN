@@ -34,31 +34,32 @@ public class MemberAuthService {
     }
 
     @Transactional
-    public Member signIn(SignInRequestDto dto) {
+    public Member signIn(SignInRequestDto dto, String loginTryIp) {
         Optional<Member> memberOpt = memberRepository.findByMemberEmail(dto.getMemberEmail());
 
         if (memberOpt.isEmpty()) {
-            saveLoginLog(dto.getMemberEmail(), null, false, "존재하지 않는 이메일로 로그인 시도");
+            saveLoginLog(dto.getMemberEmail(), null, false, "존재하지 않는 이메일로 로그인 시도", loginTryIp);
             return null;
         }
 
         Member member = memberOpt.get();
         if (member.getMemberLoginPassword().equals(dto.getMemberLoginPassword())) {
-            saveLoginLog(member.getMemberEmail(), member.getMemberNickname(), true, null);
+            saveLoginLog(member.getMemberEmail(), member.getMemberNickname(), true, null, loginTryIp);
             return member;
         }
 
-        saveLoginLog(member.getMemberEmail(), member.getMemberNickname(), false, "패스워드 오류");
+        saveLoginLog(member.getMemberEmail(), member.getMemberNickname(), false, "패스워드 오류", loginTryIp);
         return null;
     }
 
-    private void saveLoginLog(String tryId, String nickname, boolean status, String reason) {
+    private void saveLoginLog(String tryId, String nickname, boolean status, String reason, String loginTryIp) {
         memberLoginLogRepository.save(
                 MemberLoginLog.builder()
                         .loginTryId(tryId)
                         .loginMemberNickname(nickname)
                         .loginStatus(status)
                         .loginFailureReason(reason)
+                        .loginTryIp(loginTryIp)
                         .build()
         );
     }
