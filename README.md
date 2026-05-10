@@ -2,7 +2,7 @@
 
 **고민을 가방에 담아 AI 상담사에게 맡기는 서비스**
 
-사용자가 자신의 고민을 가방 유형과 함께 제출하면 Google Gemini AI가 맞춤 조언을 생성해줍니다.
+사용자가 자신의 고민을 가방 유형과 함께 제출하면 Google Gemini AI가 맞춤 조언을 생성해줍니다.<br>
 결과 페이지에서 다른 사용자들의 가방(고민)도 볼 수 있으며, 고민 좋아요, 댓글 추가 & 수정 & 삭제 및 좋아요 버튼을 누를 수 있습니다.
 
 ---
@@ -23,6 +23,7 @@
 **개발 환경**
 - **Language & DB**: Java 21, MariaDB 11
 - **Framework**: Spring Boot 3 with JPA (Spring Data JPA)
+  - 디자이너의 요구사항 변경에 유연하게 대응하기 위해 데이터 중심 개발보다 객체 중심 개발에 적합한 JPA를 활용해 빠르게 개발했습니다.
 - **Auth**: Session & Cookie
 - **Frontend**: Javascript, Thymeleaf (Server Side Rendering)
 - **Infrastructure**: AWS EC2 & Docker Container
@@ -36,8 +37,9 @@
 
 <img width="1618" height="999" alt="ERD" src="https://github.com/user-attachments/assets/cfb69d9e-1e9d-4ed0-8070-0e9c5af6a977" />
 
-
-https://www.erdcloud.com/d/n5g78GXYfmokFXqiN
+<p align="center">
+  <a href="https://www.erdcloud.com/d/n5g78GXYfmokFXqiN">ERDCloud에서 자세히 보기</a>
+</p>
 
 ---
 
@@ -68,13 +70,13 @@ Gemini AI에게 고민을 전송하여 응답을 사용자에게 전달합니다
 
 
 #### **고민 게시글 전체 조회**
-사용자는 전체 고민들을 조회할 수 있습니다.
+사용자는 전체 고민들을 조회할 수 있습니다. (페이징 처리)
 
 <img width="765" height="613" alt="고민리스트" src="https://github.com/user-attachments/assets/64212bad-79ef-4e23-ac7b-fd14f882b804" />
 
 
 #### **고민 게시글 상세 조회**
-사용자는 각 고민들을 조회할 수 있습니다.
+사용자는 각 고민들을 조회할 수 있습니다.<br>
 사용자는 댓글 조회, 작성, 수정, 삭제가 가능하며, 고민과 댓글에 대해 좋아요 버튼을 누를 수 있습니다.
 
 <img width="1889" height="944" alt="상세조회와좋아요" src="https://github.com/user-attachments/assets/2f8598ba-3ed1-42ee-af32-8565499912c9" />
@@ -82,6 +84,6 @@ Gemini AI에게 고민을 전송하여 응답을 사용자에게 전달합니다
 
 #### **관리자 페이지**
 
+총 회원 수, 총 고민 수, 금일 AI 고민 요청 수를 조회할 수 있으며, 회원 로그인 로그와 Gemini 요청 로그 데이터를 관리자 화면에서 확인할 수 있습니다.
 
 <img width="1895" height="985" alt="관리자" src="https://github.com/user-attachments/assets/34fc5568-d5fa-465b-9fd8-9c46d27a4736" />
-
