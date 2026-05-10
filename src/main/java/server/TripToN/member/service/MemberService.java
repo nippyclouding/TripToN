@@ -17,6 +17,8 @@ import server.TripToN.concernLike.repository.ConcernLikeRepository;
 import server.TripToN.member.dto.mypage.*;
 import server.TripToN.member.entity.Member;
 import server.TripToN.member.repository.MemberRepository;
+import server.TripToN.global.error.BusinessException;
+import server.TripToN.global.error.ErrorCode;
 
 @Service
 @Transactional
@@ -37,7 +39,8 @@ public class MemberService {
                                        int commentLikePage) {
 
         // 회원 정보 조회
-        Member member = memberRepository.findById(memberId).orElseThrow();
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
         // 회원이 작성한 고민 리스트 조회, idx_concerns_member_paging 인덱스
         Page<Concern> concerns = concernRepository.findByMemberMemberId(

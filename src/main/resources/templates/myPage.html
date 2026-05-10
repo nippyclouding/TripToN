@@ -30,17 +30,12 @@
                     </a>
                 </div>
                 <div th:if="${#lists.isEmpty(myPage.concernDtos)}" class="mypage-empty">작성한 고민이 없습니다</div>
-                <div class="mypage-pagination" th:if="${myPage.concernTotalPages > 0}">
-                    <a th:if="${concernPage > 0}"
-                       th:href="@{/myPage(concernPage=${concernPage - 1},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})}"
-                       class="page-btn">&#8592;</a>
-                    <span th:if="${concernPage == 0}" class="page-btn" style="opacity:0;pointer-events:none;">&#8592;</span>
-                    <span class="page-info" th:text="${concernPage + 1} + ' / ' + ${myPage.concernTotalPages}"></span>
-                    <a th:if="${concernPage + 1 < myPage.concernTotalPages}"
-                       th:href="@{/myPage(concernPage=${concernPage + 1},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})}"
-                       class="page-btn">&#8594;</a>
-                    <span th:if="${concernPage + 1 >= myPage.concernTotalPages}" class="page-btn" style="opacity:0;pointer-events:none;">&#8594;</span>
-                </div>
+                <th:block th:replace="~{fragments/layout :: mypage-pager(
+                    ${concernPage},
+                    ${myPage.concernTotalPages},
+                    @{/myPage(concernPage=${concernPage - 1},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})},
+                    @{/myPage(concernPage=${concernPage + 1},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})}
+                )}"></th:block>
             </div>
 
             <!-- 내 댓글 -->
@@ -53,17 +48,12 @@
                     </div>
                 </div>
                 <div th:if="${#lists.isEmpty(myPage.commentDtos)}" class="mypage-empty">작성한 댓글이 없습니다</div>
-                <div class="mypage-pagination" th:if="${myPage.commentTotalPages > 0}">
-                    <a th:if="${commentPage > 0}"
-                       th:href="@{/myPage(concernPage=${concernPage},commentPage=${commentPage - 1},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})}"
-                       class="page-btn">&#8592;</a>
-                    <span th:if="${commentPage == 0}" class="page-btn" style="opacity:0;pointer-events:none;">&#8592;</span>
-                    <span class="page-info" th:text="${commentPage + 1} + ' / ' + ${myPage.commentTotalPages}"></span>
-                    <a th:if="${commentPage + 1 < myPage.commentTotalPages}"
-                       th:href="@{/myPage(concernPage=${concernPage},commentPage=${commentPage + 1},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})}"
-                       class="page-btn">&#8594;</a>
-                    <span th:if="${commentPage + 1 >= myPage.commentTotalPages}" class="page-btn" style="opacity:0;pointer-events:none;">&#8594;</span>
-                </div>
+                <th:block th:replace="~{fragments/layout :: mypage-pager(
+                    ${commentPage},
+                    ${myPage.commentTotalPages},
+                    @{/myPage(concernPage=${concernPage},commentPage=${commentPage - 1},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})},
+                    @{/myPage(concernPage=${concernPage},commentPage=${commentPage + 1},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})}
+                )}"></th:block>
             </div>
 
             <!-- 좋아요한 고민 -->
@@ -77,17 +67,12 @@
                     </a>
                 </div>
                 <div th:if="${#lists.isEmpty(myPage.concernLikeDtos)}" class="mypage-empty">좋아요한 고민이 없습니다</div>
-                <div class="mypage-pagination" th:if="${myPage.concernLikeTotalPages > 0}">
-                    <a th:if="${concernLikePage > 0}"
-                       th:href="@{/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage - 1},commentLikePage=${commentLikePage})}"
-                       class="page-btn">&#8592;</a>
-                    <span th:if="${concernLikePage == 0}" class="page-btn" style="opacity:0;pointer-events:none;">&#8592;</span>
-                    <span class="page-info" th:text="${concernLikePage + 1} + ' / ' + ${myPage.concernLikeTotalPages}"></span>
-                    <a th:if="${concernLikePage + 1 < myPage.concernLikeTotalPages}"
-                       th:href="@{/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage + 1},commentLikePage=${commentLikePage})}"
-                       class="page-btn">&#8594;</a>
-                    <span th:if="${concernLikePage + 1 >= myPage.concernLikeTotalPages}" class="page-btn" style="opacity:0;pointer-events:none;">&#8594;</span>
-                </div>
+                <th:block th:replace="~{fragments/layout :: mypage-pager(
+                    ${concernLikePage},
+                    ${myPage.concernLikeTotalPages},
+                    @{/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage - 1},commentLikePage=${commentLikePage})},
+                    @{/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage + 1},commentLikePage=${commentLikePage})}
+                )}"></th:block>
             </div>
 
             <!-- 좋아요한 댓글 -->
@@ -99,17 +84,12 @@
                     </div>
                 </div>
                 <div th:if="${#lists.isEmpty(myPage.commentLikeDtos)}" class="mypage-empty">좋아요한 댓글이 없습니다</div>
-                <div class="mypage-pagination" th:if="${myPage.commentLikeTotalPages > 0}">
-                    <a th:if="${commentLikePage > 0}"
-                       th:href="@{/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage - 1})}"
-                       class="page-btn">&#8592;</a>
-                    <span th:if="${commentLikePage == 0}" class="page-btn" style="opacity:0;pointer-events:none;">&#8592;</span>
-                    <span class="page-info" th:text="${commentLikePage + 1} + ' / ' + ${myPage.commentLikeTotalPages}"></span>
-                    <a th:if="${commentLikePage + 1 < myPage.commentLikeTotalPages}"
-                       th:href="@{/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage + 1})}"
-                       class="page-btn">&#8594;</a>
-                    <span th:if="${commentLikePage + 1 >= myPage.commentLikeTotalPages}" class="page-btn" style="opacity:0;pointer-events:none;">&#8594;</span>
-                </div>
+                <th:block th:replace="~{fragments/layout :: mypage-pager(
+                    ${commentLikePage},
+                    ${myPage.commentLikeTotalPages},
+                    @{/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage - 1})},
+                    @{/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage + 1})}
+                )}"></th:block>
             </div>
 
         </div>

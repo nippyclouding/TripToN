@@ -3,10 +3,6 @@ body.error-page {
     margin: 0;
     overflow: hidden;
     color: white;
-    background-image: url('/image/sharedImage/deepDark.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     font-family: 'Oswald', 'Roboto Condensed', sans-serif;
 }
 

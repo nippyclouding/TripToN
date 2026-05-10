@@ -11,10 +11,6 @@ body, html {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/image/sharedImage/deepDark.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     z-index: -1;
 }
 
@@ -299,4 +295,3 @@ body, html {
     visibility: hidden;
     transform: translateX(-20px) scale(0.95);
 }
-

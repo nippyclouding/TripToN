@@ -9,6 +9,8 @@ import server.TripToN.member.entity.Member;
 import server.TripToN.member.entity.MemberLoginLog;
 import server.TripToN.member.repository.MemberLoginLogRepository;
 import server.TripToN.member.repository.MemberRepository;
+import server.TripToN.global.error.BusinessException;
+import server.TripToN.global.error.ErrorCode;
 
 import java.util.Optional;
 
@@ -21,9 +23,15 @@ public class MemberAuthService {
     private final MemberLoginLogRepository memberLoginLogRepository;
 
     public void signUp(SignUpRequestDto dto) {
-        if (!dto.getMemberLoginPassword().equals(dto.getMemberLoginPasswordConfirm())) throw new IllegalArgumentException("패스워드 입력이 잘못되었습니다.");
-        if (memberRepository.findByMemberEmail(dto.getMemberEmail()).isPresent()) throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
-        if (memberRepository.findByMemberNickname(dto.getMemberNickName()).isPresent()) throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
+        if (!dto.getMemberLoginPassword().equals(dto.getMemberLoginPasswordConfirm())) {
+            throw new BusinessException(ErrorCode.PASSWORD_CONFIRM_MISMATCH);
+        }
+        if (memberRepository.findByMemberEmail(dto.getMemberEmail()).isPresent()) {
+            throw new BusinessException(ErrorCode.EMAIL_ALREADY_EXISTS);
+        }
+        if (memberRepository.findByMemberNickname(dto.getMemberNickName()).isPresent()) {
+            throw new BusinessException(ErrorCode.NICKNAME_ALREADY_EXISTS);
+        }
 
         Member member = Member.builder()
                 .memberEmail(dto.getMemberEmail())

@@ -36,7 +36,7 @@ public class ConcernService {
     @Transactional
     public AiResponseDto saveConcernAndGetAiResponse(ConcernRequestDto dto, Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUNT_ERROR));
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
         // 1. DB에 고민 저장
         Concern concern = Concern.builder()
@@ -104,7 +104,7 @@ public class ConcernService {
     @Transactional
     public void updateConcern(Long concernId, Long memberId, ConcernUpdateRequestDto dto) {
         Concern findConcern = concernRepository.findByConcernIdAndDeletedAtIsNull(concernId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUNT_ERROR));
+                .orElseThrow(() -> new BusinessException(ErrorCode.CONCERN_NOT_FOUND));
 
         if (!memberId.equals(findConcern.getMember().getMemberId()))
             throw new BusinessException(ErrorCode.WRONG_ACCESS_UPDATE);
@@ -115,7 +115,7 @@ public class ConcernService {
     @Transactional
     public void removeConcern(Long concernId, Long memberId) {
         Concern findConcern = concernRepository.findByConcernIdAndDeletedAtIsNull(concernId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUNT_ERROR));
+                .orElseThrow(() -> new BusinessException(ErrorCode.CONCERN_NOT_FOUND));
 
         if (!memberId.equals(findConcern.getMember().getMemberId()))
             throw new BusinessException(ErrorCode.WRONG_ACCESS_DELETE);

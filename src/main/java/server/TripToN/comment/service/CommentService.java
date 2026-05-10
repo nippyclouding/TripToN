@@ -27,7 +27,8 @@ public class CommentService {
     public void createComment(CommentCreateRequestDto dto, Long writerId, Long concernId) {
         Concern concern = concernRepository.findByConcernIdAndDeletedAtIsNull(concernId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.CONCERN_NOT_FOUND));
-        Member writer = memberRepository.findById(writerId).orElseThrow();
+        Member writer = memberRepository.findById(writerId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
         Comment comment = Comment.builder()
                 .commentContent(dto.getCommentContent())
                 .concern(concern)
@@ -38,7 +39,8 @@ public class CommentService {
 
     public void updateComment(CommentUpdateRequestDto dto, Long currentMemberId, Long commentId) {
         // 1. 작성자 일치 여부 조회
-        Comment findComment = commentRepository.findCommentAndMemberById(commentId).orElseThrow();
+        Comment findComment = commentRepository.findCommentAndMemberById(commentId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.COMMENT_NOT_FOUND));
         if (!findComment.getMember().getMemberId().equals(currentMemberId)) throw new BusinessException(ErrorCode.WRONG_ACCESS_UPDATE);
 
         // 2. update
@@ -47,7 +49,8 @@ public class CommentService {
 
     public void deleteComment(Long currentMemberId, Long commentId) {
         // 1. 작성자 일치 여부 조회
-        Comment findComment = commentRepository.findCommentAndMemberById(commentId).orElseThrow();
+        Comment findComment = commentRepository.findCommentAndMemberById(commentId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.COMMENT_NOT_FOUND));
         if (!findComment.getMember().getMemberId().equals(currentMemberId)) throw new BusinessException(ErrorCode.WRONG_ACCESS_DELETE);
 
         // 2. delete

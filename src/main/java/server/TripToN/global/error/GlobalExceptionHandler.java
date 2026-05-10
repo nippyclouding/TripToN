@@ -49,8 +49,8 @@ public class GlobalExceptionHandler {
     protected Object handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e,
                                                                  HttpServletRequest request) {
         log.error("handleHttpRequestMethodNotSupportedException", e);
-        ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.METHOD_NOT_ALLOWED.toString(),
-                e.getMessage());
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.METHOD_NOT_ALLOWED.getErrorCode(),
+                ErrorCode.METHOD_NOT_ALLOWED.getMessage());
         return errorResponse(request, HttpStatus.METHOD_NOT_ALLOWED, errorResponse);
     }
 
@@ -82,8 +82,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected Object handleException(Exception e, HttpServletRequest request) {
         log.error("Exception", e);
-        ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR.toString(),
-                "서버 오류가 발생했습니다.");
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR.getErrorCode(),
+                ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
         return errorResponse(request, HttpStatus.INTERNAL_SERVER_ERROR, errorResponse);
     }
 
