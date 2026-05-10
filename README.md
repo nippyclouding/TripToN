@@ -7,7 +7,7 @@
 
 ---
 
-<img width="693" height="605" alt="github1" src="https://github.com/user-attachments/assets/7082a6ce-83e2-4a00-8a9f-0441bdb78f28" />
+<img width="643" height="574" alt="대표이미지" src="https://github.com/user-attachments/assets/f112c711-ca01-41c4-867a-b29661902be4" />
 
 ---
 
@@ -34,7 +34,7 @@
 
 ### 1. ERD
 
-<img width="715" height="593" alt="github3" src="https://github.com/user-attachments/assets/153a9796-0d0f-4376-947d-35d304ff755d" />
+<img width="2270" height="1442" alt="ERD" src="https://github.com/user-attachments/assets/3758fcdd-104e-4976-896a-45eb048a0ebe" />
 
 
 
@@ -42,7 +42,7 @@
 
 ### 2. SYSTEM ARCHITECTURE
 
-<img width="518" height="463" alt="github2" src="https://github.com/user-attachments/assets/8b352a95-0548-465f-94c7-07b58ed490e6" />
+<img width="1027" height="918" alt="SystemArchitecture" src="https://github.com/user-attachments/assets/5ae960d9-f287-4ad9-9db6-831555ff84fd" />
 
 
 ---
@@ -52,29 +52,35 @@
 #### **가방 종류 선택**
 사용자는 로그인 후 고민을 담을 가방을 총 3가지 중 하나 선택할 수 있습니다. 
 
-<img width="952" height="579" alt="github4" src="https://github.com/user-attachments/assets/b7f992d0-f37f-4a57-97d1-ab18cf1dbfdc" />
+<img width="1870" height="949" alt="가방선택" src="https://github.com/user-attachments/assets/4edda114-fa59-47db-9572-96006528b653" />
 
 
 #### **고민 입력**
 사용자는 자신의 고민을 입력창에 입력할 수 있습니다.
 
-<img width="585" height="549" alt="github5" src="https://github.com/user-attachments/assets/d21bf279-898e-431e-ab1e-5175b2999461" />
+<img width="735" height="848" alt="고민" src="https://github.com/user-attachments/assets/0170249d-7041-4130-80b5-568e3675a263" />
 
 #### **AI 고민 응답**
 Gemini AI에게 고민을 전송하여 응답을 사용자에게 전달합니다.
 
-<img width="631" height="566" alt="github6" src="https://github.com/user-attachments/assets/f6ec5d39-03ce-4ce4-a414-eca1ce9aebbf" />
+<img width="977" height="820" alt="응답" src="https://github.com/user-attachments/assets/a912b9c6-f81f-4cb8-b6af-400c80b69b78" />
 
 
 #### **고민 게시글 전체 조회**
 사용자는 전체 고민들을 조회할 수 있습니다.
 
-<img width="461" height="483" alt="github7" src="https://github.com/user-attachments/assets/5fc9c0c8-9715-44a3-9752-8eb040959e9b" />
+<img width="765" height="613" alt="고민리스트" src="https://github.com/user-attachments/assets/64212bad-79ef-4e23-ac7b-fd14f882b804" />
 
 
 #### **고민 게시글 상세 조회**
 사용자는 각 고민들을 조회할 수 있습니다.
-사용자는 댓글 조회, 작성, 수정, 삭제가 가능하며, 좋아요 버튼을 누를 수 있습니다.
+사용자는 댓글 조회, 작성, 수정, 삭제가 가능하며, 고민과 댓글에 대해 좋아요 버튼을 누를 수 있습니다.
 
-<img width="1253" height="568" alt="github9" src="https://github.com/user-attachments/assets/5704fad4-4251-4b3f-ac5d-0840afb4fcb0" />
+<img width="1889" height="944" alt="상세조회와좋아요" src="https://github.com/user-attachments/assets/2f8598ba-3ed1-42ee-af32-8565499912c9" />
+
+
+#### **관리자 페이지**
+
+
+<img width="1895" height="985" alt="관리자" src="https://github.com/user-attachments/assets/34fc5568-d5fa-465b-9fd8-9c46d27a4736" />
 
