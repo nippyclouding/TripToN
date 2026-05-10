@@ -81,6 +81,11 @@ Gemini AI에게 고민을 전송하여 응답을 사용자에게 전달합니다
 
 <img width="1889" height="944" alt="상세조회와좋아요" src="https://github.com/user-attachments/assets/2f8598ba-3ed1-42ee-af32-8565499912c9" />
 
+#### **마이페이지**
+사용자는 마이페이지에서 자신이 작성한 고민, 댓글, 좋아요한 고민, 좋아요한 댓글을 조회할 수 있습니다.
+
+![마이페이지](README_IMG_SOURCE/flow_IMG/마이페이지.png)
+
 
 #### **관리자 페이지**
 
