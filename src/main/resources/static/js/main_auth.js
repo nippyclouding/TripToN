@@ -193,6 +193,12 @@ function setNicknameCheckMessage(message, isAvailable) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const signModal = document.getElementById('sign-modal');
+    if (signModal && signModal.dataset.authOpen === 'true') {
+        openSignModal();
+        switchAuthTab(signModal.dataset.authTab === 'signup' ? 'signup' : 'signin');
+    }
+
     const emailInput = document.querySelector('#form-signup [name="memberEmail"]');
     const nicknameInput = document.querySelector('#form-signup [name="memberNickName"]');
 

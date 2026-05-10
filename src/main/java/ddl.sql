@@ -15,7 +15,7 @@ CREATE TABLE members (
                          updated_at DATETIME(6),
                          deleted_at DATETIME(6),
                          PRIMARY KEY (member_id)
-)
+);
 
 -- 2. 고민(게시글) 테이블
 CREATE TABLE concerns (
@@ -28,7 +28,7 @@ CREATE TABLE concerns (
                           updated_at DATETIME(6),
                           deleted_at DATETIME(6),
                           PRIMARY KEY (concern_id)
-)
+);
 
 -- 3. AI 응답 테이블
 CREATE TABLE responses (
@@ -37,7 +37,7 @@ CREATE TABLE responses (
                            response_content TEXT NOT NULL,
                            created_at DATETIME(6),
                            PRIMARY KEY (response_id)
-)
+);
 
 -- 4. 댓글 테이블
 CREATE TABLE comments (
@@ -49,7 +49,7 @@ CREATE TABLE comments (
                           updated_at DATETIME(6),
                           deleted_at DATETIME(6),
                           PRIMARY KEY (comment_id)
-)
+);
 
 -- 5. 고민 게시글 좋아요 테이블
 CREATE TABLE concern_likes (
@@ -58,7 +58,7 @@ CREATE TABLE concern_likes (
                                member_id BIGINT NOT NULL,
                                created_at DATETIME(6) NOT NULL,
                                PRIMARY KEY (concern_like_id)
-)
+);
 
 -- 6. 댓글 좋아요 테이블
 CREATE TABLE comment_likes (
@@ -67,7 +67,7 @@ CREATE TABLE comment_likes (
                                member_id BIGINT NOT NULL,
                                created_at DATETIME(6),
                                PRIMARY KEY (comment_like_id)
-)
+);
 
 -- 7. 회원 로그인 로그 테이블
 CREATE TABLE member_login_logs (
@@ -99,7 +99,7 @@ ALTER TABLE members ADD CONSTRAINT UK_MEMBER_EMAIL UNIQUE (member_email);
 ALTER TABLE members ADD CONSTRAINT UK_MEMBER_NICKNAME UNIQUE (member_nickname);
 
 -- 하나의 고민글에는 하나의 AI 응답만 존재 (1:1 관계)
-ALTER TABLE responses ADD CONSTRAINT UKeiwaol9lxpytysill0hoygcc7 UNIQUE (concern_id);
+ALTER TABLE responses ADD CONSTRAINT UK_RESPONSE_CONCERN UNIQUE (concern_id);
 
 -- 좋아요 중복 방지 (한 유저가 같은 글/댓글에 한 번만 좋아요 가능)
 ALTER TABLE concern_likes ADD CONSTRAINT UQ_CONCERN_LIKE UNIQUE (member_id, concern_id);

@@ -37,15 +37,12 @@ public interface ConcernRepository extends JpaRepository<Concern, Long> {
     long countByDeletedAtIsNull();
 
     // 어드민 페이지 전용 쿼리 - 삭제된 고민까지 포함
-    @Query(
-            value = """
+    @Query(value = """
                     SELECT c
                     FROM Concern c
                     JOIN FETCH c.member
                     ORDER BY c.createdAt DESC
-                    """,
-            countQuery = "SELECT COUNT(c) FROM Concern c"
-    )
+                    """, countQuery = "SELECT COUNT(c) FROM Concern c")
     Page<Concern> findAllForAdmin(Pageable pageable);
 
 }

@@ -33,6 +33,7 @@ public class ConcernController {
                               Model model,
                               HttpSession session) {
         Long memberId = (Long) session.getAttribute(Const.MEMBER_SESSION_KEY);
+        if (memberId == null) return "redirect:/";
         AiResponseDto aiResponseDto = concernService.saveConcernAndGetAiResponse(dto, memberId);
         model.addAttribute("aiResponseDto", aiResponseDto);
         return "info";
@@ -93,7 +94,7 @@ public class ConcernController {
     @PostMapping("/api/{concernId}/like")
     public ResponseEntity<Void> addConcernLike(@PathVariable Long concernId, HttpSession session) {
         Long memberId = (Long) session.getAttribute(Const.MEMBER_SESSION_KEY);
-        if (memberId == null) throw new BusinessException(ErrorCode.ENTITY_NOT_FOUNT_ERROR);
+        if (memberId == null) throw new BusinessException(ErrorCode.SESSION_NOT_FOUND);
 
         concernLikeService.toggleLike(memberId, concernId);
 

@@ -1,5 +1,6 @@
 package server.TripToN.admin;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import server.TripToN.admin.dto.AdminLoginRequestDto;
 import server.TripToN.admin.dto.TotalCountResponseDto;
+import server.TripToN.global.util.Const;
 
 @RequiredArgsConstructor
 @RequestMapping("/admin-console")
@@ -37,7 +39,8 @@ public class AdminController {
 
     @PostMapping
     public String admin(@Valid @ModelAttribute AdminLoginRequestDto dto,
-                        Model model) {
+                        Model model,
+                        HttpSession session) {
         boolean authenticated =
                         adminProperties.getAdminLoginId().equals(dto.getAdminLoginId())
                         && adminProperties.getAdminPassword().equals(dto.getAdminLoginPassword());
@@ -47,6 +50,7 @@ public class AdminController {
             return "admin_login";
         }
 
+        session.setAttribute(Const.ADMIN_SESSION_KEY, true);
         return "admin";
     }
 

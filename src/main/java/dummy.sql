@@ -9,7 +9,7 @@ WITH RECURSIVE cte (n) AS (
 )
 SELECT
     CONCAT('user', n, '@tripton.com'),
-    '$2a$10$dummyHashPassword1234567890', -- 더미 암호화 비밀번호
+    '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', -- password
     CONCAT('여행자_', n),
     NOW() - INTERVAL FLOOR(RAND() * 365) DAY, -- 최근 1년 사이 랜덤 가입일
     NOW()
@@ -82,7 +82,7 @@ SELECT
     NOW() - INTERVAL FLOOR(RAND() * 365) DAY
 FROM cte;
 
-INSERT INTO member_login_logs (login_try_id, login_member_nickname, login_status, login_failure_reason, created_at)
+INSERT INTO member_login_logs (login_try_id, login_member_nickname, login_status, login_failure_reason, login_try_ip, created_at)
 WITH RECURSIVE cte (n) AS (
     SELECT 1
     UNION ALL
@@ -93,6 +93,10 @@ SELECT
     CONCAT('여행자_', FLOOR(1 + (RAND() * 1000))),
     n MOD 2, -- 0(실패) 또는 1(성공)
     IF(n MOD 2 = 0, '비밀번호 불일치', NULL), -- 실패일 때만 사유 작성
+    IF(n MOD 5 = 0,
+       CONCAT('2001:db8::', HEX(n)),
+       CONCAT('192.168.', FLOOR(RAND() * 255), '.', FLOOR(1 + (RAND() * 254)))
+    ),
     NOW() - INTERVAL FLOOR(RAND() * 365) DAY
 FROM cte;
 

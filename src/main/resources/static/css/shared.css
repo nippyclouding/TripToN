@@ -9,6 +9,32 @@
     box-sizing: border-box;
 }
 
+body.admin-background,
+body.mypage-background,
+body.error-page,
+.background {
+    background-image: url('/image/sharedImage/deepDark.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+body.admin-background,
+body.mypage-background {
+    background-attachment: fixed;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.admin-login-form,
+.admin-panel {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 16px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
 /* ============================
    공통 컴포넌트 스타일
    ============================ */
