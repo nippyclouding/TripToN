@@ -147,6 +147,8 @@ a.mypage-item:hover,
 }
 
 .page-btn {
+    border: 0;
+    background: transparent;
     color: rgba(255, 255, 255, 0.5);
     text-decoration: none;
     font-size: 15px;
@@ -154,6 +156,7 @@ a.mypage-item:hover,
     padding: 3px 6px;
     border-radius: 4px;
     transition: color 0.2s, background 0.2s;
+    cursor: pointer;
 }
 
 .page-btn:hover {
@@ -162,7 +165,9 @@ a.mypage-item:hover,
 }
 
 .page-btn--disabled,
-.page-btn--disabled:hover {
+.page-btn--disabled:hover,
+.page-btn:disabled,
+.page-btn:disabled:hover {
     opacity: 0;
     pointer-events: none;
     background: transparent;

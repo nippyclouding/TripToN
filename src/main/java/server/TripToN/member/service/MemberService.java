@@ -21,7 +21,7 @@ import server.TripToN.global.error.BusinessException;
 import server.TripToN.global.error.ErrorCode;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
@@ -30,74 +30,53 @@ public class MemberService {
     private final ConcernLikeRepository concernLikeRepository;
     private final CommentLikeRepository commentLikeRepository;
 
-
-    @Transactional(readOnly = true)
-    public MyPageResponseDto getMyPage(Long memberId,
-                                       int concernPage,
-                                       int commentPage,
-                                       int concernLikePage,
-                                       int commentLikePage) {
-
-        // 회원 정보 조회
+    public MyPageProfileResponseDto getMyPageProfile(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
 
-        // 회원이 작성한 고민 리스트 조회, idx_concerns_member_paging 인덱스
-        Page<Concern> concerns = concernRepository.findByMemberMemberId(
-                memberId, PageRequest.of(concernPage, 5, Sort.by("createdAt").descending()));
-
-        // 회원이 작성한 댓글 리스트 조회, idx_comments_member_paging 인덱스
-        Page<Comment> comments = commentRepository.findByMemberMemberId(
-                memberId, PageRequest.of(commentPage, 5, Sort.by("createdAt").descending()));
-
-        // 회원이 좋아요한 고민 조회, unique 인덱스 (member_id, concern_id)
-        Page<ConcernLike> concernLikes = concernLikeRepository.findByMemberMemberIdWithConcern(
-                memberId, PageRequest.of(concernLikePage, 5));
-
-        // 회원이 좋아요한 댓글 조회, unique 인덱스 (member_id, comment_id)
-        Page<CommentLike> commentLikes = commentLikeRepository.findByMemberMemberIdWithComment(
-                memberId, PageRequest.of(commentLikePage, 5));
-
-        return MyPageResponseDto.builder()
+        return MyPageProfileResponseDto.builder()
                 .memberEmail(member.getMemberEmail())
                 .memberNickName(member.getMemberNickname())
-
-                .concernDtos(concerns.getContent().stream()
-                        .map(c -> MyPageConcernResponseDto.builder()
-                                .concernId(c.getConcernId())
-                                .concernTitle(c.getConcernTitle())
-                                .luggageType(c.getLuggageType())
-                                .createdAt(c.getCreatedAt())
-                                .build())
-                        .toList())
-                .concernTotalPages(concerns.getTotalPages())
-
-                .commentDtos(comments.getContent().stream()
-                        .map(c -> MyPageCommentResponseDto.builder()
-                                .commentId(c.getCommentId())
-                                .commentContent(c.getCommentContent())
-                                .createdAt(c.getCreatedAt())
-                                .build())
-                        .toList())
-                .commentTotalPages(comments.getTotalPages())
-
-                .concernLikeDtos(concernLikes.getContent().stream()
-                        .map(cl -> MyPageConcernLikeDto.builder()
-                                .concernLikeId(cl.getConcernLikeId())
-                                .concernId(cl.getConcern().getConcernId())
-                                .concernTitle(cl.getConcern().getConcernTitle())
-                                .build())
-                        .toList())
-                .concernLikeTotalPages(concernLikes.getTotalPages())
-
-                .commentLikeDtos(commentLikes.getContent().stream()
-                        .map(cl -> MyPageCommentLikeDto.builder()
-                                .commentLikeId(cl.getCommentLikeId())
-                                .commentContent(cl.getComment().getCommentContent())
-                                .build())
-                        .toList())
-                .commentLikeTotalPages(commentLikes.getTotalPages())
-
                 .build();
+    }
+
+    public Page<MyPageConcernResponseDto> getMyConcerns(Long memberId, int page) {
+        return concernRepository.findByMemberMemberId(
+                        memberId, PageRequest.of(page, 5, Sort.by("createdAt").descending()))
+                .map(c -> MyPageConcernResponseDto.builder()
+                        .concernId(c.getConcernId())
+                        .concernTitle(c.getConcernTitle())
+                        .luggageType(c.getLuggageType())
+                        .createdAt(c.getCreatedAt())
+                        .build());
+    }
+
+    public Page<MyPageCommentResponseDto> getMyComments(Long memberId, int page) {
+        return commentRepository.findByMemberMemberId(
+                        memberId, PageRequest.of(page, 5, Sort.by("createdAt").descending()))
+                .map(c -> MyPageCommentResponseDto.builder()
+                        .commentId(c.getCommentId())
+                        .commentContent(c.getCommentContent())
+                        .createdAt(c.getCreatedAt())
+                        .build());
+    }
+
+    public Page<MyPageConcernLikeDto> getMyConcernLikes(Long memberId, int page) {
+        return concernLikeRepository.findByMemberMemberIdWithConcern(
+                        memberId, PageRequest.of(page, 5))
+                .map(cl -> MyPageConcernLikeDto.builder()
+                        .concernLikeId(cl.getConcernLikeId())
+                        .concernId(cl.getConcern().getConcernId())
+                        .concernTitle(cl.getConcern().getConcernTitle())
+                        .build());
+    }
+
+    public Page<MyPageCommentLikeDto> getMyCommentLikes(Long memberId, int page) {
+        return commentLikeRepository.findByMemberMemberIdWithComment(
+                        memberId, PageRequest.of(page, 5))
+                .map(cl -> MyPageCommentLikeDto.builder()
+                        .commentLikeId(cl.getCommentLikeId())
+                        .commentContent(cl.getComment().getCommentContent())
+                        .build());
     }
 }

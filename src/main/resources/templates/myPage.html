@@ -11,8 +11,8 @@
 
         <!-- 유저 정보 -->
         <div class="mypage-header">
-            <h1 class="mypage-nickname" th:text="${myPage.memberNickName}"></h1>
-            <span class="mypage-email" th:text="${myPage.memberEmail}"></span>
+            <h1 class="mypage-nickname" id="mypage-nickname"></h1>
+            <span class="mypage-email" id="mypage-email"></span>
         </div>
 
         <!-- 2x2 그리드 -->
@@ -21,81 +21,36 @@
             <!-- 내 고민 -->
             <div class="mypage-panel">
                 <div class="mypage-panel-title">MY CONCERNS</div>
-                <div class="mypage-list" th:if="${not #lists.isEmpty(myPage.concernDtos)}">
-                    <a th:each="item : ${myPage.concernDtos}"
-                       th:href="@{/concern/{id}(id=${item.concernId})}"
-                       class="mypage-item">
-                        <span class="item-title" th:text="${item.concernTitle}"></span>
-                        <span class="item-meta" th:text="${#temporals.format(item.createdAt, 'yy.MM.dd')}"></span>
-                    </a>
-                </div>
-                <div th:if="${#lists.isEmpty(myPage.concernDtos)}" class="mypage-empty">작성한 고민이 없습니다</div>
-                <th:block th:replace="~{fragments/layout :: mypage-pager(
-                    ${concernPage},
-                    ${myPage.concernTotalPages},
-                    @{/myPage(concernPage=${concernPage - 1},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})},
-                    @{/myPage(concernPage=${concernPage + 1},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})}
-                )}"></th:block>
+                <div class="mypage-list" id="concerns-list"></div>
+                <div class="mypage-pagination" id="concerns-pagination"></div>
             </div>
 
             <!-- 내 댓글 -->
             <div class="mypage-panel">
                 <div class="mypage-panel-title">MY COMMENTS</div>
-                <div class="mypage-list" th:if="${not #lists.isEmpty(myPage.commentDtos)}">
-                    <div th:each="item : ${myPage.commentDtos}" class="mypage-item">
-                        <span class="item-title" th:text="${item.commentContent}"></span>
-                        <span class="item-meta" th:text="${#temporals.format(item.createdAt, 'yy.MM.dd')}"></span>
-                    </div>
-                </div>
-                <div th:if="${#lists.isEmpty(myPage.commentDtos)}" class="mypage-empty">작성한 댓글이 없습니다</div>
-                <th:block th:replace="~{fragments/layout :: mypage-pager(
-                    ${commentPage},
-                    ${myPage.commentTotalPages},
-                    @{/myPage(concernPage=${concernPage},commentPage=${commentPage - 1},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})},
-                    @{/myPage(concernPage=${concernPage},commentPage=${commentPage + 1},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage})}
-                )}"></th:block>
+                <div class="mypage-list" id="comments-list"></div>
+                <div class="mypage-pagination" id="comments-pagination"></div>
             </div>
 
             <!-- 좋아요한 고민 -->
             <div class="mypage-panel">
                 <div class="mypage-panel-title">LIKED CONCERNS</div>
-                <div class="mypage-list" th:if="${not #lists.isEmpty(myPage.concernLikeDtos)}">
-                    <a th:each="item : ${myPage.concernLikeDtos}"
-                       th:href="@{/concern/{id}(id=${item.concernId})}"
-                       class="mypage-item">
-                        <span class="item-title" th:text="${item.concernTitle}"></span>
-                    </a>
-                </div>
-                <div th:if="${#lists.isEmpty(myPage.concernLikeDtos)}" class="mypage-empty">좋아요한 고민이 없습니다</div>
-                <th:block th:replace="~{fragments/layout :: mypage-pager(
-                    ${concernLikePage},
-                    ${myPage.concernLikeTotalPages},
-                    @{/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage - 1},commentLikePage=${commentLikePage})},
-                    @{/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage + 1},commentLikePage=${commentLikePage})}
-                )}"></th:block>
+                <div class="mypage-list" id="concern-likes-list"></div>
+                <div class="mypage-pagination" id="concern-likes-pagination"></div>
             </div>
 
             <!-- 좋아요한 댓글 -->
             <div class="mypage-panel">
                 <div class="mypage-panel-title">LIKED COMMENTS</div>
-                <div class="mypage-list" th:if="${not #lists.isEmpty(myPage.commentLikeDtos)}">
-                    <div th:each="item : ${myPage.commentLikeDtos}" class="mypage-item">
-                        <span class="item-title" th:text="${item.commentContent}"></span>
-                    </div>
-                </div>
-                <div th:if="${#lists.isEmpty(myPage.commentLikeDtos)}" class="mypage-empty">좋아요한 댓글이 없습니다</div>
-                <th:block th:replace="~{fragments/layout :: mypage-pager(
-                    ${commentLikePage},
-                    ${myPage.commentLikeTotalPages},
-                    @{/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage - 1})},
-                    @{/myPage(concernPage=${concernPage},commentPage=${commentPage},concernLikePage=${concernLikePage},commentLikePage=${commentLikePage + 1})}
-                )}"></th:block>
+                <div class="mypage-list" id="comment-likes-list"></div>
+                <div class="mypage-pagination" id="comment-likes-pagination"></div>
             </div>
 
         </div>
     </div>
 
     <th:block th:replace="~{fragments/common-scripts :: music-scripts}"></th:block>
+    <script src="/js/mypage.js" defer></script>
 
 </body>
 </html>
