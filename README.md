@@ -23,7 +23,6 @@
 **개발 환경**
 - **Language & DB**: Java 21, MariaDB 11
 - **Framework**: Spring Boot 3 with JPA (Spring Data JPA)
-  - 디자이너의 요구사항 변경에 유연하게 대응하기 위해 데이터 중심 개발보다 객체 중심 개발에 적합한 JPA를 활용해 빠르게 개발했습니다.
 - **Auth**: Session & Cookie
 - **Frontend**: Javascript, Thymeleaf (Server Side Rendering)
 - **Infrastructure**: AWS EC2 & Docker Container
