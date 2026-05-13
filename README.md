@@ -1,6 +1,7 @@
 # TRIPTON
 
 **고민을 가방에 담아 AI 상담사에게 맡기는 서비스**
+
 <sub>해당 파일은 기능 서술에 초점을 두고 있습니다. 기술적 의사 고민 등과 같은 부분은 <a href="https://nippyclouding.github.io/project.html">포트폴리오</a>에서 확인할 수 있습니다.</sub>
 
 사용자가 자신의 고민을 가방 유형과 함께 제출하면 Google Gemini AI가 맞춤 조언을 생성해줍니다.<br>
