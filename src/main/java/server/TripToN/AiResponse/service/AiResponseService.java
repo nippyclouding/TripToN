@@ -58,7 +58,7 @@ public class AiResponseService {
 
     private String buildPrompt(Concern concern) {
         return String.format(
-                "당신은 여행자의 고민을 들어주는 전문 상담사입니다.\n\n" +
+                "당신은 고민을 들어주는 전문 상담사입니다.\n\n" +
                         "고민 제목: %s\n" +
                         "고민 내용: %s\n\n" +
                         "위 고민에 대해 공감하며 실질적인 조언을 300자 이내로 해주세요.",

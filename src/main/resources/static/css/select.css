@@ -585,3 +585,187 @@ input[type="hidden"] {
         width: clamp(130px, 18vw, 160px);
     }
 }
+
+@media screen and (max-width: 768px) {
+    body {
+        min-height: 100svh;
+        background-attachment: scroll;
+        overflow-x: hidden;
+    }
+
+    .bag-container {
+        top: 47%;
+    }
+
+    .bag-container img {
+        max-width: min(76vw, 340px);
+        max-height: min(48svh, 340px);
+    }
+
+    .bottom-controls {
+        bottom: max(82px, calc(env(safe-area-inset-bottom) + 58px));
+        gap: 18px;
+    }
+
+    .arrow-btn img {
+        width: 28px;
+        height: auto;
+    }
+
+    .about-btn img {
+        width: 82px;
+        max-width: 24vw;
+    }
+
+    .moving-text img {
+        max-height: 68svh;
+    }
+
+    .item-modal,
+    .input-modal {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100svh;
+        min-height: 100svh;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .item-modal.show {
+        align-items: center;
+        justify-content: center;
+        padding: 60px 14px 94px;
+    }
+
+    .modal-content {
+        max-width: 100%;
+        max-height: none;
+    }
+
+    .modal-content img {
+        width: min(88vw, 360px);
+        max-height: calc(100svh - 220px);
+    }
+
+    .modal-buttons {
+        flex-direction: row;
+        justify-content: center;
+        gap: 22px;
+        margin-top: 16px;
+    }
+
+    .modal-arrow-btn img,
+    .input-modal-arrow-btn img {
+        width: 44px;
+    }
+
+    .modal-close-btn img,
+    .input-modal-close-btn img {
+        width: 38px;
+    }
+
+    .input-modal.show {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 54px 14px 92px;
+    }
+
+    .input-modal-background {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .input-modal-title {
+        flex: 0 0 auto;
+        margin: 0 0 14px;
+        padding: 0 8px;
+    }
+
+    .input-modal-title h2,
+    .input-modal-title p {
+        font-size: clamp(17px, 5.4vw, 22px);
+        line-height: 1.25;
+        letter-spacing: 0;
+    }
+
+    .input-modal-content {
+        width: min(100%, 420px);
+        max-width: 100%;
+        min-height: 0;
+        margin: 0 auto;
+        padding: 20px 16px 18px;
+        border-radius: 16px;
+    }
+
+    .input-modal-inner-image {
+        margin-bottom: 16px;
+    }
+
+    .input-modal-inner-image img {
+        width: min(180px, 48vw);
+    }
+
+    .input-modal-body,
+    #concern-form {
+        width: 100%;
+    }
+
+    #concern-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-container {
+        margin-bottom: 12px;
+    }
+
+    .input-container textarea,
+    .input-container input[type="text"],
+    .input-container input[type="password"] {
+        padding: 13px 12px;
+        font-size: 15px;
+        border-radius: 10px;
+        text-align: left;
+    }
+
+    .input-container input[type="text"],
+    .input-container input[type="password"] {
+        height: 46px;
+    }
+
+    .input-container textarea {
+        min-height: 122px;
+        max-height: 32svh;
+    }
+
+    .input-modal-buttons {
+        flex-direction: row;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 2px;
+    }
+}
+
+@media screen and (max-width: 390px) {
+    .input-modal.show {
+        padding-top: 44px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .input-modal-content {
+        padding: 16px 12px 14px;
+    }
+
+    .input-modal-inner-image {
+        margin-bottom: 12px;
+    }
+
+    .input-container textarea {
+        min-height: 104px;
+    }
+}
