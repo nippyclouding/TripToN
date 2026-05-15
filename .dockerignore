@@ -1,0 +1,13 @@
+.git
+.gradle
+build
+out
+.idea
+*.iml
+.DS_Store
+
+.env
+.env.*
+application-local.properties
+
+README_IMG_SOURCE

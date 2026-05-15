@@ -216,3 +216,43 @@ body.main-background {
 
 
 
+@media (max-width: 768px) {
+    html, body {
+        min-height: 100%;
+    }
+
+    body.main-background {
+        background-attachment: scroll;
+        background-position: center top;
+    }
+
+    .arrow-button-container {
+        bottom: max(22px, env(safe-area-inset-bottom));
+    }
+
+    .arrow-btn img {
+        width: 48px;
+    }
+
+    .auth-panel {
+        left: 50%;
+        top: auto;
+        bottom: 88px;
+        transform: translateX(-50%);
+        width: min(82vw, 300px);
+        gap: 14px;
+    }
+
+    .auth-tabs {
+        justify-content: center;
+    }
+
+    .auth-tab,
+    .auth-tab-divider {
+        font-size: 20px;
+    }
+
+    .auth-input {
+        font-size: 14px;
+    }
+}

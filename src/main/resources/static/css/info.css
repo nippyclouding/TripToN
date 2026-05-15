@@ -109,3 +109,53 @@ h1 {
     transform: translateY(-2px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
 }
+
+@media (max-width: 768px) {
+    body {
+        background-attachment: scroll;
+    }
+
+    .container {
+        width: min(100%, 640px);
+        padding: 64px 16px 96px;
+    }
+
+    h1 {
+        margin-bottom: 22px;
+        font-size: clamp(24px, 8vw, 32px);
+    }
+
+    .info-section {
+        padding: 16px;
+        margin-bottom: 16px;
+        border-radius: 12px;
+    }
+
+    .info-section h2 {
+        font-size: 16px;
+    }
+
+    .concern-title,
+    .concern-text,
+    .advice-text {
+        font-size: 14px;
+        line-height: 1.65;
+        overflow-wrap: anywhere;
+    }
+
+    .next-btn {
+        width: min(100%, 320px);
+        min-height: 44px;
+    }
+}
+
+@media (max-width: 420px) {
+    .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .info-section {
+        padding: 14px;
+    }
+}

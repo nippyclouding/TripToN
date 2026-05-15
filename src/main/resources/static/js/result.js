@@ -16,14 +16,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // 가방들을 원형으로 배치하는 함수
     function positionLuggage() {
         const items = luggageCircle.querySelectorAll('.luggage-item');
-        const radius = 190;
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        const radius = isMobile
+            ? Math.min(150, Math.max(112, window.innerWidth * 0.32))
+            : 190;
 
         items.forEach((item, index) => {
             const angle = (index / items.length) * 2 * Math.PI;
             const x = radius * Math.cos(angle);
             const y = radius * Math.sin(angle);
+            const itemWidth = item.offsetWidth || 80;
+            const itemHeight = item.offsetHeight || 100;
 
-            item.style.transform = `translate(${x - 40}px, ${y - 40}px)`;
+            item.style.transform = `translate(${x - itemWidth / 2}px, ${y - itemHeight / 2}px)`;
             item.classList.add('active');
         });
     }
@@ -72,6 +77,12 @@ document.addEventListener('DOMContentLoaded', function() {
             luggageCircle.classList.remove('show');
             paginationControls.classList.remove('show');
             isLuggageVisible = false;
+        }
+    });
+
+    window.addEventListener('resize', function() {
+        if (isLuggageVisible) {
+            positionLuggage();
         }
     });
 
