@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const FOCUS_DELAY_MS = 100;
     const MOVING_TEXT_HEIGHT_PX = 800;
     const MOVING_TEXT_SPEED = 1.5;
+    const WAITING_MIN_DURATION_MS = 5000;
 
     const movingText = document.querySelector('.moving-text');
     const img = document.querySelector('.moving-text img');
@@ -138,11 +139,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let isSubmitting = false;
 
-    window.submitConcern = function() {
+    function delay(ms) {
+        return new Promise(resolve => {
+            setTimeout(resolve, ms);
+        });
+    }
+
+    function showWaitingOverlay() {
+        const waitingOverlay = document.getElementById('waitingOverlay');
+
+        waitingOverlay.classList.add('show');
+        waitingOverlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hideWaitingOverlay() {
+        const waitingOverlay = document.getElementById('waitingOverlay');
+
+        waitingOverlay.classList.remove('show');
+        waitingOverlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = 'auto';
+    }
+
+    window.submitConcern = async function() {
         if (isSubmitting) return;
 
         const title   = document.getElementById('title-input').value.trim();
         const content = document.getElementById('concern-input').value.trim();
+        const form = document.getElementById('concern-form');
 
         if (title === '') {
             alert('고민 제목을 입력해주세요.');
@@ -163,7 +187,46 @@ document.addEventListener('DOMContentLoaded', function() {
         arrowBtn.style.pointerEvents = 'none';
         arrowBtn.querySelector('img').alt = '처리 중...';
 
-        document.getElementById('concern-form').submit();
+        showWaitingOverlay();
+
+        try {
+            const requestPromise = fetch(form.action, {
+                method: form.method,
+                body: new FormData(form),
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'text/html'
+                }
+            });
+
+            const [response] = await Promise.all([
+                requestPromise,
+                delay(WAITING_MIN_DURATION_MS)
+            ]);
+
+            if (!response.ok) {
+                throw new Error('Concern request failed with status ' + response.status);
+            }
+
+            if (response.redirected) {
+                window.location.href = response.url;
+                return;
+            }
+
+            const html = await response.text();
+            history.replaceState(null, '', response.url);
+            document.open();
+            document.write(html);
+            document.close();
+        } catch (error) {
+            console.error(error);
+            hideWaitingOverlay();
+            isSubmitting = false;
+            arrowBtn.style.opacity = '1';
+            arrowBtn.style.pointerEvents = 'auto';
+            arrowBtn.querySelector('img').alt = '제출하기';
+            alert('응답을 받아오지 못했습니다. 잠시 후 다시 시도해주세요.');
+        }
     }
 
     nextBtn.addEventListener('click', function() {

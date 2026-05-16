@@ -119,6 +119,75 @@ body {
     max-height: 1000px;
 }
 
+.waiting-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.42);
+    backdrop-filter: blur(10px);
+}
+
+.waiting-overlay.show {
+    display: flex;
+}
+
+.waiting-content {
+    position: relative;
+    width: min(74vw, 760px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.waiting-title-image {
+    width: min(72vw, 680px);
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.45));
+}
+
+.waiting-decoration {
+    position: absolute;
+    width: clamp(44px, 8vw, 86px);
+    height: auto;
+    opacity: 0;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
+}
+
+.waiting-decoration-1 {
+    left: clamp(-62px, -5.5vw, -36px);
+    top: clamp(-86px, -7.5vw, -52px);
+    animation: waitingBlinkOne 1s steps(1, end) infinite;
+}
+
+.waiting-decoration-2 {
+    right: clamp(-62px, -5.5vw, -36px);
+    bottom: clamp(-88px, -7.5vw, -52px);
+    animation: waitingBlinkTwo 1s steps(1, end) infinite;
+}
+
+@keyframes waitingBlinkOne {
+    0%, 49.999% {
+        opacity: 1;
+    }
+    50%, 100% {
+        opacity: 0;
+    }
+}
+
+@keyframes waitingBlinkTwo {
+    0%, 49.999% {
+        opacity: 0;
+    }
+    50%, 100% {
+        opacity: 1;
+    }
+}
+
 /* 가방 이미지 슬라이드 애니메이션 */
 .bag-slide-left {
     animation: slideLeft 0.5s ease-in-out;
