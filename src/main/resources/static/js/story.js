@@ -12,6 +12,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const itemGif = document.getElementById('item-gif');
     const arrowButton = document.querySelector('.arrow-button');
     const webmItems = document.querySelectorAll('.webm-item');
+    const webmSections = document.querySelectorAll('.webm1-section, .webm2-section, .webm3-section');
+    const submarineSection = document.querySelector('.dream1-section');
+    const completedAnimations = new Set();
+    let lockedSection = null;
+    let lockedSubmarineSection = null;
+    let touchStartY = 0;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let isSubmarineDragActive = false;
+    let submarineAnimationCompleted = false;
+    let submarineAnimationPlaying = false;
+    let submarineUnlockTimer = null;
 
     function ensureVideoPlay(videoElement) {
         videoElement.play().catch(function(error) {
@@ -20,6 +32,155 @@ document.addEventListener('DOMContentLoaded', function() {
                 videoElement.play();
             }, { once: true });
         });
+    }
+
+    function getLockedItem(section) {
+        if (!section) return null;
+        const item = section.querySelector('.webm-item');
+        if (!item) return null;
+
+        const itemNumber = item.getAttribute('data-item');
+        return completedAnimations.has(itemNumber) ? null : item;
+    }
+
+    function alignToSection(section) {
+        if (!section) return;
+        const sectionTop = section.offsetTop;
+
+        if (Math.abs(window.scrollY - sectionTop) > 1) {
+            window.scrollTo({
+                top: sectionTop,
+                behavior: 'auto'
+            });
+        }
+    }
+
+    function getActiveLockedSection() {
+        const windowHeight = window.innerHeight;
+        const activationLine = windowHeight * 0.45;
+        const viewportLine = window.scrollY + activationLine;
+        let activeSection = null;
+
+        webmSections.forEach(function(section) {
+            if (activeSection || !getLockedItem(section)) return;
+
+            if (viewportLine >= section.offsetTop) {
+                activeSection = section;
+            }
+        });
+
+        return activeSection;
+    }
+
+    function updateScrollLock() {
+        const nextLockedSection = getActiveLockedSection();
+
+        if (nextLockedSection) {
+            lockedSection = nextLockedSection;
+            alignToSection(lockedSection);
+            document.body.classList.add('story-scroll-locked');
+        } else if (getActiveLockedSubmarineSection()) {
+            lockedSection = null;
+            lockedSubmarineSection = submarineSection;
+            alignToSection(lockedSubmarineSection);
+            document.body.classList.add('story-scroll-locked');
+            playSubmarineOnce(false);
+        } else {
+            lockedSection = null;
+            lockedSubmarineSection = null;
+            document.body.classList.remove('story-scroll-locked');
+        }
+    }
+
+    function releaseScrollLockIfComplete(itemNumber) {
+        completedAnimations.add(itemNumber);
+
+        if (lockedSection && !getLockedItem(lockedSection)) {
+            lockedSection = null;
+            document.body.classList.remove('story-scroll-locked');
+        }
+    }
+
+    function getActiveLockedSubmarineSection() {
+        if (!submarineSection || submarineAnimationCompleted) return null;
+
+        const windowHeight = window.innerHeight;
+        const activationLine = windowHeight * 0.45;
+        const viewportLine = window.scrollY + activationLine;
+
+        return viewportLine >= submarineSection.offsetTop ? submarineSection : null;
+    }
+
+    function playSubmarineOnce(restartFromBeginning = true) {
+        if (!lockedSubmarineSection || submarineAnimationCompleted) return;
+        if (submarineAnimationPlaying) return;
+
+        submarineAnimationPlaying = true;
+        dream1Video.removeAttribute('loop');
+        dream1Video.loop = false;
+
+        if (restartFromBeginning) {
+            dream1Video.currentTime = 0;
+        }
+
+        dream1Video.play();
+
+        function completeSubmarineAnimation() {
+            if (submarineAnimationCompleted) return;
+
+            dream1Video.removeEventListener('timeupdate', completeOnLastFrame);
+            dream1Video.removeEventListener('ended', completeSubmarineAnimation);
+            clearTimeout(submarineUnlockTimer);
+            submarineAnimationPlaying = false;
+            submarineAnimationCompleted = true;
+            lockedSubmarineSection = null;
+            dream1Video.loop = true;
+            dream1Video.setAttribute('loop', '');
+            dream1Video.play();
+            document.body.classList.remove('story-scroll-locked');
+        }
+
+        function completeOnLastFrame() {
+            if (!dream1Video.duration) return;
+
+            if (dream1Video.currentTime >= dream1Video.duration - 0.1) {
+                completeSubmarineAnimation();
+            }
+        }
+
+        dream1Video.removeEventListener('timeupdate', completeOnLastFrame);
+        dream1Video.removeEventListener('ended', completeSubmarineAnimation);
+        clearTimeout(submarineUnlockTimer);
+
+        dream1Video.addEventListener('timeupdate', completeOnLastFrame);
+        dream1Video.addEventListener('ended', completeSubmarineAnimation);
+
+        if (dream1Video.duration) {
+            const remainingMs = Math.max(500, (dream1Video.duration - dream1Video.currentTime) * 1000 + 250);
+            submarineUnlockTimer = setTimeout(completeSubmarineAnimation, remainingMs);
+        }
+    }
+
+    function blockScrollEvent(event) {
+        updateScrollLock();
+
+        if (!lockedSection && !lockedSubmarineSection) return;
+
+        event.preventDefault();
+        alignToSection(lockedSection || lockedSubmarineSection);
+    }
+
+    function blockScrollKey(event) {
+        const scrollKeys = ['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '];
+
+        if (!scrollKeys.includes(event.key)) return;
+
+        updateScrollLock();
+
+        if (!lockedSection && !lockedSubmarineSection) return;
+
+        event.preventDefault();
+        alignToSection(lockedSection || lockedSubmarineSection);
     }
 
     ensureVideoPlay(video);
@@ -35,6 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!isPlaying && itemVideo.paused) {
                 isPlaying = true;
                 item.classList.add('playing');
+                alignToSection(item.closest('section'));
                 itemVideo.play();
 
                 // named function으로 등록해 ended 시 정확히 제거
@@ -49,6 +211,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 itemVideo.addEventListener('ended', function() {
                     itemVideo.removeEventListener('timeupdate', onTimeUpdate);
+                    releaseScrollLockIfComplete(itemNumber);
+
                     setTimeout(function() {
                         hidePopup(popup);
 
@@ -84,6 +248,47 @@ document.addEventListener('DOMContentLoaded', function() {
                 gifPlaying = false;
             }, 3000);
         }
+    });
+
+    dream1Video.addEventListener('dragstart', function(event) {
+        event.preventDefault();
+        isSubmarineDragActive = true;
+        playSubmarineOnce();
+    });
+
+    dream1Video.addEventListener('mousedown', function(event) {
+        dragStartX = event.clientX;
+        dragStartY = event.clientY;
+        isSubmarineDragActive = true;
+    });
+
+    dream1Video.addEventListener('touchstart', function(event) {
+        if (!event.touches.length) return;
+        dragStartX = event.touches[0].clientX;
+        dragStartY = event.touches[0].clientY;
+        isSubmarineDragActive = true;
+    }, { passive: true });
+
+    window.addEventListener('mousemove', function(event) {
+        if (!isSubmarineDragActive) return;
+        if (event.buttons !== 1) return;
+        if (Math.abs(event.clientX - dragStartX) < 6 && Math.abs(event.clientY - dragStartY) < 6) return;
+        playSubmarineOnce();
+    });
+
+    window.addEventListener('touchmove', function(event) {
+        if (!isSubmarineDragActive) return;
+        if (!event.touches.length) return;
+        if (Math.abs(event.touches[0].clientX - dragStartX) < 6 && Math.abs(event.touches[0].clientY - dragStartY) < 6) return;
+        playSubmarineOnce();
+    }, { passive: true });
+
+    window.addEventListener('mouseup', function() {
+        isSubmarineDragActive = false;
+    });
+
+    window.addEventListener('touchend', function() {
+        isSubmarineDragActive = false;
     });
 
     function hidePopup(popup) {
@@ -146,6 +351,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
+        updateScrollLock();
+
         if (itemGif && !isElementInViewport(itemGif)) {
             gifPlaying = false;
         }
@@ -161,6 +368,15 @@ document.addEventListener('DOMContentLoaded', function() {
             handleScroll();
         });
     });
+    window.addEventListener('wheel', blockScrollEvent, { passive: false });
+    window.addEventListener('touchstart', function(event) {
+        touchStartY = event.touches[0].clientY;
+    }, { passive: true });
+    window.addEventListener('touchmove', function(event) {
+        if (Math.abs(event.touches[0].clientY - touchStartY) < 2) return;
+        blockScrollEvent(event);
+    }, { passive: false });
+    window.addEventListener('keydown', blockScrollKey);
 
     setTimeout(handleScroll, 100);
 });
