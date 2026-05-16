@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const elements = [
             textImage, text1Image, text2Image, text3Image, text4Image,
-            text5Image, logoImage, itemGif, arrowButton
+            text5Image, logoImage, itemGif
         ];
 
         elements.forEach(function(element) {

@@ -446,10 +446,6 @@ body.story-scroll-locked {
     cursor: pointer;
     padding: 10px;
     transition: transform 0.3s ease-in-out;
-    opacity: 0;
-}
-
-.arrow-button.visible {
     opacity: 1;
 }
 
@@ -463,14 +459,6 @@ body.story-scroll-locked {
     width: auto;
     height: auto;
     object-fit: contain;
-}
-
-/* 마지막 검정 배경 섹션 */
-.final-section {
-    position: relative;
-    width: 100vw;
-    min-height: 100vh;
-    background-color: black;
 }
 
 /* 스크롤 스무스 효과 */
